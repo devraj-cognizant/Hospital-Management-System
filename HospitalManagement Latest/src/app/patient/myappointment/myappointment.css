@@ -1,0 +1,115 @@
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #004d40;
+  margin-bottom: 1rem;
+}
+ 
+.sub-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 1.5rem 0 1rem;
+  color: #333;
+}
+ 
+.appointment-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,77,64,0.12);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+ 
+.appointment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,77,64,0.15);
+}
+ 
+.appointment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+ 
+.status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  background-color: #e0f2f1;
+  color: #004d40;
+}
+ 
+.appointment-body p {
+  margin: 0.4rem 0;
+  font-size: 0.95rem;
+  color: #444;
+}
+ 
+.appointment-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.75rem;
+}
+ 
+.btn {
+  background-color: #004d40;
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+ 
+.btn:hover:not(:disabled) {
+  background-color: #00695c;
+  transform: translateY(-2px);
+}
+ 
+/* ✅ Grey style for disabled reschedule button */
+.btn-grey,
+.btn:disabled {
+  background-color: #ccc !important;
+  color: #666 !important;
+  cursor: not-allowed;
+  border: 1px solid #aaa;
+  transform: none;
+}
+ 
+.btn-secondary {
+  background-color: #e0f2f1;
+  color: #004d40;
+}
+ 
+.btn-danger {
+  background-color: #b42318;
+  color: #ffffff;
+}
+ 
+.upcoming .status {
+  background-color: #c8e6c9;
+  color: #2e7d32;
+}
+ 
+.past .status {
+  background-color: #ffe0b2;
+  color: #e65100;
+}
+ 
+/* ✅ Optional badge style for reschedule-used indicator */
+.badge-warning {
+  display: inline-block;
+  background-color: #fdd835;
+  color: #333;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  margin-top: 0.3rem;
+}
+ 
+ 

@@ -1,0 +1,225 @@
+.patient-records-wrapper {
+  padding: 2rem;
+  background: linear-gradient(180deg, #f4f7fa 0%, #e0f2f1 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #004d40;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Filter Bar */
+.controls {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #e0f2f1;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #b2dfdb;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.search-input,
+.date-input {
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  border: 1px solid #80cbc4;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: #004d40;
+  min-width: 160px;
+}
+
+.date-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #004d40;
+}
+
+.btn {
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-sort {
+  background: linear-gradient(135deg, #004d40, #00695c);
+  color: white;
+}
+
+.btn-clear {
+  background-color: white;
+  color: #004d40;
+  border: 2px solid #004d40;
+}
+
+.btn-add {
+  margin-top: 1rem;
+  background: linear-gradient(135deg, #00796b, #004d40);
+  color: #fff;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Patient Cards */
+.patient-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.patient-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.patient-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+}
+
+.patient-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.patient-header h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #004d40;
+}
+
+.patient-id {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.patient-info p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Medical History Table */
+.history-title {
+  margin-top: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #004d40;
+}
+
+.history-table-wrapper {
+  margin-top: 0.8rem;
+  overflow-x: auto;
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.history-table th,
+.history-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.history-table th {
+  background-color: #004d40;
+  color: white;
+  font-weight: 600;
+}
+
+.history-table tr:nth-child(even) {
+  background-color: #f4f7fa;
+}
+
+.history-table tr:hover {
+  background-color: #e0f2f1;
+}
+
+/* ✅ Modal Styling */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #004d40;
+}
+
+.modal-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* ✅ Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #004d40;
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  font-size: 0.9rem;
+  animation: fadeInOut 3s ease forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translateY(20px); }
+  10% { opacity: 1; transform: translateY(0); }
+  90% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(20px); }
+}

@@ -1,0 +1,23 @@
+<div class="dashboard-wrapper">
+  <!-- Sidebar Navigation -->
+  <nav class="dashboard-nav">
+    <div class="nav-brand">MediCare Hospital</div>
+    <a routerLink="profile" routerLinkActive="active">Profile</a>
+    <a routerLink="book" routerLinkActive="active">Book Appointment</a>
+    <a routerLink="appointments" routerLinkActive="active">My Appointments</a>
+    <!-- <a routerLink="history" routerLinkActive="active">Medical History</a> -->
+    <button class="btn-logout" (click)="logout()">Logout</button>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="dashboard-main">
+    <div class="dashboard-header">
+      <h2>Welcome, {{ patient?.firstName || ""}} {{ patient?.lastName }}</h2>
+    </div>
+
+    <div class="dashboard-content">
+      <!-- Routed child components render here -->
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

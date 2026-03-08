@@ -1,0 +1,34 @@
+<button class="btn secondary" routerLink="/home">← Back to Home</button>
+
+<h2>Welcome to MediCare Hospital</h2>
+<p class="intro">Please select your login type to continue</p>
+
+<div class="portal-container">
+  <!-- Patient Portal -->
+  <div class="portal">
+    <h3>👤 Patient Portal</h3>
+    <p>Book appointments, manage your medical records, and track your health journey</p>
+    <ul>
+      <li>✓ Schedule & manage appointments</li>
+      <li>✓ Access medical history</li>
+      <li>✓ Update personal information</li>
+      <li>✓ Book for family members</li>
+    </ul>
+    <!-- ✅ Navigate directly to patient auth -->
+    <a class="btn primary" routerLink="/patient/auth">Login as Patient</a>
+  </div>
+
+  <!-- Doctor Portal -->
+  <div class="portal">
+    <h3>👨‍⚕️ Doctor Portal</h3>
+    <p>Manage your schedule, view patient information, and handle appointment requests</p>
+    <ul>
+      <li>✓ Manage availability & schedule</li>
+      <li>✓ View & confirm appointments</li>
+      <li>✓ Access patient records</li>
+      <li>✓ Search & filter patients</li>
+    </ul>
+    <!-- ✅ Navigate directly to doctor login -->
+    <a class="btn primary" routerLink="/doctor/login">Login as Doctor</a>
+  </div>
+</div>

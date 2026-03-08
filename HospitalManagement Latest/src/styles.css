@@ -1,0 +1,221 @@
+/* ====== Global Reset & Base ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  /* background-color: #f9fafb; */
+   background: linear-gradient(180deg, #f4f7fa 0%, #087062 100%);
+  color: #333;
+  height: 100%;
+}
+
+/* ====== Headings ====== */
+h2, h3, h4 {
+  font-weight: 600;
+  color: #004d40; /* dark teal brand color */
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  margin-bottom: 0.25rem;
+}
+
+.sub-title {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  color: #00695c;
+}
+
+/* ====== Buttons ====== */
+button, .btn {
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn {
+  background-color: #00796b;
+  color: #fff;
+}
+
+.btn:hover {
+  background-color: #004d40;
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: #e0e0e0;
+  color: #333;
+  padding: 2rem;
+}
+
+.btn-danger {
+  background-color: #d32f2f;
+  color: #fff;
+}
+
+.btn-block {
+  background-color: #d32f2f;
+  color: #fff;
+}
+
+.btn-unblock {
+  background-color: #388e3c;
+  color: #fff;
+}
+
+.btn-save {
+  background-color: #00796b;
+  color: #fff;
+}
+
+/* ====== Forms ====== */
+input, select, textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 0.25rem;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #00796b;
+  box-shadow: 0 0 0 2px rgba(0,121,107,0.2);
+}
+
+/* ====== Layout ====== */
+.dashboard-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.dashboard-nav {
+  width: 220px;
+  background-color: #004d40;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.dashboard-nav .nav-brand {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.dashboard-nav button {
+  background: none;
+  border: none;
+  color: #fff;
+  text-align: left;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.dashboard-nav button.active {
+  font-weight: bold;
+  color: #80cbc4;
+}
+
+.dashboard-main {
+  flex: 1;
+  padding: 2rem;
+  background-color: #f9fafb;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* ====== Cards ====== */
+.appointment-card {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.appointment-card.upcoming {
+  border-left: 4px solid #00796b;
+}
+
+.appointment-card.past {
+  border-left: 4px solid #9e9e9e;
+}
+
+.appointment-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.appointment-body p {
+  margin: 0.25rem 0;
+}
+
+.appointment-actions {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ====== Slots ====== */
+.slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.slots button {
+  flex: 1 0 80px;
+  text-align: center;
+}
+
+.slots button.available {
+  background-color: #e0f7e9;
+  color: #004d40;
+}
+
+.slots button.blocked {
+  background-color: #fbeaea;
+  color: #b42318;
+  cursor: not-allowed;
+}
+
+.slots button.selected {
+  border: 2px solid #004d40;
+  background-color: #00796b;
+  color: #fff;
+}
+
+/* ====== Utility ====== */
+.status {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #00796b;
+}
+
+.icon-calendar::before {
+  content: "📅 ";
+}
+
+.icon-note::before {
+  content: "📝 ";
+}

@@ -1,0 +1,68 @@
+/* History Form */
+.form-wrapper {
+  max-width: 800px; /* wider form */
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0,77,64,0.12);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.form-wrapper h3 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #004d40;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.form-wrapper form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-wrapper label {
+  font-weight: 600;
+  color: #00695c;
+  margin-bottom: 0.3rem;
+}
+
+.form-wrapper input[type="text"],
+.form-wrapper textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-wrapper input[type="text"]:focus,
+.form-wrapper textarea:focus {
+  border-color: #00bfa5;
+  box-shadow: 0 0 6px rgba(0,191,165,0.3);
+  outline: none;
+}
+
+.form-wrapper textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.btn.btn-add {
+  background: linear-gradient(135deg, #004d40, #00695c);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.btn.btn-add:hover {
+  background-color: #00695c;
+  transform: translateY(-2px);
+}

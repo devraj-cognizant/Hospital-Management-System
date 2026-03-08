@@ -1,0 +1,139 @@
+.availability-wrapper {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,77,64,0.12);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #004d40;
+  margin-bottom: 0.5rem;
+}
+
+.section-sub {
+  font-size: 0.95rem;
+  color: #667085;
+  margin-bottom: 1.5rem;
+}
+
+.date-picker {
+  margin-bottom: 1.5rem;
+}
+
+.date-picker label {
+  font-weight: 600;
+  color: #004d40;
+  margin-right: 0.5rem;
+}
+
+input[type="date"] {
+  padding: 0.6rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9fbfc;
+  font-size: 0.95rem;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn {
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-block {
+  background-color: #b42318;
+  color: #ffffff;
+}
+
+.btn-block:hover {
+  background-color: #d32f2f;
+}
+
+.btn-unblock {
+  background-color: #004d40;
+  color: #ffffff;
+}
+
+.btn-unblock:hover {
+  background-color: #00695c;
+}
+
+.sub-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.slots button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.slots button.available {
+  background-color: #e0f2f1;
+  color: #004d40;
+}
+
+.slots button.blocked {
+  background-color: #f3f4f6;
+  color: #999;
+}
+
+.slots button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+.slot-time {
+  font-size: 1rem;
+}
+
+.slot-status {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.save-container {
+  text-align: right;
+}
+
+.btn-save {
+  background-color: #004d40;
+  color: #ffffff;
+}
+
+.btn-save:hover {
+  background-color: #00695c;
+}

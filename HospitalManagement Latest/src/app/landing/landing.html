@@ -1,0 +1,91 @@
+<div class="landing-container">
+  <app-header></app-header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h2>Your Health, Our Priority</h2>
+    <p>
+      Comprehensive hospital management system designed to provide seamless healthcare services.
+      Book appointments, access medical records, and manage your health journey all in one place.
+    </p>
+
+    <div class="buttons">
+      <!-- ✅ Use routerLink instead of goToLoginSelection -->
+      <a routerLink="/login" class="btn primary">Get Started</a>
+      <button class="btn secondary" (click)="scrollToSection()">Learn More</button>
+    </div>
+  </section>
+
+  <!-- Feature Highlights -->
+  <section class="features">
+    <div class="feature-box">
+      <div class="icon">📅</div>
+      <h3>Easy Appointment Scheduling</h3>
+      <p>Book appointments with our specialist doctors quickly and conveniently.</p>
+    </div>
+    <div class="feature-box">
+      <div class="icon">👨‍⚕️</div>
+      <h3>Expert Medical Team</h3>
+      <p>Access to experienced doctors across multiple specializations.</p>
+    </div>
+    <div class="feature-box">
+      <div class="icon">📋</div>
+      <h3>Complete Medical History</h3>
+      <p>Track your medical records and treatment history in one place.</p>
+    </div>
+  </section>
+
+  <!-- Info Boxes -->
+  <section class="info-section">
+    <div class="info-box">
+      <div id="more-info" class="icon">🕒</div>
+      <h3>24/7 Access</h3>
+      <p>Manage your health information anytime, anywhere.</p>
+    </div>
+    <div class="info-box">
+      <div class="icon">🛡️</div>
+      <h3>Secure & Private</h3>
+      <p>Your medical data is protected with the highest security standards.</p>
+    </div>
+    <div class="info-box">
+      <div class="icon">❤️</div>
+      <h3>Patient-Centered Care</h3>
+      <p>Personalized treatment plans tailored to your needs.</p>
+    </div>
+  </section>
+
+  <!-- Stats Banner -->
+  <section class="stats-banner">
+    <div>👥 500+ Patients Served</div>
+    <div>👨‍⚕️ 50+ Expert Doctors</div>
+    <div>🏥 15+ Specializations</div>
+    <div>📞 24/7 Support Available</div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-column">
+      <h4>MediCare Hospital</h4>
+      <p>Providing quality healthcare services with compassion and excellence.</p>
+    </div>
+    <div class="footer-column">
+      <h4>Quick Links</h4>
+      <ul>
+        <li>🔗 Patient Portal</li>
+        <li>🔗 Doctor Portal</li>
+        <li>🚑 Emergency Services</li>
+        <li>📞 Contact Us</li>
+      </ul>
+    </div>
+    <div class="footer-column">
+      <h4>Contact</h4>
+      <p>📞 Emergency: +1-555-EMERGENCY</p>
+      <p>📅 Appointments: +1-555-APPOINT</p>
+      <p>✉️ Email: info@medicare.com</p>
+      <p>📍 Address: 123 Health Street, Medical City</p>
+    </div>
+    <div class="copyright">
+      © 2026 MediCare Hospital. All rights reserved.
+    </div>
+  </footer>
+</div>

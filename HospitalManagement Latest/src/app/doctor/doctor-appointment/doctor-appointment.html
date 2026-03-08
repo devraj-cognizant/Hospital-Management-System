@@ -1,0 +1,82 @@
+<div class="appointment-wrapper">
+  <!-- Appointment Requests -->
+  <h3 class="section-title">Appointment Requests</h3>
+  <div *ngIf="requests.length > 0; else noRequests">
+    <div *ngFor="let appt of requests" class="appointment-card request">
+      <div class="card-header">
+        <strong>{{ appt.patientName }}</strong>
+        <span class="reason">{{ appt.reason }}</span>
+      </div>
+      <div class="card-body">
+        <p><i class="icon-calendar"></i> {{ appt.appointmentDate }} at {{ appt.time }}</p>
+      </div>
+      <div class="card-actions">
+        <button class="btn btn-approve" (click)="approve(appt)">Approve</button>
+        <button class="btn btn-cancel" (click)="cancel(appt)">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <ng-template #noRequests>
+    <p class="empty">No pending requests.</p>
+  </ng-template>
+
+
+  <!-- Upcoming Appointments -->
+  <h3 class="section-title">Upcoming Appointments</h3>
+  <div *ngIf="upcoming.length > 0; else noUpcoming">
+    <div *ngFor="let appt of upcoming" class="appointment-card upcoming">
+      <div class="card-header">
+        <strong>{{ appt.patientName }}</strong>
+        <span class="reason">{{ appt.reason }}</span>
+      </div>
+      <div class="card-body">
+        <p><i class="icon-calendar"></i> {{ appt.appointmentDate }} at {{ appt.time }}</p>
+        <p class="status">Status: {{ appt.status }}</p>
+      </div>
+      <div class="card-actions">
+        <button class="btn btn-complete" (click)="complete(appt)">Mark Completed</button>
+      </div>
+
+    </div>
+  </div>
+  <ng-template #noUpcoming>
+    <p class="empty">No upcoming appointments.</p>
+  </ng-template>
+
+  <!-- Completed Appointments -->
+  <h3 class="section-title">Completed Appointments</h3>
+  <div *ngIf="past.length > 0; else noPast">
+    <div *ngFor="let appt of past" class="appointment-card past">
+      <div class="card-header">
+        <strong>{{ appt.patientName }}</strong>
+        <span class="reason">{{ appt.reason }}</span>
+      </div>
+      <div class="card-body">
+  <p><i class="icon-calendar"></i> {{ appt.appointmentDate }} at {{ appt.time }}</p>
+  <p class="status">Status: {{ appt.status }}</p>
+  
+  <a *ngIf="appt.notes" href="#" (click)="viewNotes(appt, $event)">View Notes</a>
+</div>
+    </div>
+  </div>
+  <ng-template #noPast>
+    <p class="empty">No completed appointments.</p>
+  </ng-template>
+
+  <!-- Cancelled Appointments -->
+  <h3 class="section-title">Cancelled Appointments</h3>
+  <div *ngIf="cancelled.length > 0; else noCancelled">
+    <div *ngFor="let appt of cancelled" class="appointment-card cancelled">
+      <div class="card-header">
+        <strong>{{ appt.patientName }}</strong>
+        <span class="reason">{{ appt.reason }}</span>
+      </div>
+      <div class="card-body">
+        <p><i class="icon-calendar"></i> {{ appt.appointmentDate }} at {{ appt.time }}</p>
+        <p class="status">Status: {{ appt.status }}</p>
+      </div>
+    </div>
+  </div>
+  <ng-template #noCancelled>
+    <p class="empty">No cancelled appointments.</p>
+  </ng-template>

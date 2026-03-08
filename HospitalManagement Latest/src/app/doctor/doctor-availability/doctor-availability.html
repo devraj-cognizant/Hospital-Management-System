@@ -1,0 +1,43 @@
+<div class="availability-wrapper">
+  <h3 class="section-title">Manage Availability</h3>
+  <p class="section-sub">Block or unblock time slots for appointments.</p>
+
+  <!-- Date Picker -->
+  <div class="date-picker">
+    <label for="date">Select Date:</label>
+    <input id="date" type="date" [(ngModel)]="selectedDate" [min]="today"/>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="btn btn-block" (click)="blockAll()">Block All</button>
+    <button class="btn btn-unblock" (click)="unblockAll()">Unblock All</button>
+  </div>
+
+  <!-- Time Slots -->
+  <h4 class="sub-title">Time Slots</h4>
+  <div class="slots">
+    <button
+      *ngFor="let slot of timeSlots"
+      [class.available]="isSlotAvailable(slot)"
+      [class.blocked]="isSlotBlocked(slot)"
+      (click)="toggleSlot(slot)"
+      [disabled]="isPastSlot(slot)"
+    >
+      <span class="slot-time">{{ slot }}</span>
+      <span class="slot-status">
+        {{ isPastSlot(slot) ? 'Past' : isSlotAvailable(slot) ? 'Available' : 'Blocked' }}
+      </span>
+    </button>
+  </div>
+
+  <!-- Save -->
+  <div class="save-container">
+    <button class="btn btn-save" (click)="saveAvailability()">Save Availability</button>
+  </div>
+
+  <!-- Success message -->
+  <div *ngIf="successMessage" class="success-msg">
+    {{ successMessage }}
+  </div>
+</div>

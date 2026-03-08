@@ -1,0 +1,116 @@
+<div class="auth-wrapper">
+  <button class="back-btn" (click)="goBack()">← Back</button>
+
+  <div class="tabs">
+    <span [class.active]="activeTab === AuthTab.Login" (click)="switchTab(AuthTab.Login)">Login</span>
+    <span [class.active]="activeTab === AuthTab.Register" (click)="switchTab(AuthTab.Register)">Register</span>
+  </div>
+
+  <div *ngIf="activeTab === AuthTab.Login" class="form-section">
+    <h3>Welcome Back</h3>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <input type="email" formControlName="email" placeholder="Email" />
+      <small class="error" *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">
+        Email is required.
+      </small>
+      <small class="error" *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
+        Enter a valid email.
+      </small><br />
+
+      <input type="password" formControlName="password" placeholder="Password" />
+
+      <small class="error" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+        Password is required.
+      </small>
+      <small class="error" *ngIf="loginForm.get('password')?.hasError('pattern') && loginForm.get('password')?.touched">
+        Password must be at least 8 characters, include uppercase, number, and special character.
+      </small><br />
+
+      <button class="btn" type="submit">Login</button>
+    </form>
+    <p class="register-prompt">Don't have an account? <a (click)="switchTab(AuthTab.Register)">Register here</a></p>
+  </div>
+
+  <div *ngIf="activeTab === AuthTab.Register" class="form-section">
+    <h3>Create Account</h3>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      
+      <input type="text" formControlName="firstName" placeholder="First Name *" />
+      <small class="error" *ngIf="(registerForm.get('firstName')?.dirty || registerForm.get('firstName')?.touched) && registerForm.get('firstName')?.invalid">
+        Only alphabets allowed.
+      </small><br />
+
+      <input type="text" formControlName="lastName" placeholder="Last Name *" />
+      <small class="error" *ngIf="(registerForm.get('lastName')?.dirty || registerForm.get('lastName')?.touched) && registerForm.get('lastName')?.invalid">
+        Only alphabets allowed.
+      </small><br />
+
+      <input type="email" formControlName="email" placeholder="Email *" />
+      <small class="error" *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched">
+        Email is required.
+      </small>
+      <small class="error" *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched">
+        Enter a valid email.
+      </small><br />
+
+      <input type="tel" formControlName="phone" placeholder="Phone *" maxlength="10" />
+      <small class="error" *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid">
+        Enter a 10-digit number.
+      </small><br />
+
+      <input
+        type="date"
+        formControlName="dob"
+        [max]="today"
+        placeholder="Date of Birth"
+      />
+      <small class="error" *ngIf="registerForm.get('dob')?.touched && registerForm.get('dob')?.invalid">
+        Select a valid date.
+      </small><br />
+
+      <select formControlName="gender">
+        <option value="" disabled>Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+      <small class="error" *ngIf="registerForm.get('gender')?.touched && registerForm.get('gender')?.invalid">
+        Please select gender.
+      </small><br />
+
+      <select formControlName="bloodGroup">
+        <option value="" disabled>Blood Group</option>
+        <option *ngFor="let bg of ['A+','A-','B+','B-','AB+','AB-','O+','O-']" [value]="bg">{{ bg }}</option>
+      </select>
+      <small class="error" *ngIf="registerForm.get('bloodGroup')?.touched && registerForm.get('bloodGroup')?.invalid">
+        Select blood group.
+      </small><br />
+
+      <input type="text" formControlName="address" placeholder="Address" /><br />
+
+      <input type="tel" formControlName="emergencyContact" placeholder="Emergency Contact" maxlength="10" />
+      <small class="error" *ngIf="registerForm.get('emergencyContact')?.touched && registerForm.get('emergencyContact')?.invalid">
+        Enter a 10-digit number.
+      </small><br />
+
+      <input type="password" formControlName="password" placeholder="Password *" />
+      <small class="error" *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">
+        Password is required.
+      </small>
+      <small class="error" *ngIf="registerForm.get('password')?.hasError('pattern') && registerForm.get('password')?.touched">
+        Password must be at least 8 characters, include uppercase, number, and special character.
+      </small><br />
+
+      <input type="password" formControlName="confirmPassword" placeholder="Confirm Password *" />
+      <small class="error" *ngIf="registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched">
+        Confirm your password.
+      </small>
+      <small class="error" *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched">
+        Passwords do not match.
+      </small><br />
+
+      <button class="btn" type="submit">Register</button>
+    </form>
+    <p class="register-prompt">Already have an account? <a (click)="switchTab(AuthTab.Login)">Login here</a></p>
+  </div>
+</div>

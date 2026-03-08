@@ -1,0 +1,123 @@
+.appointment-form {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,77,64,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-item--full {
+  grid-column: 1 / -1;
+}
+
+label {
+  font-weight: 600;
+  color: #004d40;
+  margin-bottom: 0.4rem;
+}
+
+input, select {
+  padding: 0.8rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9fbfc;
+  font-size: 0.95rem;
+}
+
+.slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.slots button {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.slots button.available {
+  background-color: #e0f2f1;
+  color: #004d40;
+}
+
+.slots button.blocked {
+  background-color: #f3f4f6;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.slots button.selected {
+  background-color: #004d40;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0,77,64,0.2);
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn {
+  background-color: #004d40;
+  color: white;
+  padding: 0.8rem 1.4rem;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  background-color: #00695c;
+  transform: translateY(-2px);
+}
+.slots button {
+  padding: 0.6rem 1rem;
+  margin: 0.4rem;
+  border-radius: 6px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.slots button.available {
+  background-color: #e0f7e9; /* light green */
+  color: #004d40;
+}
+
+.slots button.blocked {
+  background-color: #fbeaea; /* light red */
+  color: #b42318;
+  cursor: not-allowed;
+}
+
+.slots button.selected {
+  border: 2px solid #004d40;
+  background-color: #00bfa5;
+  color: #fff;
+}
+
+.slots button:hover:not(.blocked) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+

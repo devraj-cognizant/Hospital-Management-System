@@ -1,0 +1,55 @@
+<div class="appointments-wrapper">
+  <h3 class="section-title">My Appointments</h3>
+
+  <h4 class="sub-title">Upcoming ({{ upcomingAppointments.length }})</h4>
+  <div *ngIf="upcomingAppointments.length > 0; else noUpcoming">
+    <div *ngFor="let appt of upcomingAppointments" class="appointment-card upcoming">
+      <div class="appointment-header">
+        <strong>{{ appt.doctorName || 'Specialist' }} ({{ appt.specialization }})</strong>
+        <span class="status" [ngClass]="appt.status.toLowerCase()">{{ appt.status }}</span>
+      </div>
+      <div class="appointment-body">
+        <p><i class="icon-calendar"></i> {{ appt.appointmentDate | date:'mediumDate' }} at {{ appt.time }}</p>
+        <p><i class="icon-note"></i> Reason: {{ appt.reason }}</p>
+        <p *ngIf="appt.rescheduleUsed" class="badge badge-warning">Reschedule already used</p>
+      </div>
+      <div class="appointment-actions">
+        <button class="btn" (click)="requestReschedule(appt)" [disabled]="appt.rescheduleUsed">
+          Reschedule
+        </button>
+        <button class="btn btn-danger" (click)="promptCancel(appt)">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <ng-template #noUpcoming><p class="empty">No upcoming appointments.</p></ng-template>
+
+  <h4 class="sub-title">Completed ({{ completedAppointments.length }})</h4>
+  <div *ngIf="completedAppointments.length > 0; else noCompleted">
+    <div *ngFor="let appt of completedAppointments" class="appointment-card past">
+      <div class="appointment-header">
+        <strong>{{ appt.doctorName || 'Doctor' }}</strong>
+        <span class="status">{{ appt.status }}</span>
+      </div>
+      <div class="appointment-body">
+        <p><i class="icon-calendar"></i> {{ appt.appointmentDate | date:'mediumDate' }}</p>
+        <p *ngIf="appt.notes"><strong>Doctor's Notes:</strong> {{ appt.notes }}</p>
+      </div>
+    </div>
+  </div>
+  <ng-template #noCompleted><p class="empty">No completed appointments.</p></ng-template>
+
+  <h4 class="sub-title">Cancelled ({{ cancelledAppointments.length }})</h4>
+  <div *ngIf="cancelledAppointments.length > 0; else noCancelled">
+    <div *ngFor="let appt of cancelledAppointments" class="appointment-card cancelled">
+      <div class="appointment-header">
+        <strong>{{ appt.doctorName || 'Specialist' }}</strong>
+        <span class="status">{{ appt.status }}</span>
+      </div>
+      <div class="appointment-body">
+        <p>{{ appt.appointmentDate | date:'mediumDate' }}</p>
+        <p *ngIf="appt.reason">Reason: {{ appt.reason }}</p>
+      </div>
+    </div>
+  </div>
+  <ng-template #noCancelled><p class="empty">No cancelled appointments.</p></ng-template>
+</div>

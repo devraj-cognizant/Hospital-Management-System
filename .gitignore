@@ -1,0 +1,39 @@
+# --- System Files ---
+.DS_Store
+Thumbs.db
+
+# --- Dependencies ---
+# This ignores node_modules in the root, frontend, and backend folders
+node_modules/
+
+# --- Angular (Frontend) ---
+.angular/
+dist/
+tmp/
+out-tsc/
+# Ignore Angular's build-specific cache
+.cache/
+
+# --- Node.js & Express (Backend) ---
+# VERY IMPORTANT: This keeps your database credentials and secrets off GitHub
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Database ---
+# If you ever use a local SQLite or a data dump
+*.db
+*.sqlite
+
+# --- IDEs & Editors ---
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace

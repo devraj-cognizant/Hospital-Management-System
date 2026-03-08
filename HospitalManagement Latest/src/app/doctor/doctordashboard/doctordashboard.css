@@ -1,0 +1,94 @@
+/* Sidebar Navigation */
+.dashboard-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 240px;
+  background-color: #004d40;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  gap: 1rem;
+}
+
+/* Brand */
+.nav-brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #00bfa5;
+  padding-bottom: 1rem;
+}
+
+/* Nav Links */
+.dashboard-nav a {
+  font-weight: 600;
+  color: #e0f2f1;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: block;
+}
+
+.dashboard-nav a:hover {
+  background-color: #00695c;
+  transform: translateX(4px);
+}
+
+.dashboard-nav a.active {
+  background-color: #00bfa5;
+  color: white;
+}
+
+/* Logout link styled same as other links */
+.btn-logout {
+  margin-top: auto; /* push to bottom */
+  color: #e0f2f1;   /* same as other links */
+}
+
+
+/* Main Content */
+.dashboard-content {
+  margin-left: 240px;         /* offset for sidebar */
+  min-height: 100vh;
+  background: #ffffff;
+  padding: 2rem;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
+  animation: fadeSlide 0.4s ease-in-out;
+}
+
+/* Animation */
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-nav {
+    position: relative;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 1rem;
+    border-bottom: 2px solid #00bfa5;
+  }
+
+  .nav-brand {
+    display: none;
+  }
+
+  .dashboard-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}

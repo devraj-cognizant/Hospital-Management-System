@@ -1,0 +1,134 @@
+/* Global Reset */
+html, body {
+  margin: 0;
+  padding: 3px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f7fa;
+  color: #333;
+}
+
+/* Back Button */
+.btn.secondary {
+  background-color: white;
+  color: #004d40; /* Dark teal */
+  border: 2px solid #004d40;
+  margin-top: 2rem;
+  margin-left: 2rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn.secondary:hover {
+  background-color: #e0f2f1;
+  transform: translateY(-2px);
+}
+
+/* Heading and Intro */
+h2 {
+  font-size: 2.2rem;
+  color: #004d40;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.intro {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Portal Container */
+.portal-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 1rem;
+}
+
+/* Individual Portal Cards */
+.portal {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 2rem;
+  max-width: 350px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* keep text left */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.portal h3 {
+  font-size: 1.4rem;
+  color: #00695c; /* Teal accent */
+  margin-bottom: 0.5rem;
+}
+
+.portal p {
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.portal ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.portal ul li {
+  margin-bottom: 0.4rem;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* Hover Effect */
+.portal:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0, 77, 64, 0.2); /* teal shadow */
+  border-color: #004d40;
+}
+
+/* Primary Buttons */
+.btn.primary {
+  background-color: #004d40; /* Dark teal */
+  color: white;
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  align-self: center; /* center button horizontally */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.btn.primary:hover {
+  background-color: #00695c; /* Teal highlight */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .portal-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .portal {
+    max-width: 90%;
+  }
+
+  .btn.primary, .btn.secondary {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -1,0 +1,276 @@
+const Patient = require("../models/patient");
+const Doctor = require("../models/doctor");
+const Appointment = require("../models/appointment");
+const Blacklist = require("../models/blacklist");
+const bcrypt = require("bcryptjs");
+const { setUser } = require("../services/auth");
+const { v4: uuidv4 } = require("uuid");
+
+/* -------------------- Register Patient -------------------- */
+async function handlePatientRegister(req, res) {
+    try {
+        const body = req.body;
+
+        const existingUser = await Patient.findOne({ email: body.email });
+        if (existingUser) {
+            return res.status(400).json({ message: "Email already registered" });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(body.password, salt);
+
+        const newPatient = await Patient.create({
+            ...body,
+            password: hashedPassword,
+        });
+
+        return res.status(201).json({
+            message: "Patient registered successfully",
+            patientId: newPatient.patientID
+        });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+}
+
+/* -------------------- Login Patient -------------------- */
+async function handlePatientLogin(req, res) {
+    try {
+        const { email, password } = req.body;
+
+        const patient = await Patient.findOne({ email });
+        if (!patient) {
+            return res.status(401).json({ message: "Invalid Email or Password" });
+        }
+
+        const isMatch = await bcrypt.compare(password, patient.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: "Invalid Email or Password" });
+        }
+
+        const payload = {
+            id: patient.patientID,
+            email: patient.email,
+            role: patient.role || "patient"
+        };
+
+        const token = setUser(payload);
+
+        res.cookie("uid", token);
+
+        return res.status(200).json({
+            message: "Login successful",
+            user: {
+                patientID: patient.patientID,
+                firstName: patient.firstName,
+                lastName: patient.lastName,
+                role: payload.role
+            },
+            token: token
+        });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+
+// get the profile of the user which has logged in
+
+async function handleGetProfile(req, res) {
+  try {
+    console.log("--- PROFILE DEBUG ---");
+    console.log("Searching for patientID:", req.user.id); // Must match "4c02fc42..."
+
+    const patient = await Patient.findOne({ patientID: req.user.id });
+    
+    console.log("Patient found in DB:", patient ? "SUCCESS" : "NOT FOUND");
+
+    if (!patient) {
+      return res.status(404).json({ message: "Patient not found in Database" });
+    }
+
+    return res.status(200).json(patient);
+  } catch (error) {
+    console.error("Controller Error:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+}
+
+/* -------------------- Update Patient Profile -------------------- */
+async function handleUpdatePatientProfile(req, res) {
+    try {
+        const { email } = req.params;
+        const updateData = req.body;
+
+        const updatedPatient = await Patient.findOneAndUpdate(
+            { email: email },
+            { $set: updateData },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedPatient) {
+            return res.status(404).json({ message: "Patient not found" });
+        }
+
+        return res.status(200).json({
+            message: "Profile updated successfully",
+            user: updatedPatient
+        });
+    } catch (error) {
+        return res.status(500).json({ message: "Error updating profile", error: error.message });
+    }
+}
+
+/* -------------------- Book Appointment -------------------- */
+async function bookAppointment(req, res) {
+    try {
+        const { doctorID, patientID, appointmentDate, time, reason } = req.body;
+
+        const patient = await Patient.findOne({ patientID });
+        const doctor = await Doctor.findOne({ id: doctorID });
+
+        if (!patient || !doctor) {
+            return res.status(404).json({ message: "Patient or Doctor not found" });
+        }
+
+        const normalizedDate = new Date(appointmentDate).toISOString().split("T")[0];
+
+        // Access availability as plain object
+        const dayAvailability = doctor.availability[normalizedDate];
+        if (!dayAvailability || !dayAvailability.available.includes(time)) {
+            return res.status(400).json({ message: `The time slot ${time} is not available on ${normalizedDate}` });
+        }
+
+        const appointmentID = "APT-" + uuidv4();
+        const newAppointment = await Appointment.create({
+            appointmentID,
+            patientID: patient.patientID,
+            patientName: `${patient.firstName} ${patient.lastName}`,
+            doctorID: doctor.id,
+            doctorName: doctor.name,
+            specialization: doctor.specialization,
+            appointmentDate: normalizedDate,
+            time,
+            reason,
+            status: "Requested"
+        });
+
+        return res.status(201).json({
+            message: "Appointment booked successfully",
+            appointment: newAppointment
+        });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Error booking appointment", error: error.message });
+    }
+}
+
+/* -------------------- Reschedule Appointment -------------------- */
+async function rescheduleAppointment(req, res) {
+    try {
+        const { appointmentID } = req.params;
+        const { newDate, newTime } = req.body;
+
+        const appointment = await Appointment.findOne({ appointmentID });
+        if (!appointment) {
+            return res.status(404).json({ message: "Appointment not found" });
+        }
+
+        const doctor = await Doctor.findOne({ id: appointment.doctorID });
+        if (!doctor) {
+            return res.status(404).json({ message: "Associated Doctor not found" });
+        }
+
+        const oldDate = new Date(appointment.appointmentDate).toISOString().split("T")[0];
+        const oldTime = appointment.time;
+        const normalizedNewDate = new Date(newDate).toISOString().split("T")[0];
+
+        // Check new slot availability
+        const newDayAvailability = doctor.availability[normalizedNewDate] || { available: [], blocked: [] };
+        if (!newDayAvailability.available.includes(newTime)) {
+            return res.status(400).json({ message: `The new time slot ${newTime} on ${normalizedNewDate} is not available.` });
+        }
+
+        // Free old slot
+        const oldDayAvailability = doctor.availability[oldDate];
+        if (oldDayAvailability) {
+            oldDayAvailability.blocked = oldDayAvailability.blocked.filter(slot => slot !== oldTime);
+            if (!oldDayAvailability.available.includes(oldTime)) {
+                oldDayAvailability.available.push(oldTime);
+                oldDayAvailability.available.sort();
+            }
+            doctor.availability[oldDate] = oldDayAvailability;
+        }
+
+        // Block new slot
+        newDayAvailability.available = newDayAvailability.available.filter(slot => slot !== newTime);
+        newDayAvailability.blocked.push(newTime);
+        doctor.availability[normalizedNewDate] = newDayAvailability;
+
+        await doctor.save();
+
+        // Update appointment
+        appointment.appointmentDate = normalizedNewDate;
+        appointment.time = newTime;
+        appointment.status = "Rescheduled";
+        await appointment.save();
+
+        return res.status(200).json({
+            message: "Appointment rescheduled successfully",
+            appointment
+        });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Error rescheduling appointment", error: error.message });
+    }
+}
+
+/* -------------------- Logout Patient -------------------- */
+async function handlePatientLogout(req, res) {
+    try {
+        // Grab the token from the cookie OR the header
+        const token = req.cookies?.uid || req.headers?.authorization?.split(" ")[1];
+
+        if (token) {
+            // Save it to the database so it can never be used again
+            await Blacklist.create({ token });
+        }
+
+        // Clear the cookie for good measure
+        res.clearCookie("uid");
+        
+        return res.status(200).json({ message: "Patient logged out successfully" });
+    } catch (error) {
+        return res.status(500).json({ message: "Error during logout", error: error.message });
+    }
+}
+
+async function getPatientAppointments(req, res) {
+    try {
+        const { patientID } = req.params;
+        
+        // Find all appointments where patientID matches
+        const appointments = await Appointment.find({ patientID });
+
+        return res.status(200).json({
+            success: true,
+            appointments: appointments
+        });
+    } catch (error) {
+        console.error("Error fetching patient appointments:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+module.exports = {
+    handlePatientLogin,
+    handlePatientRegister,
+    handleUpdatePatientProfile,
+    bookAppointment,
+    rescheduleAppointment,
+    handlePatientLogout,
+    handleGetProfile,
+    getPatientAppointments
+};

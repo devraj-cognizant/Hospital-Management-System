@@ -1,0 +1,76 @@
+<div class="appointment-wrapper">
+    <h3 class="section-title">
+        {{ rescheduleAppt ? 'Reschedule Appointment' : 'Book Appointment' }}
+    </h3>
+
+    <p class="section-sub" *ngIf="!rescheduleAppt">
+        Schedule a consultation with our specialist doctors.
+    </p>
+    <p class="section-sub" *ngIf="rescheduleAppt">
+        Select a new date and time for your appointment.
+    </p>
+
+    <form [formGroup]="appointmentForm" (ngSubmit)="book()" class="appointment-form">
+        <div class="form-grid">
+            <div class="form-item">
+                <label for="specialization">Choose Specialization</label>
+                <select id="specialization" formControlName="specialization" (change)="onSpecializationChange()">
+                    <option value="">-- Select Specialization --</option>
+                    <option *ngFor="let spec of specializations" [value]="spec">
+                        {{ spec }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-item" *ngIf="appointmentForm.get('specialization')?.value">
+                <label for="doctor">Choose Doctor</label>
+                <select id="doctor" formControlName="doctor">
+                    <option value="">-- Select Doctor --</option>
+                    <option *ngFor="let doc of filteredDoctors" [value]="doc.id || doc._id">
+                        {{ doc.name }} ({{ doc.specialization }})
+                    </option>
+                </select>
+            </div>
+            
+            <div class="form-item form-item--full">
+                <label for="reason">Reason</label>
+                <select id="reason" formControlName="reason" (change)="onReasonChange()">
+                    <option value="">-- Select Reason --</option>
+                    <option *ngFor="let r of reasons" [value]="r">{{ r }}</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-item form-item--full" *ngIf="showOtherReason">
+                <label for="otherReason">Please specify</label>
+                <textarea id="otherReason" formControlName="otherReason" placeholder="Describe your concern"></textarea>
+            </div>
+
+            <div class="form-item" *ngIf="rescheduleAppt || appointmentForm.get('doctor')?.value">
+                <label for="date">Select Date</label>
+                <input id="date" type="date" formControlName="date" [min]="today" />
+            </div>
+        </div>
+
+        <div class="form-item form-item--full" *ngIf="appointmentForm.get('date')?.value">
+            <h4 class="sub-title">Time Slots</h4>
+            
+            <div class="slots" *ngIf="availableSlots.length > 0; else noSlots">
+                <button type="button" *ngFor="let slot of availableSlots" (click)="selectTime(slot)"
+                    [class.selected]="appointmentForm.get('time')?.value === slot">
+                    {{ slot }}
+                </button>
+            </div>
+            
+            <ng-template #noSlots>
+                <p style="color: #e74c3c; font-size: 14px;">No available slots for this date. Please select another date.</p>
+            </ng-template>
+        </div>
+
+       <div class="buttons">
+        <button type="button" class="btn" [disabled]="appointmentForm.invalid" (click)="book($event)">
+            {{ rescheduleAppt ? 'Confirm Reschedule' : 'Book Appointment' }}
+        </button>
+    </div>
+    </form>
+</div>

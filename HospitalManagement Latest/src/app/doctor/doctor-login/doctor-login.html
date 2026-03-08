@@ -1,0 +1,32 @@
+<div class="login-screen">
+  <div class="doctor-login-wrapper">
+    <div class="buttons back-btn">
+      <button type="button" class="btn btn-secondary" (click)="goBack()">⬅ Back</button>
+    </div>
+
+    <h2 class="portal-title">Doctor Portal</h2>
+    <p class="portal-sub">
+      Welcome Doctor 👨‍⚕️<br />Login to manage your appointments and patients.
+    </p>
+
+    <form (ngSubmit)="login()" class="login-form">
+      <div class="form-item">
+        <label for="email">Email</label>
+        <input id="email" type="email" [(ngModel)]="email" name="email" required />
+      </div>
+
+      <div class="form-item">
+        <label for="password">Password</label>
+        <input id="password" type="password" [(ngModel)]="password" name="password" required />
+      </div>
+
+      <!-- <div class="form-footer">
+        <a href="#" class="forgot-link">Forgot Password?</a>
+      </div> -->
+
+      <div class="buttons">
+        <button type="submit" class="btn">Login</button>
+      </div>
+    </form>
+  </div>
+</div>

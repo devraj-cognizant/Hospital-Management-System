@@ -1,0 +1,67 @@
+<div class="patient-records-wrapper">
+  <!-- Controls -->
+  <div class="controls">
+    <input type="text"
+           (ngModelChange)="onSearch($event)"
+           [ngModel]="searchTerm"
+           placeholder="🔍 Search by patient name"
+           class="search-input" />
+
+    <label class="date-label" for="startDate">From:</label>
+    <input id="startDate" type="date" [(ngModel)]="filterStartDate" class="date-input" />
+
+    <label class="date-label" for="endDate">To:</label>
+    <input id="endDate" type="date" [(ngModel)]="filterEndDate" class="date-input" />
+
+    <button class="btn btn-sort" (click)="toggleSort()">
+      Sort by Date {{ sortDescending ? '↓' : '↑' }}
+    </button>
+    <button class="btn btn-clear" (click)="clearFilters()">Clear ✖</button>
+  </div>
+
+  <!-- Patient List -->
+  <div class="patient-list">
+    <div *ngIf="filteredPatients.length === 0" class="empty">
+      No patients found.
+    </div>
+
+    <div *ngFor="let patient of filteredPatients" class="patient-card">
+      <!-- Patient Header -->
+      <div class="patient-header">
+        <h3>{{ patient.name }}</h3>
+        <span class="patient-id">ID: {{ patient.id }}</span>
+        <button class="btn btn-download" (click)="downloadPdf(patient)">Download PDF</button>
+      </div>
+
+      <!-- Patient Info -->
+      <div class="patient-info">
+        <p><strong>Age:</strong> {{ patient.age }}</p>
+        <p><strong>Gender:</strong> {{ patient.gender }}</p>
+        <p><strong>Contact:</strong> {{ patient.contact }}</p>
+      </div>
+
+      <!-- Medical History -->
+      <h4 class="history-title">Medical History</h4>
+      <div class="history-table-wrapper">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Diagnosis</th>
+              <th>Treatment</th>
+              <th>Date of Visit</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let history of patient.history">
+              <td>{{ history.diagnosis }}</td>
+              <td>{{ history.treatment }}</td>
+              <td>{{ history.dateOfVisit | date:'yyyy-MM-dd' }}</td>
+              <td>{{ history.notes }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

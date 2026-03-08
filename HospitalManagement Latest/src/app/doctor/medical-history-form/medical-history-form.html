@@ -1,0 +1,16 @@
+<div class="form-wrapper">
+  <h3>Enter Treatment Details for {{ patientName }}</h3>
+  
+  <div class="form-container">
+    <label>Diagnosis:</label>
+    <input type="text" [(ngModel)]="formData.diagnosis" placeholder="Enter diagnosis..." required />
+
+    <label>Treatment:</label>
+    <input type="text" [(ngModel)]="formData.treatment" placeholder="Enter treatment plan..." required />
+
+    <label>Notes:</label>
+    <textarea [(ngModel)]="formData.notes" placeholder="Additional notes..."></textarea>
+
+    <button class="btn btn-add" (click)="submitForm()">Save History</button>
+  </div>
+</div>

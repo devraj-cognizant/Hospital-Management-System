@@ -1,0 +1,168 @@
+/* Wrapper */
+.dashboard-wrapper,
+.patient-dashboard-wrapper,
+.doctor-dashboard-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #004d40, #00695c);
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+}
+
+/* Sidebar Navigation */
+.dashboard-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 240px;
+  background-color: #004d40;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+/* Brand */
+.nav-brand {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #00bfa5;
+  padding-bottom: 1rem;
+}
+
+/* Nav Links + Buttons */
+.dashboard-nav a,
+.dashboard-nav button {
+  background: none;
+  border: none;
+  font-weight: 600;
+  color: #e0f2f1;
+  padding: 0.8rem 1rem;
+  text-align: left;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+  display: block;
+}
+
+.dashboard-nav a:hover,
+.dashboard-nav button:hover {
+  background-color: #00695c;
+  transform: translateX(4px);
+}
+
+.dashboard-nav a.active,
+.dashboard-nav button.active {
+  background-color: #00bfa5;
+  color: white;
+}
+
+/* Logout Button */
+.btn-logout {
+  margin-top: auto;
+  background-color: #d32f2f;
+  color: white !important;
+  text-align: center;
+  border-radius: 6px;
+  padding: 0.8rem;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-logout:hover {
+  background-color: #b71c1c;
+}
+
+/* Main Content */
+.dashboard-main {
+  margin-left: 240px;
+  min-height: 100vh;
+  background: #ffffff;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 0 0 12px rgba(0,0,0,0.15);
+}
+
+/* Header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h2 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #004d40;
+  margin: 0;
+}
+
+.dashboard-header .btn {
+  background-color: #004d40;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.dashboard-header .btn:hover {
+  background-color: #00695c;
+  transform: translateY(-2px);
+}
+
+/* Content Area */
+.dashboard-content {
+  flex-grow: 1;
+  padding: 1rem 0;
+  animation: fadeSlide 0.4s ease-in-out;
+}
+
+/* Animation */
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-nav {
+    position: relative;
+    width: 100%;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 1rem;
+    border-bottom: 2px solid #00bfa5;
+  }
+
+  .nav-brand {
+    display: none;
+  }
+
+  .dashboard-nav a,
+  .dashboard-nav button {
+    flex: 1;
+    text-align: center;
+    padding: 0.6rem;
+  }
+
+  .dashboard-main {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}
