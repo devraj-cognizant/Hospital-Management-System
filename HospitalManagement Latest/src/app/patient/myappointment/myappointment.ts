@@ -11,7 +11,7 @@ import autoTable from 'jspdf-autotable';
   selector: 'app-myappointment',
   standalone: true,
   imports: [FormsModule, CommonModule],
-  templateUrl: './myappointment.html',
+  templateUrl:'./myappointment.html',
   styleUrls: ['./myappointment.css'],
 })
 export class Myappointment implements OnInit {
