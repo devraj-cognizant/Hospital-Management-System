@@ -6,7 +6,7 @@
     <div *ngFor="let appt of upcomingAppointments" class="appointment-card upcoming">
       <div class="appointment-header">
         <strong>{{ appt.doctorName || 'Specialist' }} ({{ appt.specialization }})</strong>
-        <span class="status" [ngClass]="appt.status.toLowerCase()">{{ appt.status }}</span>
+        <span class="status" [ngClass]="appt.status ? appt.status.toLowerCase() : ''">{{ appt.status }}</span>
       </div>
       <div class="appointment-body">
         <p><i class="icon-calendar"></i> {{ appt.appointmentDate | date:'mediumDate' }} at {{ appt.time }}</p>
@@ -14,10 +14,10 @@
         <p *ngIf="appt.rescheduleUsed" class="badge badge-warning">Reschedule already used</p>
       </div>
       <div class="appointment-actions">
-        <button class="btn" (click)="requestReschedule(appt)" [disabled]="appt.rescheduleUsed">
+        <button type="button" class="btn" (click)="requestReschedule(appt, $event)" [disabled]="appt.rescheduleUsed">
           Reschedule
         </button>
-        <button class="btn btn-danger" (click)="promptCancel(appt)">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="promptCancel(appt)">Cancel</button>
       </div>
     </div>
   </div>

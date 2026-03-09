@@ -7,7 +7,8 @@ const {
   handleGetProfile,
   rescheduleAppointment,
   handlePatientLogout,
-  getPatientAppointments
+  getPatientAppointments,
+  cancelAppointment
 } = require("../controllers/patient");
 
 // ✅ Import the middlewares
@@ -50,4 +51,7 @@ router.post("/logout", handlePatientLogout);
 
 // ✅ Add this route
 router.get("/:patientID/appointments", getPatientAppointments);
+
+// Add this near your other Protected Patient Routes
+router.patch("/appointment/:appointmentID/cancel", cancelAppointment);
 module.exports = router;

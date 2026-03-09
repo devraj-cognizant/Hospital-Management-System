@@ -264,6 +264,61 @@ async function getPatientAppointments(req, res) {
     }
 }
 
+async function cancelAppointment(req, res) {
+    try {
+        const { appointmentID } = req.params;
+
+        // 1. Find the appointment
+        const appointment = await Appointment.findOne({ appointmentID });
+        if (!appointment) {
+            return res.status(404).json({ message: "Appointment not found" });
+        }
+
+        // 2. Security Check: Make sure the patient is only cancelling THEIR OWN appointment
+        if (appointment.patientID !== req.user.id) {
+            return res.status(403).json({ message: "You can only cancel your own appointments" });
+        }
+
+        // 3. Find the doctor to give the time slot back
+        const doctor = await Doctor.findOne({ id: appointment.doctorID });
+        if (!doctor) {
+            return res.status(404).json({ message: "Associated Doctor not found" });
+        }
+
+        const date = new Date(appointment.appointmentDate).toISOString().split("T")[0];
+        const time = appointment.time;
+
+        // 4. Give the time slot back to the doctor's availability
+        const dayAvailability = doctor.availability[date];
+        if (dayAvailability) {
+            // Remove the time from "blocked"
+            dayAvailability.blocked = dayAvailability.blocked.filter(slot => slot !== time);
+
+            // Add the time back to "available"
+            if (!dayAvailability.available.includes(time)) {
+                dayAvailability.available.push(time);
+                dayAvailability.available.sort(); // Keep times in order
+            }
+
+            doctor.availability[date] = dayAvailability;
+            doctor.markModified("availability"); // Tell Mongoose we changed a mixed object
+            await doctor.save();
+        }
+
+        // 5. Update the appointment status
+        appointment.status = "Cancelled";
+        await appointment.save();
+
+        return res.status(200).json({
+            message: "Appointment cancelled successfully",
+            appointment
+        });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Error cancelling appointment", error: error.message });
+    }
+}
+
 module.exports = {
     handlePatientLogin,
     handlePatientRegister,
@@ -272,5 +327,6 @@ module.exports = {
     rescheduleAppointment,
     handlePatientLogout,
     handleGetProfile,
-    getPatientAppointments
+    getPatientAppointments,
+    cancelAppointment
 };

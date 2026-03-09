@@ -135,6 +135,11 @@ export class PatientService {
     return found;
   }
 
+  // Inside patient-service.ts in Angular
+  cancelAppointmentDB(appointmentID: string) {
+    return this.http.patch(`http://localhost:5000/patient/appointment/${appointmentID}/cancel`, {}, { withCredentials: true });
+  }
+
   getPatientAppointmentsDB(patientID: string): Observable<any> {
     return this.http.get(`http://localhost:5000/patient/${patientID}/appointments`, { withCredentials: true });
   }
