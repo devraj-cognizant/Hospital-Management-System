@@ -57,7 +57,13 @@ async function handlePatientLogin(req, res) {
 
         const token = setUser(payload);
 
-        res.cookie("uid", token);
+        // ✅ THE FIX: Add the security flags!
+        res.cookie("uid", token, {
+            httpOnly: true,  // 🛡️ Completely hides the cookie from JavaScript / Hackers
+            secure: false,   // ⚠️ Set to true in Production when you have HTTPS
+            sameSite: "lax", // Prevents CSRF attacks
+            maxAge: 24 * 60 * 60 * 1000 // Expires in 24 hours (matches your JWT)
+        });
 
         return res.status(200).json({
             message: "Login successful",
@@ -79,23 +85,23 @@ async function handlePatientLogin(req, res) {
 // get the profile of the user which has logged in
 
 async function handleGetProfile(req, res) {
-  try {
-    console.log("--- PROFILE DEBUG ---");
-    console.log("Searching for patientID:", req.user.id); // Must match "4c02fc42..."
+    try {
+        console.log("--- PROFILE DEBUG ---");
+        console.log("Searching for patientID:", req.user.id); // Must match "4c02fc42..."
 
-    const patient = await Patient.findOne({ patientID: req.user.id });
-    
-    console.log("Patient found in DB:", patient ? "SUCCESS" : "NOT FOUND");
+        const patient = await Patient.findOne({ patientID: req.user.id });
 
-    if (!patient) {
-      return res.status(404).json({ message: "Patient not found in Database" });
+        console.log("Patient found in DB:", patient ? "SUCCESS" : "NOT FOUND");
+
+        if (!patient) {
+            return res.status(404).json({ message: "Patient not found in Database" });
+        }
+
+        return res.status(200).json(patient);
+    } catch (error) {
+        console.error("Controller Error:", error);
+        return res.status(500).json({ message: "Server error" });
     }
-
-    return res.status(200).json(patient);
-  } catch (error) {
-    console.error("Controller Error:", error);
-    return res.status(500).json({ message: "Server error" });
-  }
 }
 
 /* -------------------- Update Patient Profile -------------------- */
@@ -239,8 +245,8 @@ async function handlePatientLogout(req, res) {
         }
 
         // Clear the cookie for good measure
-        res.clearCookie("uid");
-        
+        res.clearCookie("uid", { httpOnly: true, sameSite: "lax" });
+
         return res.status(200).json({ message: "Patient logged out successfully" });
     } catch (error) {
         return res.status(500).json({ message: "Error during logout", error: error.message });
@@ -250,7 +256,7 @@ async function handlePatientLogout(req, res) {
 async function getPatientAppointments(req, res) {
     try {
         const { patientID } = req.params;
-        
+
         // Find all appointments where patientID matches
         const appointments = await Appointment.find({ patientID });
 

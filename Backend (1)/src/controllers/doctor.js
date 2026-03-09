@@ -24,9 +24,9 @@ async function handleDoctorRegister(req, res) {
             password: hashedPassword
         });
 
-        return res.status(201).json({ 
-            message: "Doctor registered successfully", 
-            id: newDoctor.id 
+        return res.status(201).json({
+            message: "Doctor registered successfully",
+            id: newDoctor.id
         });
 
     } catch (error) {
@@ -34,6 +34,7 @@ async function handleDoctorRegister(req, res) {
     }
 }
 
+/* -------------------- Login Doctor -------------------- */
 /* -------------------- Login Doctor -------------------- */
 async function handleDoctorLogin(req, res) {
     try {
@@ -49,29 +50,31 @@ async function handleDoctorLogin(req, res) {
             return res.status(401).json({ message: "Invalid email or password. Please try again." });
         }
 
-        // --- NEW CODE STARTS HERE ---
-        
         // 1. Create a payload that includes the role!
         const payload = {
             id: doctor.id,
             email: doctor.email,
-            role: "DOCTOR" // <-- This is the magic word for RBAC
+            role: "DOCTOR" 
         };
 
-        // 2. Generate the token/session using your auth service
-        const token = setUser(payload); 
+        // 2. Generate token
+        const token = setUser(payload);
 
-        // 3. Send the token to the client as a cookie (if you are using cookies)
-        res.cookie("uid", token);
+        // 3. Set the Secure HttpOnly Cookie
+        res.cookie("uid", token, {
+            httpOnly: true,  // 🛡️ Completely hides the cookie from JavaScript / Hackers
+            secure: false,   // ⚠️ Set to true in Production when you have HTTPS
+            sameSite: "lax", // Prevents CSRF attacks
+            maxAge: 24 * 60 * 60 * 1000 // Expires in 24 hours
+        });
 
-        // --- NEW CODE ENDS HERE ---
-
+        // 🚀 THE FIX: You accidentally deleted this block! 
+        // Without this, Angular waits forever and nothing happens.
         return res.status(200).json({
             message: "Login successful",
             id: doctor.id,
             name: doctor.name,
-            specialization: doctor.specialization,
-            token: token // Good practice to also send it in the JSON body
+            specialization: doctor.specialization
         });
 
     } catch (error) {
@@ -94,9 +97,9 @@ async function updateDoctorAvailability(req, res) {
         doctor.availability = availability;
         await doctor.save();
 
-        return res.status(200).json({ 
-            message: "Availability replaced successfully", 
-            availability: doctor.availability 
+        return res.status(200).json({
+            message: "Availability replaced successfully",
+            availability: doctor.availability
         });
 
     } catch (error) {
@@ -153,16 +156,16 @@ async function getDoctorAvailability(req, res) {
 /* -------------------- Logout Doctor -------------------- */
 async function handleDoctorLogout(req, res) {
     // Clear the doctor's cookie
-    res.clearCookie("uid");
-    
+    res.clearCookie("uid", { httpOnly: true, sameSite: "lax" });
+
     return res.status(200).json({ message: "Doctor logged out successfully" });
 }
 
 async function getAllDoctors(req, res) {
     try {
         // Fetch all doctors but exclude their passwords and sensitive data
-        const doctors = await Doctor.find({}, { password: 0 }); 
-        
+        const doctors = await Doctor.find({}, { password: 0 });
+
         return res.status(200).json(doctors);
     } catch (error) {
         console.error("Error fetching doctors:", error);
