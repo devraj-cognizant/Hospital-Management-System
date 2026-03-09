@@ -17,13 +17,13 @@ import autoTable from 'jspdf-autotable';
 export class Myappointment implements OnInit {
   today: string = new Date().toISOString().split('T')[0];
   appointments: Appointment[] = [];
-  medicalHistories: any[] = []; 
+  medicalHistories: any[] = [];
 
   constructor(
     private patientService: PatientService,
     private router: Router,
-    private cdr: ChangeDetectorRef 
-  ) {}
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit() {
     this.loadData();
@@ -56,12 +56,14 @@ export class Myappointment implements OnInit {
 
   // --- Filtering Logic ---
   get upcomingAppointments(): Appointment[] {
-    return this.appointments.filter((a: any) => {
-      const s = a.status?.toLowerCase() || '';
-      const apptDate = a.appointmentDate ? a.appointmentDate.split('T')[0] : '';
-      return (s === 'requested' || s === 'scheduled' || s === 'pending') && apptDate >= this.today;
-    });
-  }
+  return this.appointments.filter((a: any) => {
+    const s = a.status?.toLowerCase() || '';
+    const apptDate = a.appointmentDate ? a.appointmentDate.split('T')[0] : '';
+    return (s === 'scheduled') && apptDate >= this.today;
+  });
+}
+
+
 
   get completedAppointments(): Appointment[] {
     return this.appointments.filter((a: any) => a.status?.toLowerCase() === 'completed');
@@ -70,16 +72,24 @@ export class Myappointment implements OnInit {
   get cancelledAppointments(): Appointment[] {
     return this.appointments.filter((a: any) => a.status?.toLowerCase() === 'cancelled');
   }
+  get requestAppointments(): Appointment[] {
+    return this.appointments.filter((a: any) => {
+      const s = a.status?.toLowerCase() || '';
+      const apptDate = a.appointmentDate ? a.appointmentDate.split('T')[0] : '';
+      return (s === 'requested' || s === 'pending') && apptDate >= this.today;
+    });
+  }
+
 
   // --- Actions ---
   promptCancel(appt: Appointment) {
     if (window.confirm('Are you sure you want to cancel?')) {
-      const reason = prompt('Reason for cancellation:'); 
+      const reason = prompt('Reason for cancellation:');
       if (reason !== null) {
         this.patientService.cancelAppointmentDB(appt.appointmentID).subscribe({
           next: () => {
             alert(`❌ Appointment cancelled.`);
-            this.loadData(); 
+            this.loadData();
           },
           error: (err: any) => alert(`Error: ${err.error?.message}`)
         });
@@ -88,7 +98,7 @@ export class Myappointment implements OnInit {
   }
 
   requestReschedule(appt: Appointment, event?: Event) {
-    if (event) event.preventDefault(); 
+    if (event) event.preventDefault();
     if (appt.rescheduleUsed) return alert('⚠️ Reschedule already used.');
     if (window.confirm('Do you want to reschedule?')) {
       this.router.navigate(['/patient/book'], { state: { rescheduleAppt: appt } });
@@ -115,7 +125,7 @@ export class Myappointment implements OnInit {
 
     // PDF Layout Styling
     doc.setFontSize(22);
-    doc.setTextColor(41, 128, 185); 
+    doc.setTextColor(41, 128, 185);
     doc.text('Medical Visit Summary', 14, 22);
     doc.setDrawColor(200, 200, 200);
     doc.line(14, 25, 196, 25);
@@ -125,7 +135,7 @@ export class Myappointment implements OnInit {
     doc.setFont('helvetica', 'bold');
     doc.text(`Patient: ${patient?.firstName} ${patient?.lastName}`, 14, 35);
     doc.text(`Doctor: ${historyEntry.doctorName || 'N/A'}`, 120, 35);
-    
+
     doc.setFont('helvetica', 'normal');
     doc.text(`Date of Visit: ${new Date(historyEntry.dateOfVisit).toLocaleDateString()}`, 14, 42);
     doc.text(`History ID: ${historyEntry.historyID}`, 120, 42);

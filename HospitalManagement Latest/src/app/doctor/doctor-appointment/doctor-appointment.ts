@@ -60,7 +60,7 @@ export class DoctorAppointment implements OnInit {
   get upcoming(): Appointment[] {
     return this.appointments.filter(a => {
       const s = a.status?.toLowerCase() || '';
-      return s === 'scheduled' || s === 'accepted';
+      return s === 'scheduled' || s === 'accepted' ;
     });
   }
 

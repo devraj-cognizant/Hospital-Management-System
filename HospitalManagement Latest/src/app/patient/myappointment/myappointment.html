@@ -1,25 +1,52 @@
 <div class="appointments-wrapper">
   <h3 class="section-title">My Appointments</h3>
 
-  <h4 class="sub-title">Upcoming ({{ upcomingAppointments.length }})</h4>
-  <div *ngIf="upcomingAppointments.length > 0; else noUpcoming">
-    <div *ngFor="let appt of upcomingAppointments" class="appointment-card upcoming">
+  <!-- Requested Appointments -->
+  <h4 class="sub-title">Requests ({{ requestAppointments.length }})</h4>
+  <div *ngIf="requestAppointments.length > 0; else noRequests">
+    <div *ngFor="let appt of requestAppointments" class="appointment-card request">
       <div class="appointment-header">
         <strong>{{ appt.doctorName || 'Specialist' }} ({{ appt.specialization }})</strong>
-        <span class="status" [ngClass]="appt.status ? appt.status.toLowerCase() : ''">{{ appt.status }}</span>
+        <span class="status requested">{{ appt.status }}</span>
       </div>
       <div class="appointment-body">
         <p><i class="icon-calendar"></i> {{ appt.appointmentDate | date:'mediumDate' }} at {{ appt.time }}</p>
         <p><i class="icon-note"></i> Reason: {{ appt.reason }}</p>
       </div>
       <div class="appointment-actions">
-        <button type="button" class="btn btn-outline" (click)="requestReschedule(appt, $event)" [disabled]="appt.rescheduleUsed">Reschedule</button>
+        <!-- ✅ Reschedule only allowed for requests -->
+        <button type="button" class="btn btn-outline"
+                (click)="requestReschedule(appt, $event)"
+                [disabled]="appt.rescheduleUsed || !(appt.status?.toLowerCase() === 'requested' || appt.status?.toLowerCase() === 'pending')">
+          Reschedule
+        </button>
+        <button type="button" class="btn btn-danger" (click)="promptCancel(appt)">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <ng-template #noRequests><p class="empty">No pending requests.</p></ng-template>
+
+  <!-- Upcoming Appointments -->
+  <h4 class="sub-title">Upcoming ({{ upcomingAppointments.length }})</h4>
+  <div *ngIf="upcomingAppointments.length > 0; else noUpcoming">
+    <div *ngFor="let appt of upcomingAppointments" class="appointment-card upcoming">
+      <div class="appointment-header">
+        <strong>{{ appt.doctorName || 'Specialist' }} ({{ appt.specialization }})</strong>
+        <span class="status scheduled">{{ appt.status }}</span>
+      </div>
+      <div class="appointment-body">
+        <p><i class="icon-calendar"></i> {{ appt.appointmentDate | date:'mediumDate' }} at {{ appt.time }}</p>
+        <p><i class="icon-note"></i> Reason: {{ appt.reason }}</p>
+      </div>
+      <div class="appointment-actions">
+        <!-- ❌ No reschedule once approved -->
         <button type="button" class="btn btn-danger" (click)="promptCancel(appt)">Cancel</button>
       </div>
     </div>
   </div>
   <ng-template #noUpcoming><p class="empty">No upcoming appointments.</p></ng-template>
 
+  <!-- Completed Appointments -->
   <h4 class="sub-title">Completed ({{ completedAppointments.length }})</h4>
   <div *ngIf="completedAppointments.length > 0; else noCompleted">
     <div *ngFor="let appt of completedAppointments" class="appointment-card past">
@@ -40,6 +67,7 @@
   </div>
   <ng-template #noCompleted><p class="empty">No completed appointments.</p></ng-template>
 
+  <!-- Cancelled Appointments -->
   <h4 class="sub-title">Cancelled ({{ cancelledAppointments.length }})</h4>
   <div *ngIf="cancelledAppointments.length > 0; else noCancelled">
     <div *ngFor="let appt of cancelledAppointments" class="appointment-card cancelled">

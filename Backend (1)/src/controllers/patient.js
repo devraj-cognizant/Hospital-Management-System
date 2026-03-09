@@ -175,63 +175,51 @@ async function bookAppointment(req, res) {
 
 /* -------------------- Reschedule Appointment -------------------- */
 async function rescheduleAppointment(req, res) {
-    try {
-        const { appointmentID } = req.params;
-        const { newDate, newTime } = req.body;
+  try {
+    const { appointmentID } = req.params;
+    const { newDate, newTime } = req.body;
 
-        const appointment = await Appointment.findOne({ appointmentID });
-        if (!appointment) {
-            return res.status(404).json({ message: "Appointment not found" });
-        }
-
-        const doctor = await Doctor.findOne({ id: appointment.doctorID });
-        if (!doctor) {
-            return res.status(404).json({ message: "Associated Doctor not found" });
-        }
-
-        const oldDate = new Date(appointment.appointmentDate).toISOString().split("T")[0];
-        const oldTime = appointment.time;
-        const normalizedNewDate = new Date(newDate).toISOString().split("T")[0];
-
-        // Check new slot availability
-        const newDayAvailability = doctor.availability[normalizedNewDate] || { available: [], blocked: [] };
-        if (!newDayAvailability.available.includes(newTime)) {
-            return res.status(400).json({ message: `The new time slot ${newTime} on ${normalizedNewDate} is not available.` });
-        }
-
-        // Free old slot
-        const oldDayAvailability = doctor.availability[oldDate];
-        if (oldDayAvailability) {
-            oldDayAvailability.blocked = oldDayAvailability.blocked.filter(slot => slot !== oldTime);
-            if (!oldDayAvailability.available.includes(oldTime)) {
-                oldDayAvailability.available.push(oldTime);
-                oldDayAvailability.available.sort();
-            }
-            doctor.availability[oldDate] = oldDayAvailability;
-        }
-
-        // Block new slot
-        newDayAvailability.available = newDayAvailability.available.filter(slot => slot !== newTime);
-        newDayAvailability.blocked.push(newTime);
-        doctor.availability[normalizedNewDate] = newDayAvailability;
-
-        await doctor.save();
-
-        // Update appointment
-        appointment.appointmentDate = normalizedNewDate;
-        appointment.time = newTime;
-        appointment.status = "Rescheduled";
-        await appointment.save();
-
-        return res.status(200).json({
-            message: "Appointment rescheduled successfully",
-            appointment
-        });
-
-    } catch (error) {
-        return res.status(500).json({ message: "Error rescheduling appointment", error: error.message });
+    const appointment = await Appointment.findOne({ appointmentID });
+    if (!appointment) {
+      return res.status(404).json({ message: "Appointment not found" });
     }
+
+    // ✅ Only allow rescheduling if still a request
+    if (!["Requested", "Pending"].includes(appointment.status)) {
+      return res.status(400).json({
+        message: "Only requested appointments can be rescheduled before approval."
+      });
+    }
+
+    const doctor = await Doctor.findOne({ id: appointment.doctorID });
+    if (!doctor) {
+      return res.status(404).json({ message: "Associated Doctor not found" });
+    }
+
+    const normalizedNewDate = new Date(newDate).toISOString().split("T")[0];
+
+    // ✅ Check if slot is available (doctor’s availability)
+    const newDayAvailability = doctor.availability[normalizedNewDate] || { available: [], blocked: [] };
+    if (!newDayAvailability.available.includes(newTime)) {
+      return res.status(400).json({ message: `The new time slot ${newTime} on ${normalizedNewDate} is not available.` });
+    }
+
+    // ✅ Just update appointment request (no availability changes yet)
+    appointment.appointmentDate = new Date(newDate);
+    appointment.time = newTime;
+    appointment.status = "Requested"; // stays requested
+    await appointment.save();
+
+    return res.status(200).json({
+      message: "Appointment request rescheduled successfully",
+      appointment
+    });
+
+  } catch (error) {
+    return res.status(500).json({ message: "Error rescheduling appointment", error: error.message });
+  }
 }
+
 
 /* -------------------- Logout Patient -------------------- */
 async function handlePatientLogout(req, res) {
