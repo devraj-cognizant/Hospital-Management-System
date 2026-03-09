@@ -81,6 +81,31 @@ async function getDoctorHistory(req, res) {
     }
 }
 
+
+
+
+// Get all medical history records for a specific patient
+const getPatientMedicalHistory = async (req, res) => {
+  try {
+    const { patientID } = req.params;
+
+    // Find all history records linked to this patient ID
+    const histories = await MedicalHistory.find({ patientID: patientID });
+
+    if (!histories || histories.length === 0) {
+      return res.status(200).json([]); // Return empty array if no history exists yet
+    }
+
+    // Return the array of history records
+    res.status(200).json(histories);
+  } catch (error) {
+    console.error("Error fetching medical history:", error);
+    res.status(500).json({ message: "Server error while fetching medical history" });
+  }
+};
+
+
+
 // 3️⃣ The Age Helper Function
 function calculateAge(dob) {
     if (!dob) return "N/A";
@@ -98,4 +123,4 @@ function calculateAge(dob) {
 }
 
 // ✅ EXPORT BOTH FUNCTIONS
-module.exports = { addMedicalHistory, getDoctorHistory };
+module.exports = { addMedicalHistory, getDoctorHistory, getPatientMedicalHistory };

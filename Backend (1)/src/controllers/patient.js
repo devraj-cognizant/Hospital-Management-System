@@ -319,6 +319,8 @@ async function cancelAppointment(req, res) {
     }
 }
 
+
+
 module.exports = {
     handlePatientLogin,
     handlePatientRegister,

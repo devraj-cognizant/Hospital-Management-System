@@ -11,12 +11,9 @@
       <div class="appointment-body">
         <p><i class="icon-calendar"></i> {{ appt.appointmentDate | date:'mediumDate' }} at {{ appt.time }}</p>
         <p><i class="icon-note"></i> Reason: {{ appt.reason }}</p>
-        <p *ngIf="appt.rescheduleUsed" class="badge badge-warning">Reschedule already used</p>
       </div>
       <div class="appointment-actions">
-        <button type="button" class="btn" (click)="requestReschedule(appt, $event)" [disabled]="appt.rescheduleUsed">
-          Reschedule
-        </button>
+        <button type="button" class="btn btn-outline" (click)="requestReschedule(appt, $event)" [disabled]="appt.rescheduleUsed">Reschedule</button>
         <button type="button" class="btn btn-danger" (click)="promptCancel(appt)">Cancel</button>
       </div>
     </div>
@@ -28,11 +25,16 @@
     <div *ngFor="let appt of completedAppointments" class="appointment-card past">
       <div class="appointment-header">
         <strong>{{ appt.doctorName || 'Doctor' }}</strong>
-        <span class="status">{{ appt.status }}</span>
+        <span class="status completed">Completed</span>
       </div>
       <div class="appointment-body">
         <p><i class="icon-calendar"></i> {{ appt.appointmentDate | date:'mediumDate' }}</p>
-        <p *ngIf="appt.notes"><strong>Doctor's Notes:</strong> {{ appt.notes }}</p>
+        <p *ngIf="appt.diagnosis"><strong>Diagnosis:</strong> {{ appt.diagnosis }}</p>
+      </div>
+      <div class="appointment-actions">
+        <button type="button" class="btn btn-success" (click)="downloadReport(appt)">
+          Download Report (PDF)
+        </button>
       </div>
     </div>
   </div>
@@ -42,12 +44,11 @@
   <div *ngIf="cancelledAppointments.length > 0; else noCancelled">
     <div *ngFor="let appt of cancelledAppointments" class="appointment-card cancelled">
       <div class="appointment-header">
-        <strong>{{ appt.doctorName || 'Specialist' }}</strong>
-        <span class="status">{{ appt.status }}</span>
+        <strong>{{ appt.doctorName }}</strong>
+        <span class="status cancelled">Cancelled</span>
       </div>
       <div class="appointment-body">
         <p>{{ appt.appointmentDate | date:'mediumDate' }}</p>
-        <p *ngIf="appt.reason">Reason: {{ appt.reason }}</p>
       </div>
     </div>
   </div>

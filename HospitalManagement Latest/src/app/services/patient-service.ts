@@ -3,7 +3,7 @@ import { Patient } from '../model/patient';
 import { PatientMedicalHistory } from '../model/patient-medical-history';
 import { Appointment } from '../model/appointment';
 import { DoctorService } from './doctor';
-import { HttpClient } from '@angular/common/http'; 
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -11,12 +11,15 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 })
 export class PatientService {
   private apiUrl = 'http://localhost:5000/patient';
-  
-  private currentPatientSubject = new BehaviorSubject<Patient | null>(null);
-  public currentPatient$ = this.currentPatientSubject.asObservable(); 
-  private registeredPatients: Patient[] = []; 
 
-  constructor(private doctorService: DoctorService, private http: HttpClient) {
+  private currentPatientSubject = new BehaviorSubject<Patient | null>(null);
+  public currentPatient$ = this.currentPatientSubject.asObservable();
+  private registeredPatients: Patient[] = [];
+
+  constructor(
+    private doctorService: DoctorService,
+    private http: HttpClient,
+  ) {
     // ✅ Read from the Frontend Cookie instead of localStorage
     const savedPatient = this.getPatientCookie();
     if (savedPatient) {
@@ -35,13 +38,18 @@ export class PatientService {
   private getPatientCookie(): Patient | null {
     const match = document.cookie.match(new RegExp('(^| )loggedInPatient=([^;]+)'));
     if (match) {
-      try { return JSON.parse(decodeURIComponent(match[2])); } catch (e) { return null; }
+      try {
+        return JSON.parse(decodeURIComponent(match[2]));
+      } catch (e) {
+        return null;
+      }
     }
     return null;
   }
 
   private clearPatientCookie() {
-    document.cookie = "loggedInPatient=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
+    document.cookie =
+      'loggedInPatient=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict';
   }
 
   // ---------------------------
@@ -52,32 +60,34 @@ export class PatientService {
   }
 
   login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, { email, password }, { withCredentials: true }).pipe(
-      tap((response: any) => {
-        this.currentPatientSubject.next(response.user);
-        this.setPatientCookie(response.user); // ✅ Save to cookie
-      })
-    );
+    return this.http
+      .post(`${this.apiUrl}/login`, { email, password }, { withCredentials: true })
+      .pipe(
+        tap((response: any) => {
+          this.currentPatientSubject.next(response.user);
+          this.setPatientCookie(response.user); // ✅ Save to cookie
+        }),
+      );
   }
 
   setCurrentPatient(patient: Patient): void {
-    this.currentPatientSubject.next(patient); 
+    this.currentPatientSubject.next(patient);
     this.setPatientCookie(patient); // ✅ Save to cookie
   }
 
   clearLocalSession(): void {
-    this.currentPatientSubject.next(null); 
+    this.currentPatientSubject.next(null);
     this.clearPatientCookie(); // ✅ Wipe the cookie
   }
 
   logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).pipe(
-      tap(() => this.clearLocalSession())
-    );
+    return this.http
+      .post(`${this.apiUrl}/logout`, {}, { withCredentials: true })
+      .pipe(tap(() => this.clearLocalSession()));
   }
 
   getLoggedInPatient(): Patient | null {
-    return this.currentPatientSubject.value; 
+    return this.currentPatientSubject.value;
   }
 
   // ---------------------------
@@ -88,21 +98,32 @@ export class PatientService {
       tap((patient) => {
         this.currentPatientSubject.next(patient);
         this.setPatientCookie(patient); // Sync cookie with latest DB profile
-      })
+      }),
     );
   }
 
   updateProfile(updated: Patient): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/update/${updated.email}`, updated, { withCredentials: true }).pipe(
-      tap(() => {
-        this.currentPatientSubject.next(updated);
-        this.setPatientCookie(updated); // Sync cookie with edits
-      })
-    );
+    return this.http
+      .patch(`${this.apiUrl}/update/${updated.email}`, updated, { withCredentials: true })
+      .pipe(
+        tap(() => {
+          this.currentPatientSubject.next(updated);
+          this.setPatientCookie(updated); // Sync cookie with edits
+        }),
+      );
   }
 
   getMedicalHistory(): PatientMedicalHistory | undefined {
     return this.currentPatientSubject.value?.medicalHistory;
+  }
+
+  // Add this inside your PatientService class
+
+  getMedicalHistoryDB(patientID: string): Observable<any[]> {
+    // This calls the specific endpoint for the medicalhistories collection
+    return this.http.get<any[]>(`${this.apiUrl}/${patientID}/medical-history`, {
+      withCredentials: true,
+    });
   }
 
   saveMedicalHistory(history: PatientMedicalHistory): void {
@@ -118,29 +139,45 @@ export class PatientService {
   // Appointments
   // ---------------------------
   bookAppointmentDB(bookingData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/book-appointment`, bookingData, { withCredentials: true });
+    return this.http.post(`${this.apiUrl}/book-appointment`, bookingData, {
+      withCredentials: true,
+    });
   }
 
-  rescheduleAppointmentDB(appointmentID: string, newDate: string, newTime: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/appointment/${appointmentID}`, { newDate, newTime }, { withCredentials: true });
+  rescheduleAppointmentDB(
+    appointmentID: string,
+    newDate: string,
+    newTime: string,
+  ): Observable<any> {
+    return this.http.patch(
+      `${this.apiUrl}/appointment/${appointmentID}`,
+      { newDate, newTime },
+      { withCredentials: true },
+    );
   }
 
   getPatientById(patientID: string): Patient {
-    const found = this.registeredPatients.find(p => p.patientID === patientID);
+    const found = this.registeredPatients.find((p) => p.patientID === patientID);
     if (!found) {
-        const current = this.currentPatientSubject.value;
-        if(current?.patientID === patientID) return current;
-        return { firstName: 'Unknown', lastName: 'Patient', patientID } as Patient;
+      const current = this.currentPatientSubject.value;
+      if (current?.patientID === patientID) return current;
+      return { firstName: 'Unknown', lastName: 'Patient', patientID } as Patient;
     }
     return found;
   }
 
   // Inside patient-service.ts in Angular
   cancelAppointmentDB(appointmentID: string) {
-    return this.http.patch(`http://localhost:5000/patient/appointment/${appointmentID}/cancel`, {}, { withCredentials: true });
+    return this.http.patch(
+      `http://localhost:5000/patient/appointment/${appointmentID}/cancel`,
+      {},
+      { withCredentials: true },
+    );
   }
 
   getPatientAppointmentsDB(patientID: string): Observable<any> {
-    return this.http.get(`http://localhost:5000/patient/${patientID}/appointments`, { withCredentials: true });
+    return this.http.get(`http://localhost:5000/patient/${patientID}/appointments`, {
+      withCredentials: true,
+    });
   }
 }

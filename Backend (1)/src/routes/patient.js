@@ -11,7 +11,10 @@ const {
   cancelAppointment
 } = require("../controllers/patient");
 
+const {getPatientMedicalHistory}=require("../controllers/medicalHistorycontroller");
+
 // ✅ Import the middlewares
+
 const { restrictToLoggedInUserOnly, restrictToRoles } = require("../middlewares/auth");
 
 const router = express.Router();
@@ -51,7 +54,7 @@ router.post("/logout", handlePatientLogout);
 
 // ✅ Add this route
 router.get("/:patientID/appointments", getPatientAppointments);
-
+router.get("/:patientID/medical-history", getPatientMedicalHistory);
 // Add this near your other Protected Patient Routes
 router.patch("/appointment/:appointmentID/cancel", cancelAppointment);
 module.exports = router;
