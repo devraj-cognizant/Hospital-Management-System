@@ -1,23 +1,39 @@
 <div class="dashboard-wrapper">
-  <!-- Sidebar Navigation -->
-  <nav class="dashboard-nav">
-    <div class="nav-brand">MediCare Hospital</div>
-    <a routerLink="profile" routerLinkActive="active">Profile</a>
-    <a routerLink="book" routerLinkActive="active">Book Appointment</a>
-    <a routerLink="appointments" routerLinkActive="active">My Appointments</a>
-    <!-- <a routerLink="history" routerLinkActive="active">Medical History</a> -->
-    <button class="btn-logout" (click)="logout()">Logout</button>
-  </nav>
-
-  <!-- Main Content -->
-  <div class="dashboard-main">
-    <div class="dashboard-header">
-      <h2>Welcome, {{ patient?.firstName || ""}} {{ patient?.lastName }}</h2>
+  <aside class="dashboard-nav">
+    <div class="nav-brand">
+      <span class="brand-icon">🏥</span>
+      <span class="brand-text">MediCare</span>
     </div>
+
+    <div class="nav-links">
+      <a routerLink="profile" routerLinkActive="active" class="nav-item">
+        <span class="icon">👤</span>
+        <span class="label">Profile</span>
+      </a>
+      <a routerLink="book" routerLinkActive="active" class="nav-item">
+        <span class="icon">📅</span>
+        <span class="label">Book Appointment</span>
+      </a>
+      <a routerLink="appointments" routerLinkActive="active" class="nav-item">
+        <span class="icon">📋</span>
+        <span class="label">My Appointments</span>
+      </a>
+    </div>
+
+    <button class="btn-logout" (click)="logout()">
+      <span class="icon">🚪</span>
+      <span class="label">Logout</span>
+    </button>
+  </aside>
+
+  <main class="dashboard-main">
+    <header class="dashboard-header animate-in">
+      <h2>Welcome, {{ patient?.firstName || "User" }}</h2>
+      <div class="header-line"></div>
+    </header>
 
     <div class="dashboard-content">
-      <!-- Routed child components render here -->
       <router-outlet></router-outlet>
     </div>
-  </div>
+  </main>
 </div>

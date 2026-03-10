@@ -1,168 +1,169 @@
-/* Wrapper */
-.dashboard-wrapper,
-.patient-dashboard-wrapper,
-.doctor-dashboard-wrapper {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #004d40, #00695c);
-  font-family: 'Segoe UI', sans-serif;
-  display: flex;
+:host {
+  --nav-width: 240px;
+  --emerald-700: #047857;
+  --emerald-800: #065f46;
+  --slate-100: #f1f5f9;
+  --slate-800: #1e293b;
+  --transition: all 0.2s ease-in-out;
 }
 
-/* Sidebar Navigation */
+.dashboard-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--slate-100);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Sidebar - Compact Professional */
 .dashboard-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 240px;
-  background-color: #004d40;
+  width: var(--nav-width);
+  background-color: var(--emerald-800);
   color: white;
   display: flex;
   flex-direction: column;
-  padding: 2rem 1.5rem;
-  gap: 1rem;
-  overflow-y: auto;
+  padding: 1.5rem 1rem;
+  position: fixed;
+  height: 100vh;
+  z-index: 100;
 }
 
-/* Brand */
 .nav-brand {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 2rem;
-  text-align: center;
-  letter-spacing: 1px;
-  border-bottom: 2px solid #00bfa5;
-  padding-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 0.5rem 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 1.5rem;
 }
 
-/* Nav Links + Buttons */
-.dashboard-nav a,
-.dashboard-nav button {
-  background: none;
-  border: none;
-  font-weight: 600;
-  color: #e0f2f1;
-  padding: 0.8rem 1rem;
-  text-align: left;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+.brand-icon { font-size: 1.5rem; }
+.brand-text { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.5px; }
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  color: #d1fae5;
   text-decoration: none;
-  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: var(--transition);
 }
 
-.dashboard-nav a:hover,
-.dashboard-nav button:hover {
-  background-color: #00695c;
-  transform: translateX(4px);
-}
+.nav-item .icon { font-size: 1.2rem; }
 
-.dashboard-nav a.active,
-.dashboard-nav button.active {
-  background-color: #00bfa5;
+.nav-item:hover {
+  background: rgba(255,255,255,0.08);
   color: white;
 }
 
-/* Logout Button */
+.nav-item.active {
+  background: #10b981;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
 .btn-logout {
   margin-top: auto;
-  background-color: #d32f2f;
-  color: white !important;
-  text-align: center;
-  border-radius: 6px;
-  padding: 0.8rem;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-}
-
-.btn-logout:hover {
-  background-color: #b71c1c;
-}
-
-/* Main Content */
-.dashboard-main {
-  margin-left: 240px;
-  min-height: 100vh;
-  background: #ffffff;
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
-  padding: 2rem;
   display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  box-shadow: 0 0 12px rgba(0,0,0,0.15);
-}
-
-/* Header */
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  gap: 12px;
+  padding: 10px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Main Content Area */
+.dashboard-main {
+  flex: 1;
+  margin-left: var(--nav-width);
+  padding: 2rem;
+  min-width: 0;
 }
 
 .dashboard-header h2 {
   font-size: 1.5rem;
-  font-weight: 500;
-  color: #004d40;
-  margin: 0;
+  font-weight: 700;
+  color: var(--slate-800);
+  margin-bottom: 0.5rem;
 }
 
-.dashboard-header .btn {
-  background-color: #004d40;
-  color: white;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+.header-line {
+  width: 40px;
+  height: 4px;
+  background: #10b981;
+  border-radius: 2px;
 }
 
-.dashboard-header .btn:hover {
-  background-color: #00695c;
-  transform: translateY(-2px);
+/* --- Responsive Adjustments --- */
+
+/* Tablets - Slim Sidebar */
+@media (max-width: 1024px) {
+  :host { --nav-width: 70px; }
+  .brand-text, .nav-item .label, .btn-logout .label { display: none; }
+  .nav-brand { justify-content: center; padding-left: 0; padding-right: 0; }
+  .nav-item { justify-content: center; padding: 12px; }
+  .btn-logout { justify-content: center; }
+  .dashboard-main { padding: 1.5rem; }
 }
 
-/* Content Area */
-.dashboard-content {
-  flex-grow: 1;
-  padding: 1rem 0;
-  animation: fadeSlide 0.4s ease-in-out;
-}
-
-/* Animation */
-@keyframes fadeSlide {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
+/* Mobile - Bottom Navigation */
+@media (max-width: 640px) {
   .dashboard-nav {
-    position: relative;
     width: 100%;
-    height: auto;
+    height: 65px;
+    bottom: 0;
+    top: auto;
     flex-direction: row;
+    padding: 0 1rem;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .nav-brand, .btn-logout { display: none; } /* Simplified for tiny screens */
+
+  .nav-links {
+    flex-direction: row;
+    width: 100%;
     justify-content: space-around;
-    padding: 1rem;
-    border-bottom: 2px solid #00bfa5;
+    gap: 0;
   }
 
-  .nav-brand {
-    display: none;
+  .nav-item {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.7rem;
+    padding: 8px;
   }
 
-  .dashboard-nav a,
-  .dashboard-nav button {
-    flex: 1;
-    text-align: center;
-    padding: 0.6rem;
-  }
+  .nav-item .icon { font-size: 1.1rem; }
 
   .dashboard-main {
     margin-left: 0;
+    margin-bottom: 70px; /* Space for bottom nav */
     padding: 1rem;
   }
+
+  .dashboard-header h2 { font-size: 1.25rem; }
 }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in { animation: fadeIn 0.4s ease-out; }

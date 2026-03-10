@@ -1,123 +1,209 @@
-.appointment-form {
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,77,64,0.12);
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+:host {
+  --primary-green: #10b981; /* Emerald 500 */
+  --dark-green: #059669;    /* Emerald 600 */
+  --light-green: #ecfdf5;   /* Emerald 50 */
+  --bg-soft: #f9fafb;
+  --text-dark: #111827;
+  --text-gray: #6b7280;
+  --border-color: #e5e7eb;
+  --radius-lg: 16px;
 }
 
-.form-grid {
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.appointment-wrapper {
+  max-width: 850px; /* Slightly larger for the 'comfort' feel */
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.appointment-container {
+  background: #ffffff;
+  border-radius: 24px; /* More rounded */
+  padding: 3rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* Typography Adjustments */
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -0.025em;
+}
+
+.section-sub {
+  font-size: 1rem;
+  color: var(--text-gray);
+  margin-top: 0.5rem;
+}
+
+.step-label {
+  display: block;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
+  font-size: 1.05rem;
+}
+
+/* Enhanced Chips */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.chip {
+  padding: 10px 20px;
+  background: var(--bg-soft);
+  border: 1.5px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-gray);
+  transition: all 0.25s ease;
+}
+
+.chip:hover {
+  border-color: var(--primary-green);
+  color: var(--primary-green);
+  background: white;
+}
+
+.chip.active {
+  background: var(--primary-green);
+  border-color: var(--primary-green);
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+/* Doctor Cards */
+.doctor-card-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1.5rem;
 }
 
-.form-item {
+.doctor-card {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  background: white;
+  transition: all 0.3s ease;
 }
 
-.form-item--full {
-  grid-column: 1 / -1;
+.doctor-card:hover {
+  border-color: var(--primary-green);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px -5px rgba(0, 0, 0, 0.08);
 }
 
-label {
-  font-weight: 600;
-  color: #004d40;
-  margin-bottom: 0.4rem;
+.doctor-card.active {
+  border-color: var(--primary-green);
+  background: var(--light-green);
 }
 
-input, select {
-  padding: 0.8rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9fbfc;
+.doc-avatar-wrapper {
+  width: 56px;
+  height: 56px;
+  background: var(--light-green);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1.25rem;
+  font-size: 1.5rem;
+}
+
+.doc-name {
+  display: block;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-dark);
+}
+
+.doc-meta {
+  font-size: 0.85rem;
+  color: var(--text-gray);
+}
+
+/* Time Slots */
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
+}
+
+.slot-item {
+  padding: 12px;
+  border: 2px solid var(--border-color);
+  background: white;
+  border-radius: 12px;
   font-size: 0.95rem;
-}
-
-.slots {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.slots button {
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  border: none;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--text-dark);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: all 0.2s;
 }
 
-.slots button.available {
-  background-color: #e0f2f1;
-  color: #004d40;
+.slot-item:hover:not(.selected) {
+  border-color: var(--primary-green);
+  color: var(--primary-green);
 }
 
-.slots button.blocked {
-  background-color: #f3f4f6;
-  color: #999;
-  cursor: not-allowed;
-}
-
-.slots button.selected {
-  background-color: #004d40;
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(0,77,64,0.2);
-}
-
-.buttons {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.btn {
-  background-color: #004d40;
+.slot-item.selected {
+  background: var(--text-dark); /* Dark contrast for the selected time */
   color: white;
-  padding: 0.8rem 1.4rem;
-  border-radius: 10px;
-  font-weight: 600;
+  border-color: var(--text-dark);
+}
+
+/* Form Action */
+.submit-btn {
+  width: 100%;
+  padding: 1.25rem;
+  background: var(--primary-green);
+  color: white;
   border: none;
+  border-radius: 14px;
+  font-size: 1.15rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.25s ease, transform 0.2s ease;
+  transition: background 0.2s, transform 0.2s;
+  margin-top: 1rem;
 }
 
-.btn:hover {
-  background-color: #00695c;
-  transform: translateY(-2px);
-}
-.slots button {
-  padding: 0.6rem 1rem;
-  margin: 0.4rem;
-  border-radius: 6px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+.submit-btn:hover:not(:disabled) {
+  background: var(--dark-green);
 }
 
-.slots button.available {
-  background-color: #e0f7e9; /* light green */
-  color: #004d40;
+.submit-btn:active {
+  transform: scale(0.98);
 }
 
-.slots button.blocked {
-  background-color: #fbeaea; /* light red */
-  color: #b42318;
+.submit-btn:disabled {
+  background: #d1d5db;
   cursor: not-allowed;
 }
 
-.slots button.selected {
-  border: 2px solid #004d40;
-  background-color: #00bfa5;
-  color: #fff;
+/* Responsive */
+@media (max-width: 768px) {
+  .appointment-container { padding: 2rem; }
+  .doctor-card-grid { grid-template-columns: 1fr; }
 }
-
-.slots button:hover:not(.blocked) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-}
-
