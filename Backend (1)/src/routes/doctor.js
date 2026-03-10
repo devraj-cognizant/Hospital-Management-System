@@ -6,7 +6,7 @@ const {
   patchDoctorAvailability,
   getDoctorAvailability,
   handleDoctorLogout,
-  getAllDoctors, // ✅ Added this new import!
+  getAllDoctors,
   
 } = require("../controllers/doctor");
 
@@ -21,21 +21,20 @@ const {
   getDoctorHistory,
 } = require("../controllers/medicalHistorycontroller");
 
-// ✅ Import the middlewares
 const { restrictToLoggedInUserOnly, restrictToRoles } = require("../middlewares/auth");
 
 const router = express.Router();
 
 // --------------------------------------------------
-// 🔓 PUBLIC ROUTES (Accessible by Patients & Guests)
+// PUBLIC ROUTES (Accessible by Patients & Guests)
 // --------------------------------------------------
 router.post("/register", handleDoctorRegister);
 router.post("/login", handleDoctorLogin);
 
-// ✅ MOVED: Patients need to fetch the list of doctors to book them
+// Patients need to fetch the list of doctors to book them
 router.get("/all", getAllDoctors);
 
-// ✅ MOVED: Patients need to see availability to pick a time slot
+// Patients need to see availability to pick a time slot
 router.get("/:doctorID/availability", getDoctorAvailability);
 
 // --------------------------------------------------
@@ -46,7 +45,7 @@ router.use(restrictToLoggedInUserOnly);
 router.use(restrictToRoles(["DOCTOR"]));
 
 // --------------------------------------------------
-// 🔒 PROTECTED DOCTOR ROUTES
+// PROTECTED DOCTOR ROUTES
 // --------------------------------------------------
 // Availability (Doctors updating their own schedule)
 router.put("/:doctorID/availability", updateDoctorAvailability);

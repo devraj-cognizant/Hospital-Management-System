@@ -13,14 +13,14 @@ const {
 
 const {getPatientMedicalHistory}=require("../controllers/medicalHistorycontroller");
 
-// ✅ Import the middlewares
+// Import the middlewares
 
 const { restrictToLoggedInUserOnly, restrictToRoles } = require("../middlewares/auth");
 
 const router = express.Router();
 
 // --------------------------------------------------
-// 🔓 PUBLIC ROUTES (No login required)
+// PUBLIC ROUTES (No login required)
 // --------------------------------------------------
 router.post("/login", handlePatientLogin);
 router.post("/register", handlePatientRegister);
