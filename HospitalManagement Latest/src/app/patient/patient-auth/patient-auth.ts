@@ -79,7 +79,7 @@ export class PatientAuth implements OnInit {
 
   register() {
     if (this.registerForm.invalid) {
-      alert('Please fill all required fields correctly');
+      alert('Please fill all required fields correctlyy');
       return;
     }
 
