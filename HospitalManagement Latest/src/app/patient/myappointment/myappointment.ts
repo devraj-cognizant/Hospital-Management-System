@@ -37,6 +37,7 @@ export class Myappointment implements OnInit {
     this.patientService.getPatientAppointmentsDB(patient.patientID).subscribe({
       next: (res: any) => {
         this.appointments = res.appointments || res || [];
+        console.log("Appointments Loaded:", this.appointments); // Helpful to check status spellings!
         this.cdr.detectChanges();
       },
       error: (err: any) => console.error("Error fetching appointments", err)
@@ -45,41 +46,55 @@ export class Myappointment implements OnInit {
     // 2. Load Clinical Records from 'medicalhistories' collection
     this.patientService.getMedicalHistoryDB(patient.patientID).subscribe({
       next: (res: any) => {
-        // Updated to handle both array and object responses
         this.medicalHistories = Array.isArray(res) ? res : (res.histories || res.medicalhistories || []);
-        console.log("Clinical records loaded:", this.medicalHistories);
         this.cdr.detectChanges();
       },
       error: (err: any) => console.error("Error fetching clinical records", err)
     });
   }
 
+  // --- Helper Date Logic ---
+  // Safely compares dates regardless of database timestamp formats
+  private isFutureOrToday(dateString: string): boolean {
+    if (!dateString) return false;
+    const apptDate = new Date(dateString);
+    const todayDate = new Date();
+    
+    // Reset times to midnight so we strictly compare the calendar days
+    todayDate.setHours(0, 0, 0, 0);
+    apptDate.setHours(0, 0, 0, 0);
+    
+    return apptDate >= todayDate;
+  }
+
   // --- Filtering Logic ---
   get upcomingAppointments(): Appointment[] {
-  return this.appointments.filter((a: any) => {
-    const s = a.status?.toLowerCase() || '';
-    const apptDate = a.appointmentDate ? a.appointmentDate.split('T')[0] : '';
-    return (s === 'scheduled') && apptDate >= this.today;
-  });
-}
-
-
+    return this.appointments.filter((a: any) => {
+      const s = a.status?.toLowerCase() || '';
+      // Includes multiple common database spellings just in case!
+      const isUpcoming = s === 'scheduled' || s === 'confirmed' || s === 'approved' || s === 'booked';
+      return isUpcoming && this.isFutureOrToday(a.appointmentDate);
+    });
+  }
 
   get completedAppointments(): Appointment[] {
     return this.appointments.filter((a: any) => a.status?.toLowerCase() === 'completed');
   }
 
   get cancelledAppointments(): Appointment[] {
-    return this.appointments.filter((a: any) => a.status?.toLowerCase() === 'cancelled');
-  }
-  get requestAppointments(): Appointment[] {
     return this.appointments.filter((a: any) => {
       const s = a.status?.toLowerCase() || '';
-      const apptDate = a.appointmentDate ? a.appointmentDate.split('T')[0] : '';
-      return (s === 'requested' || s === 'pending') && apptDate >= this.today;
+      return s === 'cancelled' || s === 'canceled'; // Handles single and double 'L' spellings
     });
   }
 
+  get requestAppointments(): Appointment[] {
+    return this.appointments.filter((a: any) => {
+      const s = a.status?.toLowerCase() || '';
+      const isRequest = s === 'requested' || s === 'pending';
+      return isRequest && this.isFutureOrToday(a.appointmentDate);
+    });
+  }
 
   // --- Actions ---
   promptCancel(appt: Appointment) {
@@ -89,7 +104,7 @@ export class Myappointment implements OnInit {
         this.patientService.cancelAppointmentDB(appt.appointmentID).subscribe({
           next: () => {
             alert(`❌ Appointment cancelled.`);
-            this.loadData();
+            this.loadData(); // Refresh the list
           },
           error: (err: any) => alert(`Error: ${err.error?.message}`)
         });
@@ -108,12 +123,6 @@ export class Myappointment implements OnInit {
   // --- PDF Generation ---
   downloadReport(appt: any) {
     const patient = this.patientService.getLoggedInPatient();
-
-    /**
-     * DATA JOIN: 
-     * We link the Appointment card to the record in medicalhistories table
-     * using the appointmentID as the key.
-     */
     const historyEntry = this.medicalHistories.find(h => h.appointmentID === appt.appointmentID);
 
     if (!historyEntry) {
