@@ -57,7 +57,7 @@ async function handlePatientLogin(req, res) {
 
         const token = setUser(payload);
 
-        // ✅ THE FIX: Add the security flags!
+        // Add the security flags!
         res.cookie("uid", token, {
             httpOnly: true,  //Completely hides the cookie from JavaScript / Hackers
             secure: false,   // Set to true in Production when you have HTTPS

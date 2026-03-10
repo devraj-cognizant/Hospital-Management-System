@@ -26,14 +26,14 @@ router.post("/login", handlePatientLogin);
 router.post("/register", handlePatientRegister);
 
 // --------------------------------------------------
-// 🛑 MIDDLEWARE BARRIER
+// MIDDLEWARE BARRIER
 // Everything below this line requires a valid login AND the 'PATIENT' role
 // --------------------------------------------------
 router.use(restrictToLoggedInUserOnly);
 router.use(restrictToRoles(["PATIENT"]));
 
 // --------------------------------------------------
-// 🔒 PROTECTED PATIENT ROUTES
+//  PROTECTED PATIENT ROUTES
 // --------------------------------------------------
 // Profile
 router.patch("/update/:email", handleUpdatePatientProfile);
