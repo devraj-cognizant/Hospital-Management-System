@@ -59,8 +59,8 @@ async function handlePatientLogin(req, res) {
 
         // ✅ THE FIX: Add the security flags!
         res.cookie("uid", token, {
-            httpOnly: true,  // 🛡️ Completely hides the cookie from JavaScript / Hackers
-            secure: false,   // ⚠️ Set to true in Production when you have HTTPS
+            httpOnly: true,  //Completely hides the cookie from JavaScript / Hackers
+            secure: false,   // Set to true in Production when you have HTTPS
             sameSite: "lax", // Prevents CSRF attacks
             maxAge: 24 * 60 * 60 * 1000 // Expires in 24 hours (matches your JWT)
         });
