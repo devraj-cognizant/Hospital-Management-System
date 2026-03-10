@@ -125,26 +125,12 @@ export class PatientAuth implements OnInit {
 
     const { email, password } = this.loginForm.value;
 
-    // Keep your hardcoded test user just in case you still need it!
-    // if (email === "nikhat@gmail.com" && password === "Nikhat@123") {
-    //   alert(`Login successful! Welcome Nikhat`);
-    //   this.router.navigate(['/patient']);
-    //   return;
-    // }
-
-    // Now we subscribe to the Observable from the backend
     this.patientService.login(email, password).subscribe({
       next: (response) => {
-        // Here are our console logs to verify the backend data
         console.log("Full Backend Response:", response);
-        console.log("Extracted Token:", response.token);
+        // 🛑 COMPLETELY REMOVED localStorage logic here!
 
-        // 1. Save the token to localStorage so the user stays logged in
-        if (response.token) {
-          localStorage.setItem('token', response.token);
-        }
-
-        // 2. Extract the user data from your Node.js response
+        // Extract the user data from your Node.js response
         const loggedInUser = response.user; 
         
         if (loggedInUser) {
@@ -155,7 +141,7 @@ export class PatientAuth implements OnInit {
           alert(`Login successful!`);
         }
 
-        // 3. Navigate to the dashboard
+        // Navigate to the dashboard
         this.router.navigate(['/patient']);
       },
       error: (err) => {

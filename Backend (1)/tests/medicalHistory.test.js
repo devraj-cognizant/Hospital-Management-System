@@ -4,7 +4,7 @@ const MedicalHistory = require('../src/models/medicalHistory'); // Adjust path i
 describe('Medical History Model Validation Tests', () => {
 
     it('should throw a validation error if patientID is missing', () => {
-        // 1. Arrange: Create a history record but purposely forget the patientID
+        
         const badHistory = new MedicalHistory({
             historyID: "MH12345",
             diagnosis: "Fever",

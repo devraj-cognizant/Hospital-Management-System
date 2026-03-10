@@ -28,25 +28,21 @@ export class DoctorLogin {
 
     this.doctorService.login(this.email, this.password).subscribe({
       next: (response) => {
-        // 1. Save the token
-        if (response.token) {
-          localStorage.setItem('token', response.token);
-        }
+        // 🛑 COMPLETELY REMOVED localStorage logic here!
 
-        // 2. Map the top-level keys from your Node.js response to the Doctor model
-        // We wrap it in an object so setLoggedInDoctor receives the correct format
+        // Map the top-level keys from your Node.js response to the Doctor model
         const doctorData = {
           id: response.id,
           name: response.name,
           specialization: response.specialization,
-          email: this.email // we already have this from the form
+          email: this.email 
         };
 
         if (response.id) {
           this.doctorService.setLoggedInDoctor(doctorData as any);
           alert(`Login successful! Welcome Dr. ${response.name}`);
           
-          // 3. Use response.id for navigation
+          // Use response.id for navigation
           this.router.navigate(['/doctor', response.id]);
         } else {
           console.error("Login response missing ID:", response);
