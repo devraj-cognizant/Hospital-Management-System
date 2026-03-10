@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:native": "node --test tests/auth.test.js",
+    "test:mocha": "mocha tests/medicalHistory.test.js"
   },
   "keywords": [],
   "author": "",
@@ -19,5 +21,9 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.2.2",
     "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "chai": "^6.2.2",
+    "mocha": "^11.7.5"
   }
 }
