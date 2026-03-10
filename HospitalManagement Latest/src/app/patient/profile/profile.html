@@ -1,118 +1,108 @@
-<div class="profile-wrapper animate-fade-in" *ngIf="!isLoading && patient && profileForm">
+<div class="loading-state" *ngIf="isLoading">
+  <div class="spinner"></div>
+  <div class="loading-text">Loading your profile...</div>
+</div>
+
+<div class="profile-wrapper animate-fade-in" *ngIf="!isLoading">
   
   <div class="profile-header">
-    <div class="header-text">
-      <h2 class="section-title">Profile Information</h2>
-      <p class="subtitle">View and update your personal details</p>
+    <div>
+      <h1 class="section-title">Patient Profile</h1>
+      <p class="subtitle">Manage your personal information and medical details.</p>
     </div>
     
-    <div class="buttons">
-      <button class="btn btn-outline" type="button" (click)="toggleEdit()">
-        <span class="icon">{{ editing ? '✕' : '✎' }}</span>
-        {{ editing ? 'Cancel' : 'Edit Profile' }}
-      </button>
-      <button
-        class="btn btn-primary"
-        type="button"
-        *ngIf="editing"
-        (click)="saveProfile()"
-        [disabled]="!profileForm.dirty || profileForm.invalid">
-        <span class="icon">✓</span> Save Changes
+    <div class="buttons" *ngIf="!editing">
+      <button type="button" class="btn btn-outline" (click)="toggleEdit()">
+        ✏️ Edit Profile
       </button>
     </div>
   </div>
 
-  <p *ngIf="editing && profileForm.invalid" class="validation-warning animate-shake">
-    * Please fill out all required fields to save.
-  </p>
+  <form class="profile-form" [formGroup]="profileForm" [class.is-editing]="editing" (ngSubmit)="saveProfile()">
+    
+    <div class="validation-warning" *ngIf="profileForm.invalid && profileForm.touched && editing">
+      Please fix the errors below before saving.
+    </div>
 
-  <form [formGroup]="profileForm" class="profile-form" [class.is-editing]="editing">
     <div class="form-grid">
       
-      <div class="form-item animate-slide-up" style="--delay: 0.1s">
+      <div class="input-wrapper animate-slide-up" style="--delay: 0.1s">
         <label for="firstName">First Name</label>
-        <div class="input-wrapper">
-          <input id="firstName" type="text" formControlName="firstName" [readonly]="!editing" placeholder="e.g. John" />
-        </div>
-        <small class="error" *ngIf="profileForm.get('firstName')?.touched && profileForm.get('firstName')?.invalid">
+        <input type="text" id="firstName" formControlName="firstName" [readonly]="!editing" [class.readonly-field]="!editing">
+        <div class="error" *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched">
           First name is required.
-        </small>
+        </div>
       </div>
 
-      <div class="form-item animate-slide-up" style="--delay: 0.15s">
+      <div class="input-wrapper animate-slide-up" style="--delay: 0.1s">
         <label for="lastName">Last Name</label>
-        <div class="input-wrapper">
-          <input id="lastName" type="text" formControlName="lastName" [readonly]="!editing" placeholder="e.g. Doe" />
-        </div>
-        <small class="error" *ngIf="profileForm.get('lastName')?.touched && profileForm.get('lastName')?.invalid">
+        <input type="text" id="lastName" formControlName="lastName" [readonly]="!editing" [class.readonly-field]="!editing">
+        <div class="error" *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched">
           Last name is required.
-        </small>
-      </div>
-
-      <div class="form-item animate-slide-up" style="--delay: 0.2s">
-        <label for="email">Email Address</label>
-        <div class="input-wrapper">
-          <input id="email" class="readonly-field" type="email" formControlName="email" readonly />
         </div>
       </div>
 
-      <div class="form-item animate-slide-up" style="--delay: 0.25s">
+      <div class="input-wrapper form-item--full animate-slide-up" style="--delay: 0.2s">
+        <label for="email">Email Address (Cannot be changed)</label>
+        <input type="email" id="email" formControlName="email">
+      </div>
+
+      <div class="input-wrapper animate-slide-up" style="--delay: 0.3s">
         <label for="phone">Phone Number</label>
-        <div class="input-wrapper">
-          <input id="phone" type="tel" maxlength="10" formControlName="phone" [readonly]="!editing" />
+        <input type="tel" id="phone" formControlName="phone" [readonly]="!editing" [class.readonly-field]="!editing">
+        <div class="error" *ngIf="profileForm.get('phone')?.hasError('pattern')">
+          Must be a valid 10-digit number.
         </div>
-        <small class="error" *ngIf="profileForm.get('phone')?.touched && profileForm.get('phone')?.invalid">
-          Enter a valid 10-digit number.
-        </small>
       </div>
 
-      <div class="form-item animate-slide-up" style="--delay: 0.3s">
+      <div class="input-wrapper animate-slide-up" style="--delay: 0.3s">
         <label for="dob">Date of Birth</label>
-        <div class="input-wrapper">
-          <input id="dob" type="date" formControlName="dob" [readonly]="!editing" [max]="today" />
-        </div>
+        <input type="date" id="dob" formControlName="dob" [max]="today" [readonly]="!editing" [class.readonly-field]="!editing">
       </div>
 
-      <div class="form-item animate-slide-up" style="--delay: 0.35s">
+      <div class="input-wrapper animate-slide-up" style="--delay: 0.4s">
         <label for="gender">Gender</label>
-        <div class="input-wrapper">
-          <select id="gender" formControlName="gender" [attr.disabled]="!editing ? '' : null">
-            <option value="" disabled>Select gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+        <select id="gender" formControlName="gender">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
       </div>
 
-      <div class="form-item animate-slide-up" style="--delay: 0.4s">
+      <div class="input-wrapper animate-slide-up" style="--delay: 0.4s">
         <label for="bloodGroup">Blood Group</label>
-        <div class="input-wrapper">
-          <select id="bloodGroup" formControlName="bloodGroup" [attr.disabled]="!editing ? '' : null">
-            <option value="" disabled>Select blood group</option>
-            <option *ngFor="let bg of ['A+','A-','B+','B-','AB+','AB-','O+','O-']" [value]="bg">{{ bg }}</option>
-          </select>
-        </div>
+        <select id="bloodGroup" formControlName="bloodGroup">
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+        </select>
       </div>
 
-      <div class="form-item animate-slide-up" style="--delay: 0.45s">
+      <div class="input-wrapper animate-slide-up" style="--delay: 0.5s">
         <label for="emergencyContact">Emergency Contact</label>
-        <div class="input-wrapper">
-          <input id="emergencyContact" type="tel" maxlength="10" formControlName="emergencyContact" [readonly]="!editing" />
-        </div>
+        <input type="text" id="emergencyContact" formControlName="emergencyContact" [readonly]="!editing" [class.readonly-field]="!editing">
       </div>
 
-      <div class="form-item form-item--full animate-slide-up" style="--delay: 0.5s">
-        <label for="address">Residential Address</label>
-        <div class="input-wrapper">
-          <textarea id="address" rows="3" formControlName="address" [readonly]="!editing" placeholder="Enter your full address"></textarea>
-        </div>
+      <div class="input-wrapper form-item--full animate-slide-up" style="--delay: 0.6s">
+        <label for="address">Full Address</label>
+        <textarea id="address" formControlName="address" rows="3" [readonly]="!editing" [class.readonly-field]="!editing"></textarea>
       </div>
+
     </div>
-  </form>
-</div>
 
-<div *ngIf="isLoading" class="loading-state">
-  <div class="spinner"></div>
-  <p class="loading-text">Securing your health data...</p>
+    <div class="buttons animate-fade-in" style="margin-top: 2.5rem;" *ngIf="editing">
+      <button type="button" class="btn btn-outline" (click)="toggleEdit()">
+        Cancel
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid || profileForm.pristine">
+        Save Changes
+      </button>
+    </div>
+
+  </form>
 </div>
