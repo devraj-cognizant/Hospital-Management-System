@@ -17,16 +17,16 @@ export class DoctorService {
   private availability: Record<string, Record<string, { available: string[]; blocked: string[] }>> = {};
 
   constructor(private http: HttpClient) {
-    // ✅ Read from the Frontend Cookie instead of localStorage
+    //  Read from the Frontend Cookie instead of localStorage
     const savedDoctor = this.getDoctorCookie();
     if (savedDoctor) {
       this.currentDoctorSubject.next(savedDoctor);
     }
   }
 
-  // --------------------------------------------------
-  // 🍪 COOKIE HELPER METHODS
-  // --------------------------------------------------
+ 
+  // COOKIE HELPER METHODS
+  
   private setDoctorCookie(doctor: Doctor) {
     const doctorString = encodeURIComponent(JSON.stringify(doctor));
     document.cookie = `loggedInDoctor=${doctorString}; path=/; max-age=86400; SameSite=Strict`;
@@ -44,9 +44,7 @@ export class DoctorService {
     document.cookie = "loggedInDoctor=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict";
   }
 
-  // --------------------------------------------------
-  // 🔐 AUTHENTICATION LOGIC
-  // --------------------------------------------------
+  // AUTHENTICATION LOGIC
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, { email, password }, { withCredentials: true }).pipe(
       tap((response: any) => {
@@ -58,7 +56,7 @@ export class DoctorService {
         } as Doctor;
         
         this.currentDoctorSubject.next(doctorData); 
-        this.setDoctorCookie(doctorData); // ✅ Save to cookie
+        this.setDoctorCookie(doctorData); //  Save to cookie
       })
     );
   }
@@ -71,7 +69,7 @@ export class DoctorService {
 
   setLoggedInDoctor(doctor: Doctor) {
     this.currentDoctorSubject.next(doctor);
-    this.setDoctorCookie(doctor); // ✅ Save to cookie
+    this.setDoctorCookie(doctor); //  Save to cookie
   }
 
   getLoggedInDoctor(): Doctor | null {
@@ -80,7 +78,7 @@ export class DoctorService {
 
   clearLoggedInDoctor() {
     this.currentDoctorSubject.next(null);
-    this.clearDoctorCookie(); // ✅ Wipe the cookie
+    this.clearDoctorCookie(); //  Wipe the cookie
   }
 
   // ... (Keep ALL your existing API calls and local utility methods below here exactly the same) ...

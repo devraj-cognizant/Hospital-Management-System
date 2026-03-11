@@ -12,7 +12,7 @@ export class DoctorGuard implements CanActivate {
       return true;
     }
 
-    // ❌ Not a doctor → clear cookie and redirect
+    // Not a doctor → clear cookie and redirect
     this.doctorService.clearLoggedInDoctor();
     this.router.navigate(['/doctor/login']);
     return false;

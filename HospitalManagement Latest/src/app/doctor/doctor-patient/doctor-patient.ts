@@ -27,7 +27,7 @@ export class DoctorPatient implements OnInit, OnDestroy {
   constructor(
     private historyService: MedicalHistoryService,
     private doctorService: DoctorService,
-    private cdr: ChangeDetectorRef // ✅ Inject ChangeDetectorRef
+    private cdr: ChangeDetectorRef // Inject ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -36,7 +36,7 @@ export class DoctorPatient implements OnInit, OnDestroy {
       console.log("🎨 UI updating with data:", updatedPatients);
       this.patients = updatedPatients;
       
-      // ✅ Force Angular to refresh the screen
+      // Force Angular to refresh the screen
       this.cdr.detectChanges(); 
     });
 
@@ -62,7 +62,7 @@ export class DoctorPatient implements OnInit, OnDestroy {
   }
 
   /**
-   * ✅ Improved Getter with safety checks for "N/A" values
+   * Improved Getter with safety checks for "N/A" values
    */
   get filteredPatients(): PatientRecord[] {
     if (!this.patients) return [];

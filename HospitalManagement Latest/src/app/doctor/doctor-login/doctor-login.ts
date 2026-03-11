@@ -28,7 +28,7 @@ export class DoctorLogin {
 
     this.doctorService.login(this.email, this.password).subscribe({
       next: (response) => {
-        // 🛑 COMPLETELY REMOVED localStorage logic here!
+        // COMPLETELY REMOVED localStorage logic here!
 
         // Map the top-level keys from your Node.js response to the Doctor model
         const doctorData = {

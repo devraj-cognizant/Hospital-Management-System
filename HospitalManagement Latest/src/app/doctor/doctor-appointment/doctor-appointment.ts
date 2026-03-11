@@ -20,7 +20,7 @@ export class DoctorAppointment implements OnInit {
     private doctorService: DoctorService,
     private route: ActivatedRoute,
     private router: Router,
-    private cdr: ChangeDetectorRef // ✅ ADDED THIS
+    private cdr: ChangeDetectorRef // ADDED THIS
   ) {}
 
   ngOnInit() {
@@ -49,7 +49,7 @@ export class DoctorAppointment implements OnInit {
     });
   }
 
-  // ✅ Bulletproof getters for status checking
+  // Bulletproof getters for status checking
   get requests(): Appointment[] {
     return this.appointments.filter(a => {
       const s = a.status?.toLowerCase() || '';

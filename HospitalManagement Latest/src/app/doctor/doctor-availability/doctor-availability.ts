@@ -27,7 +27,7 @@ export class DoctorAvailability implements OnInit {
   }
 
   ngOnInit() {
-    // ✅ Load existing availability from Database
+    // Load existing availability from Database
     if (this.doctorID) {
       this.doctorService.getAvailabilityFromDB(this.doctorID).subscribe({
         next: (response) => {
@@ -108,7 +108,7 @@ export class DoctorAvailability implements OnInit {
       return;
     }
 
-    // ✅ Send to Database
+    // Send to Database
     this.doctorService.saveAvailabilityToDB(this.doctorID, { availability: this.localAvailability }).subscribe({
       next: () => {
         const normalizedDate = this.normalizedDate(this.selectedDate);

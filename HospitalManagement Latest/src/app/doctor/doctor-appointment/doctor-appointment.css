@@ -10,7 +10,7 @@
   --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
 }
 
-/* --- Layout --- */
+/* Layout  */
 .appointments-wrapper {
   max-width: 1300px;
   margin: 0 auto;
@@ -24,7 +24,7 @@
   margin-bottom: 3rem;
 }
 
-/* --- Animations --- */
+/*  Animations  */
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -39,7 +39,7 @@
 .slide-up { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
 .animate-in { animation: slideUp 0.4s ease-out forwards; }
 
-/* --- Header Section --- */
+/*  Header Section  */
 .appointments-header {
   display: flex;
   justify-content: space-between;
@@ -81,7 +81,7 @@
   animation: pulse 2s infinite;
 }
 
-/* --- Group Headers --- */
+/*  Group Headers  */
 .appointment-group { margin-bottom: 2rem; }
 .group-header {
   display: flex;
@@ -108,7 +108,7 @@
 
 .count-pill.teal-pill { background: var(--light-teal); color: var(--dark-teal); }
 
-/* --- Appointment Card Styling --- */
+/*  Appointment Card Styling  */
 .appointment-card {
   background: var(--white);
   border-radius: 18px;
@@ -184,7 +184,7 @@
 .diagnosis-summary small { font-weight: 700; color: var(--slate-400); font-size: 0.75rem; }
 .diagnosis-summary p { margin: 4px 0 0; color: var(--slate-700); font-size: 0.95rem; }
 
-/* --- Buttons --- */
+/*  Buttons  */
 .card-actions {
   display: flex;
   gap: 12px;
@@ -239,7 +239,7 @@
 
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* --- Empty States --- */
+/*  Empty States  */
 .empty-state {
   padding: 4rem 2rem;
   text-align: center;
@@ -251,7 +251,7 @@
 
 .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
 
-/* --- Responsiveness --- */
+/*  Responsiveness  */
 @media (max-width: 768px) {
   .appointment-grid { grid-template-columns: 1fr; }
   .appointments-header { flex-direction: column; gap: 1rem; text-align: center; }

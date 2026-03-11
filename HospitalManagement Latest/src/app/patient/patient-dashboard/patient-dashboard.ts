@@ -25,33 +25,33 @@ export class PatientDashboard {
     
   ) {}
 
-  // ✅ Patient info always comes from PatientService
+  // Patient info always comes from PatientService
   get patient(): Patient | null {
     return this.patientService.getLoggedInPatient();
   }
 
-  // ✅ Appointments always come from DoctorService
+  //  Appointments always come from DoctorService
   get appointments(): Appointment[] {
     return this.doctorService.getAllAppointments()
       .filter(a => a.patientID === this.patient?.patientID);
   }
 
-  // ✅ Medical history comes from PatientService
+  //  Medical history comes from PatientService
   get medicalHistory(): PatientMedicalHistory | undefined {
     return this.patientService.getMedicalHistory();
   }
 
-  // ✅ Update profile segment
+  // Update profile segment
   updateProfile(updated: Patient) {
     this.patientService.updateProfile(updated);
   }
 
-  // ✅ Update medical  history segment
+  //  Update medical  history segment
   saveMedicalHistory(history: PatientMedicalHistory) {
     this.patientService.saveMedicalHistory(history);
   }
 
-  // ✅ Appointment management
+  //  Appointment management
   addAppointment(appt: Appointment) {
     this.doctorService.addAppointment(appt);
     this.rescheduleAppt = null;
@@ -66,9 +66,9 @@ export class PatientDashboard {
     this.doctorService.cancelAppointment(appt, appt.reason ?? 'Cancelled by patient');
   }
 
-  // ✅ Logout clears patient state
+  //  Logout clears patient state
   logout() {
-  // ✅ We must .subscribe() or the HTTP request won't fire!
+  //  We must .subscribe() or the HTTP request won't fire!
   this.patientService.logout().subscribe({
     next: () => {
       alert('Logged out successfully');

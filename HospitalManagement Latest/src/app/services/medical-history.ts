@@ -28,7 +28,7 @@ export class MedicalHistoryService {
     return this.http.post(`${this.apiUrl}/${doctorID}/medicalhistory`, historyPayload, { withCredentials: true });
   }
 
-  // ✅ ONLY ONE VERSION OF THIS FUNCTION:
+  //  ONLY ONE VERSION OF THIS FUNCTION:
  fetchPatientsFromDB(doctorID: string): void {
   this.http.get<{ histories: PatientRecord[] }>(
     `${this.apiUrl}/${doctorID}/medicalhistory`, 

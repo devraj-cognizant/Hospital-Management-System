@@ -10,7 +10,7 @@
   --radius-lg: 16px;
 }
 
-/* --- Animations --- */
+/*  Animations  */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
@@ -21,7 +21,7 @@
   opacity: 0; /* Ensures elements are hidden before animation starts */
 }
 
-/* --- Layout --- */
+/*  Layout  */
 .appointment-wrapper {
   max-width: 850px; 
   margin: 3rem auto;
@@ -40,7 +40,7 @@
   gap: 2rem;
 }
 
-/* --- Typography --- */
+/*  Typography  */
 .appointment-header { margin-bottom: 1rem; }
 
 .section-title {
@@ -73,7 +73,7 @@
   font-size: 1.05rem;
 }
 
-/* --- Inputs & Textareas --- */
+/*  Inputs & Textareas  */
 .modern-input, .modern-textarea {
   width: 100%;
   padding: 1rem 1.25rem;
@@ -104,7 +104,7 @@
   color: #9ca3af;
 }
 
-/* --- Submit Action --- */
+/*  Submit Action  */
 .submit-btn {
   width: 100%;
   padding: 1.25rem;

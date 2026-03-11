@@ -54,15 +54,15 @@ initializeForm() {
       gender: new FormControl({ value: this.patient.gender, disabled: true }, Validators.required),
       bloodGroup: new FormControl({ value: this.patient.bloodGroup, disabled: true }, Validators.required),
       
-      // ✅ REMOVED Validators.pattern so an empty box doesn't break the form
+      //  REMOVED Validators.pattern so an empty box doesn't break the form
       emergencyContact: new FormControl(this.patient.emergencyContact),
       
-      // ✅ REMOVED Validators.required so an empty address doesn't block the Save button
+      //  REMOVED Validators.required so an empty address doesn't block the Save button
       address: new FormControl(this.patient.address)
     });
   }
 
-  // ✅ This function now properly tells Angular to enable/disable the dropdowns
+  //  This function now properly tells Angular to enable/disable the dropdowns
   toggleEdit() {
     this.editing = !this.editing;
     
@@ -85,7 +85,7 @@ initializeForm() {
       
       this.patientService.updateProfile(updated).subscribe({
         next: (response) => {
-          // ✅ Your backend sends back { message: "...", user: {...} }
+          // Your backend sends back { message: "...", user: {...} }
           // We take the freshly saved user from the database and update the screen
           this.patient = response.user; 
           

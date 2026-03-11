@@ -53,7 +53,7 @@ export class Myappointment implements OnInit {
     });
   }
 
-  // --- Helper Date Logic ---
+  //  Helper Date Logic 
   // Safely compares dates regardless of database timestamp formats
   private isFutureOrToday(dateString: string): boolean {
     if (!dateString) return false;
@@ -67,7 +67,7 @@ export class Myappointment implements OnInit {
     return apptDate >= todayDate;
   }
 
-  // --- Filtering Logic ---
+  //  Filtering Logic 
   get upcomingAppointments(): Appointment[] {
     return this.appointments.filter((a: any) => {
       const s = a.status?.toLowerCase() || '';
@@ -96,7 +96,7 @@ export class Myappointment implements OnInit {
     });
   }
 
-  // --- Actions ---
+  //  Actions 
   promptCancel(appt: Appointment) {
     if (window.confirm('Are you sure you want to cancel?')) {
       const reason = prompt('Reason for cancellation:');
@@ -120,7 +120,7 @@ export class Myappointment implements OnInit {
     }
   }
 
-  // --- PDF Generation ---
+  //  PDF Generation 
   downloadReport(appt: any) {
     const patient = this.patientService.getLoggedInPatient();
     const historyEntry = this.medicalHistories.find(h => h.appointmentID === appt.appointmentID);

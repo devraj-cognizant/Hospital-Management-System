@@ -13,7 +13,7 @@ import { DoctorService } from '../../services/doctor';
 })
 export class Doctordashboard implements OnInit {
   
-  // ✅ Use a GETTER: This ensures the template always sees 
+  // Use a GETTER: This ensures the template always sees 
   // the doctor, even if the service reloads from storage.
   get doctor(): Doctor | null {
     return this.doctorService.getLoggedInDoctor();
@@ -25,7 +25,7 @@ export class Doctordashboard implements OnInit {
   ) {}
 
   ngOnInit() {
-    // ✅ Redirect if someone tries to access the dashboard without being logged in
+    // Redirect if someone tries to access the dashboard without being logged in
     if (!this.doctor) {
       this.router.navigate(['/doctor-login']);
     }

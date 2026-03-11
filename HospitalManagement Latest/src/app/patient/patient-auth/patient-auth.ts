@@ -37,7 +37,7 @@ export class PatientAuth implements OnInit {
 
   today = new Date().toISOString().split('T')[0];
 
-  // ✅ FIX: Initialize forms immediately right here!
+  // FIX: Initialize forms immediately right here!
   loginForm: FormGroup = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
@@ -69,7 +69,6 @@ export class PatientAuth implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // We leave this empty now because the forms are already built above!
   }
 
   // 4. Update method signature to accept Enum
@@ -128,7 +127,7 @@ export class PatientAuth implements OnInit {
     this.patientService.login(email, password).subscribe({
       next: (response) => {
         console.log("Full Backend Response:", response);
-        // 🛑 COMPLETELY REMOVED localStorage logic here!
+        // COMPLETELY REMOVED localStorage logic here!
 
         // Extract the user data from your Node.js response
         const loggedInUser = response.user; 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router'; // Removed Router
-import { Location } from '@angular/common'; // ✅ IMPORT LOCATION
+import { Location } from '@angular/common'; //IMPORT LOCATION
 import { DoctorService } from '../../services/doctor';
 import { MedicalHistoryService } from '../../services/medical-history';
 import { CommonModule } from '@angular/common';
@@ -21,7 +21,7 @@ export class MedicalHistoryFormComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private location: Location, // ✅ INJECT LOCATION HERE
+    private location: Location, // INJECT LOCATION HERE
     private doctorService: DoctorService,
     private historyService: MedicalHistoryService
   ) {}
@@ -56,7 +56,7 @@ export class MedicalHistoryFormComponent implements OnInit {
       next: () => {
         alert(`✅ Medical history saved successfully!`);
         
-        // 🚀 THE FIX: Just go back to the previous page automatically!
+        // THE FIX: Just go back to the previous page automatically!
         this.location.back(); 
       },
       error: (err: any) => {

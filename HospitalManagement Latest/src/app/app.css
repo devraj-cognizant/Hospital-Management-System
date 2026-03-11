@@ -279,7 +279,7 @@ html, body {
 
 /* Main Content */
 .dashboard-main {
-  margin-left: 240px; /* ✅ offset for fixed sidebar */
+  margin-left: 240px; /* offset for fixed sidebar */
   flex-grow: 1;
   background: #ffffff;
   border-top-left-radius: 12px;
@@ -302,7 +302,7 @@ html, body {
 
 .dashboard-content {
   flex-grow: 1;
-  overflow-y: auto; /* ✅ scroll only content */
+  overflow-y: auto; /* scroll only content */
   animation: fadeSlide 0.4s ease-in-out;
 }
 

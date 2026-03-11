@@ -1,4 +1,4 @@
-/* --- Global Variables & Reset --- */
+/*  Global Variables & Reset  */
 :host {
   --primary-emerald: #00bfa5;
   --dark-teal: #004d40;
@@ -22,7 +22,7 @@
   overflow-x: hidden;
 }
  
-/* --- Hero Section --- */
+/*  Hero Section  */
 .hero-elite {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
@@ -91,7 +91,7 @@
   gap: 1.5rem;
 }
  
-/* --- Dashboard Mockup --- */
+/*  Dashboard Mockup  */
 .hero-mockup { position: relative; }
  
 .mockup-frame {
@@ -160,7 +160,7 @@
   z-index: 5;
 }
  
-/* --- Feature Cards (Tightened Top Spacing) --- */
+/*  Feature Cards (Tightened Top Spacing)  */
 .features-elite {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -200,7 +200,7 @@
 .feature-card p { color: var(--slate-600); line-height: 1.6; }
 .feature-card.active p { color: #94a3b8; }
  
-/* --- Stats Strip --- */
+/*  Stats Strip  */
 .stats-strip-elite {
   background-color: var(--dark-teal);
   padding: 5rem 2rem;
@@ -221,7 +221,7 @@
   font-size: 0.75rem; letter-spacing: 1px; opacity: 0.8;
 }
  
-/* --- Footer --- */
+/*  Footer  */
 .footer-elite {
   background-color: var(--slate-900);
   color: white;
@@ -251,7 +251,7 @@
   display: flex; justify-content: space-between; font-size: 0.8rem; color: #64748b;
 }
  
-/* --- Buttons --- */
+/*  Buttons  */
 .btn-primary {
   padding: 1rem 2.2rem;
   background: var(--dark-teal);
@@ -271,7 +271,7 @@
   display: flex; align-items: center; gap: 8px;
 }
  
-/* --- Animations --- */
+/* Animations  */
 .animate-in {
   opacity: 0;
   animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -282,7 +282,7 @@
   to { opacity: 1; transform: translateY(0); }
 }
  
-/* --- Responsive --- */
+/*  Responsive  */
 @media (max-width: 1024px) {
   .hero-elite { grid-template-columns: 1fr; text-align: center; padding-bottom: 3rem; }
   .hero-content { align-items: center; }

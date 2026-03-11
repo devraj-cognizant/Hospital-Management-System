@@ -13,7 +13,7 @@ import { DoctorService } from './services/doctor'; // ✅ Import Doctor Service
 })
 export class App implements OnInit {
   
-  // ✅ Inject BOTH services
+  // Inject BOTH services
   constructor(
     private patientService: PatientService,
     private doctorService: DoctorService 
@@ -22,14 +22,14 @@ export class App implements OnInit {
   ngOnInit() {
     console.log("App loaded. Checking for secure session...");
     
-    // 🛡️ 1. Check if a DOCTOR is already logged in first
+    //  1. Check if a DOCTOR is already logged in first
     const activeDoctor = this.doctorService.getLoggedInDoctor();
     if (activeDoctor) {
       console.log("👨‍⚕️ Doctor session detected for:", activeDoctor.name, "- Skipping Patient check.");
       return; // 🛑 Stop the function here! Do not call the patient API.
     }
 
-    // 🏥 2. If no Doctor is found, check for a PATIENT session
+    //  2. If no Doctor is found, check for a PATIENT session
     this.patientService.getProfile().subscribe({
       next: (patient) => {
         console.log('Session restored securely from cookie for:', patient.firstName);

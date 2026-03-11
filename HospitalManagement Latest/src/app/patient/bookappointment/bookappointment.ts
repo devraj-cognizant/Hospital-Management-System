@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule, Location } from '@angular/common'; // ✅ IMPORT Location HERE
+import { CommonModule, Location } from '@angular/common'; // IMPORT Location HERE
 import { Appointment } from '../../model/appointment';
 import { DoctorService } from '../../services/doctor';
 import { PatientService } from '../../services/patient-service';
@@ -32,7 +32,7 @@ export class Bookappointment implements OnInit {
     private patientService: PatientService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private location: Location // ✅ INJECT Location HERE
+    private location: Location // INJECT Location HERE
   ) {
     this.appointmentForm = this.fb.group({
       patientName: [''],
@@ -163,10 +163,10 @@ export class Bookappointment implements OnInit {
     this.appointmentForm.get('time')?.markAsTouched();
   }
 
-  // ✅ UPDATED BOOK METHOD with event preventDefault
+  // UPDATED BOOK METHOD with event preventDefault
   book(event?: Event) {
     if (event) {
-      event.preventDefault(); // 🛡️ Stop the browser from refreshing!
+      event.preventDefault(); // Stop the browser from refreshing!
     }
 
     if (this.appointmentForm.invalid) {
@@ -193,7 +193,7 @@ export class Bookappointment implements OnInit {
         .subscribe({
           next: () => {
             alert(`✅ Rescheduled successfully with ${doctor?.name || 'your doctor'} to ${data.date} at ${data.time}`);
-            this.location.back(); // 🚀 Safe auto-back
+            this.location.back(); // Safe auto-back
           },
           error: (err: any) => alert(`❌ Failed to reschedule: ${err.error?.message}`)
         });
@@ -209,7 +209,7 @@ export class Bookappointment implements OnInit {
       this.patientService.bookAppointmentDB(bookingPayload).subscribe({
         next: () => {
           alert(`✅ Appointment requested successfully!`);
-          this.location.back(); // 🚀 Safe auto-back
+          this.location.back(); // Safe auto-back
         },
         error: (err: any) => {
           console.error("Booking failed", err);

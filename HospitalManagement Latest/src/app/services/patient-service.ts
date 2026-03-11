@@ -20,16 +20,14 @@ export class PatientService {
     private doctorService: DoctorService,
     private http: HttpClient,
   ) {
-    // ✅ Read from the Frontend Cookie instead of localStorage
+    //  Read from the Frontend Cookie instead of localStorage
     const savedPatient = this.getPatientCookie();
     if (savedPatient) {
       this.currentPatientSubject.next(savedPatient);
     }
   }
 
-  // --------------------------------------------------
-  // 🍪 COOKIE HELPER METHODS
-  // --------------------------------------------------
+  //  COOKIE HELPER METHODS
   private setPatientCookie(patient: Patient) {
     const patientString = encodeURIComponent(JSON.stringify(patient));
     document.cookie = `loggedInPatient=${patientString}; path=/; max-age=86400; SameSite=Strict`;
@@ -52,9 +50,7 @@ export class PatientService {
       'loggedInPatient=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict';
   }
 
-  // ---------------------------
   // Authentication & Session
-  // ---------------------------
   register(patient: Patient): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, patient);
   }
@@ -72,12 +68,12 @@ export class PatientService {
 
   setCurrentPatient(patient: Patient): void {
     this.currentPatientSubject.next(patient);
-    this.setPatientCookie(patient); // ✅ Save to cookie
+    this.setPatientCookie(patient); //  Save to cookie
   }
 
   clearLocalSession(): void {
     this.currentPatientSubject.next(null);
-    this.clearPatientCookie(); // ✅ Wipe the cookie
+    this.clearPatientCookie(); //  Wipe the cookie
   }
 
   logout(): Observable<any> {
@@ -90,9 +86,8 @@ export class PatientService {
     return this.currentPatientSubject.value;
   }
 
-  // ---------------------------
   // Profile & Medical History
-  // ---------------------------
+  
   getProfile(): Observable<Patient> {
     return this.http.get<Patient>(`${this.apiUrl}/profile`, { withCredentials: true }).pipe(
       tap((patient) => {
@@ -135,9 +130,8 @@ export class PatientService {
     }
   }
 
-  // ---------------------------
+  
   // Appointments
-  // ---------------------------
   bookAppointmentDB(bookingData: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/book-appointment`, bookingData, {
       withCredentials: true,

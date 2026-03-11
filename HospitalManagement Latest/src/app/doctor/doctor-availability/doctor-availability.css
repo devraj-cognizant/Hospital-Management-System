@@ -110,7 +110,7 @@
 .chip-success { color: var(--dark-teal); border-color: var(--primary-teal); }
 .chip-success:hover { background: var(--light-teal); transform: translateY(-2px); }
 
-/* --- Time Slots Grid --- */
+/*  Time Slots Grid  */
 .slots-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -166,7 +166,7 @@
   background: #f3f4f6;
 }
 
-/* --- Save Action --- */
+/*  Save Action  */
 .submit-btn {
   width: 100%;
   padding: 1.25rem;
@@ -195,7 +195,7 @@
   border: 1px solid var(--primary-teal);
 }
 
-/* --- Responsive --- */
+/*  Responsive  */
 @media (max-width: 768px) {
   .appointment-container { padding: 2rem; }
   .modern-input { max-width: 100%; }
