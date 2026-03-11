@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const { setUser } = require("../services/auth");
 const { v4: uuidv4 } = require("uuid");
 
-/*  Register Patient  */
+/* Register Patient  */
 async function handlePatientRegister(req, res) {
     try {
         const body = req.body;
@@ -34,7 +34,7 @@ async function handlePatientRegister(req, res) {
     }
 }
 
-/*  Login Patient  */
+/* Login Patient  */
 async function handlePatientLogin(req, res) {
     try {
         const { email, password } = req.body;
@@ -83,7 +83,6 @@ async function handlePatientLogin(req, res) {
 
 
 // get the profile of the user which has logged in
-
 async function handleGetProfile(req, res) {
     try {
         console.log("--- PROFILE DEBUG ---");
@@ -104,7 +103,7 @@ async function handleGetProfile(req, res) {
     }
 }
 
-/*  Update Patient Profile  */
+/* Update Patient Profile  */
 async function handleUpdatePatientProfile(req, res) {
     try {
         const { email } = req.params;
@@ -129,7 +128,7 @@ async function handleUpdatePatientProfile(req, res) {
     }
 }
 
-/*  Book Appointment  */
+/* Book Appointment  */
 async function bookAppointment(req, res) {
     try {
         const { doctorID, patientID, appointmentDate, time, reason } = req.body;
@@ -139,6 +138,19 @@ async function bookAppointment(req, res) {
 
         if (!patient || !doctor) {
             return res.status(404).json({ message: "Patient or Doctor not found" });
+        }
+
+        //  NEW VALIDATOR: Prevent booking same doctor if an active appointment exists
+        const activeAppointment = await Appointment.findOne({
+            patientID: patient.patientID,
+            doctorID: doctor.id,
+            status: { $in: ["Requested", "Scheduled", "Pending", "Rescheduled"] } 
+        });
+
+        if (activeAppointment) {
+            return res.status(400).json({ 
+                message: "You already have an active appointment with this doctor. Please wait until it is completed or cancel it to book again." 
+            });
         }
 
         const normalizedDate = new Date(appointmentDate).toISOString().split("T")[0];
@@ -173,7 +185,7 @@ async function bookAppointment(req, res) {
     }
 }
 
-/*  Reschedule Appointment  */
+/* Reschedule Appointment  */
 async function rescheduleAppointment(req, res) {
   try {
     const { appointmentID } = req.params;
@@ -221,7 +233,7 @@ async function rescheduleAppointment(req, res) {
 }
 
 
-/*  Logout Patient  */
+/* Logout Patient  */
 async function handlePatientLogout(req, res) {
     try {
         // Grab the token from the cookie OR the header
@@ -312,8 +324,6 @@ async function cancelAppointment(req, res) {
         return res.status(500).json({ message: "Error cancelling appointment", error: error.message });
     }
 }
-
-
 
 module.exports = {
     handlePatientLogin,
