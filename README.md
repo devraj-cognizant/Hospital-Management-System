@@ -1,4 +1,4 @@
-# Hospital Management System (HMS)
+# Hospital Management System
 
 A modern, responsive healthcare platform designed to streamline hospital operations, including doctor scheduling, patient record management, and appointment booking.
 
@@ -6,27 +6,26 @@ A modern, responsive healthcare platform designed to streamline hospital operati
 
 * **Doctor Portal**: Manage schedules, view patient histories, and update visit summaries.
 * **Patient Portal**: Book and reschedule appointments, and view medical reports.
-* **Admin Dashboard**: Overlook hospital statistics and manage user roles.
-* **PDF Generation**: Export visit summaries and reports directly as PDFs.
-* **Responsive UI**: Optimized for both desktop and mobile views with smooth animations.
+* **PDF Generation**: Export visit summaries and reports directly as PDFs using jsPDF.
+* **Responsive UI**: Optimized for both desktop and mobile views with professional animations.
 
 ## 🛠️ Tech Stack
 
 * **Frontend**: Angular (TypeScript, HTML, CSS)
 * **Backend**: Node.js with Express
 * **Database**: MongoDB
-* **Libraries**: jsPDF (for reports), RxJS, Bootstrap/Material
+* **Libraries**: jsPDF, RxJS
 
 ## 📦 Getting Started
 
 ### Prerequisites
 * Node.js (v18 or higher)
 * Angular CLI (`npm install -g @angular/cli`)
-* MongoDB Compass or Atlas
+* MongoDB (Local or Atlas)
 
 ### Installation
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/your-username/hospital-management-system.git](https://github.com/your-username/hospital-management-system.git)
-   cd hospital-management-system
+   git clone https://github.com/devraj-cognizant/Hospital-Management-System.git
+   cd Hospital-Management-System
