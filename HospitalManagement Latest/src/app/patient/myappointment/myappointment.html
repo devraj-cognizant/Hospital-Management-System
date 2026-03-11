@@ -93,11 +93,11 @@
   <section class="appointment-group animate-in" *ngIf="cancelledAppointments.length > 0; else noCancelled">
     <div class="group-header">
       <h4 class="sub-title">Cancelled Appointments</h4>
-      <span class="count-pill" style="background-color: #fee2e2; color: #ef4444;">{{ cancelledAppointments.length }}</span>
+      <span class="count-pill cancelled-pill">{{ cancelledAppointments.length }}</span>
     </div>
     <div class="appointment-grid">
       <div *ngFor="let appt of cancelledAppointments" class="appointment-card cancelled slide-up">
-        <div class="card-accent" style="background-color: var(--error);"></div>
+        <div class="card-accent cancelled-accent"></div>
         <div class="card-content">
           <div class="card-top">
             <div class="doctor-info">
@@ -107,13 +107,13 @@
                 <span class="specialty">{{ appt.specialization }}</span>
               </div>
             </div>
-            <span class="status-tag cancelled" style="color: var(--error); background: #fef2f2;">Cancelled</span>
+            <span class="status-tag cancelled">Cancelled</span>
           </div>
 
           <div class="card-middle">
             <div class="detail-row">
               <span class="icon">📅</span> 
-              <span style="text-decoration: line-through; color: var(--text-muted);">
+              <span class="cancelled-text">
                 {{ appt.appointmentDate | date:'mediumDate' }} at {{ appt.time }}
               </span>
             </div>
