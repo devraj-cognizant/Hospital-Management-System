@@ -29,3 +29,24 @@ A modern, responsive healthcare platform designed to streamline hospital operati
    ```bash
    git clone https://github.com/devraj-cognizant/Hospital-Management-System.git
    cd Hospital-Management-System
+
+2. In the backend add the .env file
+   ```bash
+      PORT=
+      MONGO_URI=
+2. **Setup Backend**
+   ```bash
+   cd Backend(1)
+   npm install
+   nodemon server.js
+
+3. **Setup Frontend**
+   ```bash
+   cd HospitalManagementLatest
+   npm install
+   ng serve
+
+4. Now you can see our application on:
+   ```bash
+   http://localhost:4200/
+
