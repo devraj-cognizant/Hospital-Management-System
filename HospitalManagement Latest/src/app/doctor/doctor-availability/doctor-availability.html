@@ -1,43 +1,59 @@
-<div class="availability-wrapper">
-  <h3 class="section-title">Manage Availability</h3>
-  <p class="section-sub">Block or unblock time slots for appointments.</p>
-
-  <!-- Date Picker -->
-  <div class="date-picker">
-    <label for="date">Select Date:</label>
-    <input id="date" type="date" [(ngModel)]="selectedDate" [min]="today"/>
+<div class="appointment-wrapper">
+  <div class="appointment-header animate-in">
+    <h3 class="section-title">Manage Availability</h3>
+    <p class="section-sub">Block or unblock time slots for your upcoming appointments.</p>
   </div>
 
-  <!-- Controls -->
-  <div class="controls">
-    <button class="btn btn-block" (click)="blockAll()">Block All</button>
-    <button class="btn btn-unblock" (click)="unblockAll()">Unblock All</button>
-  </div>
+  <div class="appointment-container animate-in">
+    
+    <div class="step-section">
+      <label class="step-label">1. Select Date</label>
+      <div class="date-picker-wrapper">
+        <input id="date" type="date" [(ngModel)]="selectedDate" [min]="today" class="modern-input" />
+      </div>
+    </div>
 
+    <div class="step-section animate-in">
+      <label class="step-label">2. Quick Actions</label>
+      <div class="chip-group">
+        <button class="chip chip-danger" (click)="blockAll()">
+          🛑 Block All
+        </button>
+        <button class="chip chip-success" (click)="unblockAll()">
+          ✅ Unblock All
+        </button>
+      </div>
+    </div>
 
-  <h4 class="sub-title">Time Slots</h4>
-  <div class="slots">
-    <button
-      *ngFor="let slot of timeSlots"
-      [class.available]="isSlotAvailable(slot)"
-      [class.blocked]="isSlotBlocked(slot)"
-      (click)="toggleSlot(slot)"
-      [disabled]="isPastSlot(slot)"
-    >
-      <span class="slot-time">{{ slot }}</span>
-      <span class="slot-status">
-        {{ isPastSlot(slot) ? 'Past' : isSlotAvailable(slot) ? 'Available' : 'Blocked' }}
-      </span>
-    </button>
-  </div>
+    <div class="step-section animate-in">
+      <label class="step-label">3. Time Slots</label>
+      <div class="slots-grid">
+        <button
+          type="button"
+          *ngFor="let slot of timeSlots"
+          class="slot-item"
+          [class.available]="isSlotAvailable(slot)"
+          [class.blocked]="isSlotBlocked(slot)"
+          (click)="toggleSlot(slot)"
+          [disabled]="isPastSlot(slot)"
+        >
+          <span class="slot-time">{{ slot }}</span>
+          <span class="slot-status">
+            {{ isPastSlot(slot) ? 'Past' : isSlotAvailable(slot) ? 'Available' : 'Blocked' }}
+          </span>
+        </button>
+      </div>
+    </div>
 
-  <!-- Save -->
-  <div class="save-container">
-    <button class="btn btn-save" (click)="saveAvailability()">Save Availability</button>
-  </div>
+    <div class="form-actions animate-in">
+      <button class="submit-btn" (click)="saveAvailability()">
+        Save Availability
+      </button>
+      
+      <div *ngIf="successMessage" class="success-alert animate-in">
+        {{ successMessage }}
+      </div>
+    </div>
 
-  <!-- Success message -->
-  <div *ngIf="successMessage" class="success-msg">
-    {{ successMessage }}
   </div>
 </div>

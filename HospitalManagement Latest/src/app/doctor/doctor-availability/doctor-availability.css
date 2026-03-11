@@ -1,139 +1,202 @@
-.availability-wrapper {
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,77,64,0.12);
-  font-family: 'Segoe UI', sans-serif;
+:host {
+  /* Doctor Teal Palette mapping */
+  --primary-teal: #00bfa5; 
+  --dark-teal: #004d40;    
+  --light-teal: #e0f2f1;   
+  --bg-soft: #f9fafb;
+  --text-dark: #111827;
+  --text-gray: #6b7280;
+  --border-color: #e5e7eb;
+  --danger: #ef4444;
+  --radius-lg: 16px;
 }
 
+/* --- Animations --- */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-in {
+  animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* --- Layout --- */
+.appointment-wrapper {
+  max-width: 850px; 
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.appointment-container {
+  background: #ffffff;
+  border-radius: 24px; 
+  padding: 3rem;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* --- Typography --- */
+.appointment-header { margin-bottom: 1rem; }
+
 .section-title {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #004d40;
-  margin-bottom: 0.5rem;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--dark-teal);
+  letter-spacing: -0.025em;
+  margin: 0;
 }
 
 .section-sub {
-  font-size: 0.95rem;
-  color: #667085;
-  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  color: var(--text-gray);
+  margin-top: 0.5rem;
 }
 
-.date-picker {
-  margin-bottom: 1.5rem;
-}
-
-.date-picker label {
-  font-weight: 600;
-  color: #004d40;
-  margin-right: 0.5rem;
-}
-
-input[type="date"] {
-  padding: 0.6rem 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9fbfc;
-  font-size: 0.95rem;
-}
-
-.controls {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.btn {
-  padding: 0.7rem 1.2rem;
-  border-radius: 8px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.25s ease, transform 0.2s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-}
-
-.btn-block {
-  background-color: #b42318;
-  color: #ffffff;
-}
-
-.btn-block:hover {
-  background-color: #d32f2f;
-}
-
-.btn-unblock {
-  background-color: #004d40;
-  color: #ffffff;
-}
-
-.btn-unblock:hover {
-  background-color: #00695c;
-}
-
-.sub-title {
-  font-size: 1.2rem;
-  font-weight: 500;
+.step-label {
+  display: block;
+  font-weight: 700;
+  color: var(--text-dark);
   margin-bottom: 1rem;
-  color: #333;
+  font-size: 1.05rem;
 }
 
-.slots {
+/* --- Date Picker --- */
+.modern-input {
+  width: 100%;
+  max-width: 300px;
+  padding: 0.875rem 1.25rem;
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 1rem;
+  color: var(--text-dark);
+  background-color: var(--bg-soft);
+  transition: all 0.2s ease;
+  outline: none;
+  font-family: inherit;
+}
+
+.modern-input:focus {
+  border-color: var(--primary-teal);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(0, 191, 165, 0.15);
+}
+
+/* --- Quick Action Chips --- */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.chip {
+  padding: 10px 20px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  background: white;
+}
+
+.chip-danger { color: var(--danger); border-color: #fca5a5; }
+.chip-danger:hover { background: #fef2f2; border-color: var(--danger); transform: translateY(-2px); }
+
+.chip-success { color: var(--dark-teal); border-color: var(--primary-teal); }
+.chip-success:hover { background: var(--light-teal); transform: translateY(-2px); }
+
+/* --- Time Slots Grid --- */
+.slots-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 12px;
 }
 
-.slots button {
+.slot-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.8rem;
-  border-radius: 8px;
-  font-weight: 600;
-  border: none;
+  justify-content: center;
+  padding: 12px;
+  border: 2px solid var(--border-color);
+  background: white;
+  border-radius: 12px;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.slots button.available {
-  background-color: #e0f2f1;
-  color: #004d40;
-}
-
-.slots button.blocked {
-  background-color: #f3f4f6;
-  color: #999;
-}
-
-.slots button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+  transition: all 0.2s;
 }
 
 .slot-time {
   font-size: 1rem;
+  font-weight: 700;
 }
 
 .slot-status {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #555;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 4px;
+  text-transform: uppercase;
 }
 
-.save-container {
-  text-align: right;
+/* Slot States */
+.slot-item.available {
+  border-color: var(--primary-teal);
+  background: var(--light-teal);
+  color: var(--dark-teal);
 }
 
-.btn-save {
-  background-color: #004d40;
-  color: #ffffff;
+.slot-item.blocked {
+  background: var(--bg-soft);
+  color: var(--text-gray);
+  border-color: var(--border-color);
 }
 
-.btn-save:hover {
-  background-color: #00695c;
+.slot-item:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+}
+
+.slot-item:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f3f4f6;
+}
+
+/* --- Save Action --- */
+.submit-btn {
+  width: 100%;
+  padding: 1.25rem;
+  background: var(--dark-teal);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  margin-top: 1rem;
+}
+
+.submit-btn:hover:not(:disabled) { background: var(--primary-teal); }
+.submit-btn:active { transform: scale(0.98); }
+
+.success-alert {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--light-teal);
+  color: var(--dark-teal);
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  border: 1px solid var(--primary-teal);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .appointment-container { padding: 2rem; }
+  .modern-input { max-width: 100%; }
 }

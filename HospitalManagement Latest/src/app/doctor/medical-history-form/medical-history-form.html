@@ -1,16 +1,50 @@
-<div class="form-wrapper">
-  <h3>Enter Treatment Details for {{ patientName }}</h3>
-  
-  <div class="form-container">
-    <label>Diagnosis:</label>
-    <input type="text" [(ngModel)]="formData.diagnosis" placeholder="Enter diagnosis..." required />
+<div class="appointment-wrapper">
+  <div class="appointment-header animate-in">
+    <h3 class="section-title">Treatment Details</h3>
+    <p class="section-sub">Record medical history and the treatment plan for <strong>{{ patientName }}</strong>.</p>
+  </div>
 
-    <label>Treatment:</label>
-    <input type="text" [(ngModel)]="formData.treatment" placeholder="Enter treatment plan..." required />
+  <div class="appointment-container animate-in">
+    
+    <div class="step-section">
+      <label class="step-label">1. Diagnosis</label>
+      <input 
+        type="text" 
+        class="modern-input" 
+        [(ngModel)]="formData.diagnosis" 
+        placeholder="E.g., Acute Bronchitis" 
+        required 
+      />
+    </div>
 
-    <label>Notes:</label>
-    <textarea [(ngModel)]="formData.notes" placeholder="Additional notes..."></textarea>
+    <div class="step-section animate-in" style="animation-delay: 0.1s;">
+      <label class="step-label">2. Treatment Plan</label>
+      <input 
+        type="text" 
+        class="modern-input" 
+        [(ngModel)]="formData.treatment" 
+        placeholder="E.g., Prescribed antibiotics, rest for 5 days" 
+        required 
+      />
+    </div>
 
-    <button class="btn btn-add" (click)="submitForm()">Save History</button>
+    <div class="step-section animate-in" style="animation-delay: 0.2s;">
+      <label class="step-label">3. Additional Notes</label>
+      <textarea 
+        class="modern-textarea" 
+        [(ngModel)]="formData.notes" 
+        placeholder="Any allergies, follow-up instructions, or observations..."
+      ></textarea>
+    </div>
+
+    <div class="form-actions animate-in" style="animation-delay: 0.3s;">
+      <button 
+        class="submit-btn" 
+        (click)="submitForm()" 
+        [disabled]="!formData.diagnosis || !formData.treatment">
+        Save Medical History
+      </button>
+    </div>
+
   </div>
 </div>
