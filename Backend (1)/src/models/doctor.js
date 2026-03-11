@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 
 /*  Availability Schema  */
-const AvailabilitySchema = new mongoose.Schema(
-  {
-    available: [{ type: String }], // list of available time slots
-    blocked: [{ type: String }]    // list of blocked time slots
-  },
-  { _id: false } // prevent automatic _id for subdocuments
-);
+// const AvailabilitySchema = new mongoose.Schema(
+//   {
+//     available: [{ type: String }], // list of available time slots
+//     blocked: [{ type: String }]    // list of blocked time slots
+//   },
+//   { _id: false } // prevent automatic _id for subdocuments
+// );
 
 /*  Doctor Schema  */
 const doctorSchema = new mongoose.Schema(
