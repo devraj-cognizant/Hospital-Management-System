@@ -1,34 +1,37 @@
 <div class="loading-state" *ngIf="isLoading">
   <div class="spinner"></div>
-  <div class="loading-text">Loading your profile...</div>
+  <p class="loading-text">Retrieving Secure Profile...</p>
 </div>
 
 <div class="profile-wrapper animate-fade-in" *ngIf="!isLoading">
   
-  <div class="profile-header">
+  <header class="profile-header">
     <div>
       <h1 class="section-title">Patient Profile</h1>
-      <p class="subtitle">Manage your personal information and medical details.</p>
+      <p class="subtitle">View and manage your clinical records and personal identity.</p>
     </div>
     
-    <div class="buttons" *ngIf="!editing">
+    <div class="header-actions" *ngIf="!editing">
       <button type="button" class="btn btn-outline" (click)="toggleEdit()">
-        ✏️ Edit Profile
+        <span>✏️</span> Edit Profile
       </button>
     </div>
-  </div>
+  </header>
 
   <form class="profile-form" [formGroup]="profileForm" [class.is-editing]="editing" (ngSubmit)="saveProfile()">
     
-    <div class="validation-warning" *ngIf="profileForm.invalid && profileForm.touched && editing">
-      Please fix the errors below before saving.
+    <div class="validation-warning animate-in" *ngIf="profileForm.invalid && profileForm.touched && editing">
+      <span class="icon">⚠️</span> Please ensure all required fields are filled correctly.
     </div>
 
     <div class="form-grid">
       
+      <div class="form-item--full group-label">Personal Identification</div>
+
       <div class="input-wrapper animate-slide-up" style="--delay: 0.1s">
         <label for="firstName">First Name</label>
-        <input type="text" id="firstName" formControlName="firstName" [readonly]="!editing" [class.readonly-field]="!editing">
+        <input type="text" id="firstName" formControlName="firstName" 
+               [readonly]="!editing" [class.readonly-field]="!editing">
         <div class="error" *ngIf="profileForm.get('firstName')?.invalid && profileForm.get('firstName')?.touched">
           First name is required.
         </div>
@@ -36,20 +39,24 @@
 
       <div class="input-wrapper animate-slide-up" style="--delay: 0.1s">
         <label for="lastName">Last Name</label>
-        <input type="text" id="lastName" formControlName="lastName" [readonly]="!editing" [class.readonly-field]="!editing">
+        <input type="text" id="lastName" formControlName="lastName" 
+               [readonly]="!editing" [class.readonly-field]="!editing">
         <div class="error" *ngIf="profileForm.get('lastName')?.invalid && profileForm.get('lastName')?.touched">
           Last name is required.
         </div>
       </div>
 
       <div class="input-wrapper form-item--full animate-slide-up" style="--delay: 0.2s">
-        <label for="email">Email Address (Cannot be changed)</label>
-        <input type="email" id="email" formControlName="email">
+        <label for="email">Email Address (System ID)</label>
+        <input type="email" id="email" formControlName="email" readonly class="readonly-field lock-input">
       </div>
 
+      <div class="form-item--full group-label">Contact & Emergency Details</div>
+
       <div class="input-wrapper animate-slide-up" style="--delay: 0.3s">
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" formControlName="phone" [readonly]="!editing" [class.readonly-field]="!editing">
+        <label for="phone">Primary Phone Number</label>
+        <input type="tel" id="phone" formControlName="phone" 
+               [readonly]="!editing" [class.readonly-field]="!editing">
         <div class="error" *ngIf="profileForm.get('phone')?.hasError('pattern')">
           Must be a valid 10-digit number.
         </div>
@@ -57,21 +64,30 @@
 
       <div class="input-wrapper animate-slide-up" style="--delay: 0.3s">
         <label for="dob">Date of Birth</label>
-        <input type="date" id="dob" formControlName="dob" [max]="today" [readonly]="!editing" [class.readonly-field]="!editing">
+        <input type="date" id="dob" formControlName="dob" [max]="today" 
+               [readonly]="!editing" [class.readonly-field]="!editing">
       </div>
 
       <div class="input-wrapper animate-slide-up" style="--delay: 0.4s">
+        <label for="emergencyContact">Emergency Contact Number</label>
+        <input type="text" id="emergencyContact" formControlName="emergencyContact" 
+               [readonly]="!editing" [class.readonly-field]="!editing">
+      </div>
+
+      <div class="form-item--full group-label">Clinical Information</div>
+
+      <div class="input-wrapper animate-slide-up" style="--delay: 0.5s">
         <label for="gender">Gender</label>
-        <select id="gender" formControlName="gender">
+        <select id="gender" formControlName="gender" [disabled]="!editing">
           <option value="Male">Male</option>
           <option value="Female">Female</option>
           <option value="Other">Other</option>
         </select>
       </div>
 
-      <div class="input-wrapper animate-slide-up" style="--delay: 0.4s">
+      <div class="input-wrapper animate-slide-up" style="--delay: 0.5s">
         <label for="bloodGroup">Blood Group</label>
-        <select id="bloodGroup" formControlName="bloodGroup">
+        <select id="bloodGroup" formControlName="bloodGroup" [disabled]="!editing">
           <option value="A+">A+</option>
           <option value="A-">A-</option>
           <option value="B+">B+</option>
@@ -83,24 +99,21 @@
         </select>
       </div>
 
-      <div class="input-wrapper animate-slide-up" style="--delay: 0.5s">
-        <label for="emergencyContact">Emergency Contact</label>
-        <input type="text" id="emergencyContact" formControlName="emergencyContact" [readonly]="!editing" [class.readonly-field]="!editing">
-      </div>
-
       <div class="input-wrapper form-item--full animate-slide-up" style="--delay: 0.6s">
-        <label for="address">Full Address</label>
-        <textarea id="address" formControlName="address" rows="3" [readonly]="!editing" [class.readonly-field]="!editing"></textarea>
+        <label for="address">Permanent Residential Address</label>
+        <textarea id="address" formControlName="address" rows="3" 
+                  [readonly]="!editing" [class.readonly-field]="!editing"
+                  placeholder="Street, City, Zip Code"></textarea>
       </div>
 
     </div>
 
-    <div class="buttons animate-fade-in" style="margin-top: 2.5rem;" *ngIf="editing">
+    <div class="form-footer animate-fade-in" *ngIf="editing">
       <button type="button" class="btn btn-outline" (click)="toggleEdit()">
-        Cancel
+        Discard Changes
       </button>
       <button type="submit" class="btn btn-primary" [disabled]="profileForm.invalid || profileForm.pristine">
-        Save Changes
+        Save Profile Update
       </button>
     </div>
 

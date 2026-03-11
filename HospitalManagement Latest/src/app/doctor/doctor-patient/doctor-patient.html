@@ -1,66 +1,88 @@
-<div class="patient-records-wrapper">
-  <!-- Controls -->
-  <div class="controls">
-    <input type="text"
-           (ngModelChange)="onSearch($event)"
-           [ngModel]="searchTerm"
-           placeholder="🔍 Search by patient name"
-           class="search-input" />
-
-    <label class="date-label" for="startDate">From:</label>
-    <input id="startDate" type="date" [(ngModel)]="filterStartDate" class="date-input" />
-
-    <label class="date-label" for="endDate">To:</label>
-    <input id="endDate" type="date" [(ngModel)]="filterEndDate" class="date-input" />
-
-    <button class="btn btn-sort" (click)="toggleSort()">
-      Sort by Date {{ sortDescending ? '↓' : '↑' }}
-    </button>
-    <button class="btn btn-clear" (click)="clearFilters()">Clear ✖</button>
+<div class="appointment-wrapper">
+  <div class="appointment-header animate-in">
+    <h3 class="section-title">Medical History</h3>
+    <p class="section-sub">Access and manage comprehensive patient records and visit history.</p>
   </div>
 
-  <!-- Patient List -->
-  <div class="patient-list">
-    <div *ngIf="filteredPatients.length === 0" class="empty">
-      No patients found.
+  <div class="controls-toolbar animate-in">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text"
+             (ngModelChange)="onSearch($event)"
+             [ngModel]="searchTerm"
+             placeholder="Search patient name..."
+             class="modern-input" />
     </div>
 
-    <div *ngFor="let patient of filteredPatients" class="patient-card">
-      <!-- Patient Header -->
-      <div class="patient-header">
-        <h3>{{ patient.name }}</h3>
-        <span class="patient-id">ID: {{ patient.id }}</span>
-        <button class="btn btn-download" (click)="downloadPdf(patient)">Download PDF</button>
+    <div class="filter-group">
+      <div class="date-input-wrapper">
+        <label>From</label>
+        <input type="date" [(ngModel)]="filterStartDate" class="modern-date-input" />
+      </div>
+      <div class="date-input-wrapper">
+        <label>To</label>
+        <input type="date" [(ngModel)]="filterEndDate" class="modern-date-input" />
+      </div>
+    </div>
+
+    <div class="action-group">
+      <button class="btn btn-outline" (click)="toggleSort()">
+        Sort {{ sortDescending ? '↓' : '↑' }}
+      </button>
+      <button class="btn btn-danger-text" (click)="clearFilters()">Clear</button>
+    </div>
+  </div>
+
+  <div class="patient-list">
+    <div *ngIf="filteredPatients.length === 0" class="empty-state animate-in">
+      <div class="empty-icon">📂</div>
+      <p>No matching patient records found.</p>
+    </div>
+
+    <div *ngFor="let patient of filteredPatients" class="patient-record-card slide-up">
+      <div class="record-header">
+        <div class="patient-main-info">
+          <div class="avatar-circle">{{ patient.name[0] }}</div>
+          <div>
+            <h3 class="patient-name">{{ patient.name }}</h3>
+            <span class="patient-id-tag">ID: {{ patient.id }}</span>
+          </div>
+        </div>
+        <button class="btn btn-teal-sm" (click)="downloadPdf(patient)">
+          <span>📄</span> Download PDF
+        </button>
       </div>
 
-      <!-- Patient Info -->
-      <div class="patient-info">
-        <p><strong>Age:</strong> {{ patient.age }}</p>
-        <p><strong>Gender:</strong> {{ patient.gender }}</p>
-        <p><strong>Contact:</strong> {{ patient.contact }}</p>
+      <div class="patient-stats-grid">
+        <div class="stat-item">
+          <span class="stat-label">Age</span>
+          <span class="stat-value">{{ patient.age }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Gender</span>
+          <span class="stat-value">{{ patient.gender }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Contact</span>
+          <span class="stat-value">{{ patient.contact }}</span>
+        </div>
       </div>
 
-      <!-- Medical History -->
-      <h4 class="history-title">Medical History</h4>
-      <div class="history-table-wrapper">
-        <table class="history-table">
-          <thead>
-            <tr>
-              <th>Diagnosis</th>
-              <th>Treatment</th>
-              <th>Date of Visit</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let history of patient.history">
-              <td>{{ history.diagnosis }}</td>
-              <td>{{ history.treatment }}</td>
-              <td>{{ history.dateOfVisit | date:'yyyy-MM-dd' }}</td>
-              <td>{{ history.notes }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="history-section">
+        <h4 class="sub-label">Clinical History</h4>
+        <div class="history-items-grid">
+          <div *ngFor="let history of patient.history" class="history-entry">
+            <div class="entry-dot"></div>
+            <div class="entry-content">
+              <div class="entry-header">
+                <span class="entry-diagnosis">{{ history.diagnosis }}</span>
+                <span class="entry-date">{{ history.dateOfVisit | date:'mediumDate' }}</span>
+              </div>
+              <p class="entry-treatment"><strong>Treatment:</strong> {{ history.treatment }}</p>
+              <p class="entry-notes" *ngIf="history.notes">"{{ history.notes }}"</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
