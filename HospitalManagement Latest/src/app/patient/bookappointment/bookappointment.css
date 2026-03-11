@@ -18,6 +18,12 @@
 .animate-in {
   animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+.chip.disabled, .doctor-card.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 
 .appointment-wrapper {
   max-width: 850px; /* Slightly larger for the 'comfort' feel */

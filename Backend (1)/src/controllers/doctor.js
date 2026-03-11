@@ -156,7 +156,12 @@ async function getDoctorAvailability(req, res) {
 /* -------------------- Logout Doctor -------------------- */
 async function handleDoctorLogout(req, res) {
     // Clear the doctor's cookie
-    res.clearCookie("uid", { httpOnly: true, sameSite: "lax" });
+    res.clearCookie("uid", {
+  httpOnly: true,
+  secure: false,   // must match what you set
+  sameSite: "lax",
+  path: "/"        // always include path
+});
 
     return res.status(200).json({ message: "Doctor logged out successfully" });
 }

@@ -12,24 +12,23 @@
     <div class="step-section">
       <label class="step-label">1. Specialization</label>
       <div class="chip-group">
-        <div 
-          class="chip" 
-          *ngFor="let spec of specializations" 
+        <div class="chip" *ngFor="let spec of specializations"
           [class.active]="appointmentForm.get('specialization')?.value === spec"
-          (click)="appointmentForm.get('specialization')?.setValue(spec); onSpecializationChange()">
+          (click)="!rescheduleAppt && appointmentForm.get('specialization')?.setValue(spec); onSpecializationChange()"
+          [class.disabled]="rescheduleAppt">
           {{ spec }}
         </div>
+
       </div>
     </div>
 
     <div class="step-section animate-in" *ngIf="appointmentForm.get('specialization')?.value">
       <label class="step-label">2. Specialist</label>
       <div class="doctor-card-grid">
-        <div 
-          class="doctor-card" 
-          *ngFor="let doc of filteredDoctors" 
+        <div class="doctor-card" *ngFor="let doc of filteredDoctors"
           [class.active]="appointmentForm.get('doctor')?.value === (doc.id || doc._id)"
-          (click)="appointmentForm.get('doctor')?.setValue(doc.id || doc._id)">
+          (click)="appointmentForm.get('doctor')?.setValue(doc.id || doc._id)"
+          [class.disabled]="rescheduleAppt">
           <div class="doc-avatar-wrapper">
             <span class="doc-emoji">👨‍⚕️</span>
           </div>
@@ -44,39 +43,32 @@
     <div class="step-section animate-in" *ngIf="appointmentForm.get('doctor')?.value">
       <label class="step-label">3. Purpose of Visit</label>
       <div class="chip-group">
-        <div 
-          class="chip" 
-          *ngFor="let r of reasons" 
-          [class.active]="appointmentForm.get('reason')?.value === r"
-          (click)="appointmentForm.get('reason')?.setValue(r); onReasonChange()">
+        <div class="chip" *ngFor="let r of reasons" [class.active]="appointmentForm.get('reason')?.value === r"
+          (click)="appointmentForm.get('reason')?.setValue(r); onReasonChange()"
+          [class.disabled]="rescheduleAppt">
           {{ r }}
         </div>
-        <div class="chip" [class.active]="showOtherReason" (click)="appointmentForm.get('reason')?.setValue('Other'); onReasonChange()">
+        <div class="chip" [class.active]="showOtherReason"
+          (click)="appointmentForm.get('reason')?.setValue('Other'); onReasonChange()">
           Other
         </div>
       </div>
-      
-      <textarea 
-        *ngIf="showOtherReason" 
-        class="reason-text animate-in" 
-        [formControl]="$any(appointmentForm.get('otherReason'))" 
-        placeholder="Briefly describe your health concern...">
+
+      <textarea *ngIf="showOtherReason" class="reason-text animate-in"
+        [formControl]="$any(appointmentForm.get('otherReason'))" placeholder="Briefly describe your health concern...">
       </textarea>
     </div>
 
     <div class="step-section animate-in" *ngIf="appointmentForm.get('reason')?.value">
       <label class="step-label">4. Select Date & Time</label>
       <div class="date-picker-wrapper">
-        <input id="date" type="date" [formControl]="$any(appointmentForm.get('date'))" [min]="today" class="modern-date" />
+        <input id="date" type="date" [formControl]="$any(appointmentForm.get('date'))" [min]="today"
+          class="modern-date" />
       </div>
 
       <div class="time-slot-container" *ngIf="appointmentForm.get('date')?.value">
         <div class="slots-grid" *ngIf="availableSlots.length > 0; else noSlots">
-          <button 
-            type="button" 
-            *ngFor="let slot of availableSlots" 
-            (click)="selectTime(slot)"
-            class="slot-item"
+          <button type="button" *ngFor="let slot of availableSlots" (click)="selectTime(slot)" class="slot-item"
             [class.selected]="appointmentForm.get('time')?.value === slot">
             {{ slot }}
           </button>

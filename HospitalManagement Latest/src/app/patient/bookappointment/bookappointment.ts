@@ -17,8 +17,8 @@ export class Bookappointment implements OnInit {
   rescheduleAppt: Appointment | null = null;
   appointmentForm: FormGroup;
   today = new Date().toISOString().split('T')[0];
-  
-  doctors: any[] = []; 
+
+  doctors: any[] = [];
   specializations: string[] = [];
   filteredDoctors: any[] = [];
   availableSlotsList: string[] = [];
@@ -41,7 +41,7 @@ export class Bookappointment implements OnInit {
       date: ['', Validators.required],
       time: ['', Validators.required],
       reason: ['', Validators.required],
-      otherReason: [''] 
+      otherReason: ['']
     });
     this.rescheduleAppt = history.state?.rescheduleAppt || null;
   }
@@ -54,7 +54,7 @@ export class Bookappointment implements OnInit {
       next: (data: any) => {
         console.log("1. Doctors fetched:", data);
         setTimeout(() => {
-          this.doctors = data.doctors ? data.doctors : data; 
+          this.doctors = data.doctors ? data.doctors : data;
           this.specializations = [...new Set(this.doctors.map(d => d.specialization))];
           this.filteredDoctors = this.doctors;
           this.setupForm();
@@ -88,7 +88,7 @@ export class Bookappointment implements OnInit {
 
   setupForm() {
     const patient = this.patientService.getLoggedInPatient();
-    
+
     if (this.rescheduleAppt) {
       this.appointmentForm.patchValue({
         patientName: this.rescheduleAppt.patientName,
@@ -98,12 +98,14 @@ export class Bookappointment implements OnInit {
         date: '',
         time: ''
       });
-      
-      this.filteredDoctors = this.doctors.filter(d => 
+
+      this.filteredDoctors = this.doctors.filter(d =>
         d.id === this.rescheduleAppt?.doctorID || d._id === this.rescheduleAppt?.doctorID
       );
       this.appointmentForm.get('specialization')?.disable();
       this.appointmentForm.get('doctor')?.disable();
+      this.appointmentForm.get('reason')?.disable();
+      this.appointmentForm.get('otherReason')?.disable();
     } else if (patient) {
       this.appointmentForm.patchValue({
         patientName: `${patient.firstName} ${patient.lastName}`,
@@ -116,7 +118,7 @@ export class Bookappointment implements OnInit {
     console.log(`Specialization changed to: ${selectedSpec}`);
     this.filteredDoctors = this.doctors.filter(d => d.specialization === selectedSpec);
     this.appointmentForm.patchValue({ doctor: '', time: '', date: '' });
-    this.availableSlotsList = []; 
+    this.availableSlotsList = [];
   }
 
   onReasonChange() {
@@ -130,13 +132,13 @@ export class Bookappointment implements OnInit {
   private normalizedDate(date: string): string {
     if (!date) return '';
     if (date.includes('T')) return date.split('T')[0];
-    return date; 
+    return date;
   }
 
   updateAvailableSlots() {
     const doctorID = this.rescheduleAppt ? this.rescheduleAppt.doctorID : this.appointmentForm.get('doctor')?.value;
     const rawDate = this.appointmentForm.get('date')?.value;
-    
+
     if (!doctorID || !rawDate) {
       this.availableSlotsList = [];
       return;
@@ -144,12 +146,12 @@ export class Bookappointment implements OnInit {
 
     const normDate = this.normalizedDate(rawDate);
     console.log(`5. Looking for slots for Doctor [${doctorID}] on Date [${normDate}]`);
-    
+
     const slots = this.doctorService.getAvailableSlots(doctorID, normDate);
-    
+
     console.log(`6. Found slots:`, slots);
     this.availableSlotsList = slots || [];
-    this.cdr.detectChanges(); 
+    this.cdr.detectChanges();
   }
 
   get availableSlots(): string[] {
@@ -175,7 +177,7 @@ export class Bookappointment implements OnInit {
     const data = this.appointmentForm.getRawValue();
     const normalizedDate = this.normalizedDate(data.date);
     const doctorID = this.rescheduleAppt ? this.rescheduleAppt.doctorID : data.doctor;
-    
+
     const doctor = this.doctors.find(d => d.id === doctorID || d._id === doctorID);
     const patient = this.patientService.getLoggedInPatient();
 
@@ -198,7 +200,7 @@ export class Bookappointment implements OnInit {
     } else {
       const bookingPayload = {
         doctorID: doctorID,
-        patientID: patient.patientID, 
+        patientID: patient.patientID,
         appointmentDate: normalizedDate,
         time: data.time,
         reason: finalReason
