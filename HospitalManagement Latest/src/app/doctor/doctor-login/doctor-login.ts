@@ -40,7 +40,7 @@ export class DoctorLogin {
 
         if (response.id) {
           this.doctorService.setLoggedInDoctor(doctorData as any);
-          alert(`Login successful! Welcome Dr. ${response.name}`);
+          alert(`Login successful! Welcome  ${response.name}`);
           
           // Use response.id for navigation
           this.router.navigate(['/doctor', response.id]);
