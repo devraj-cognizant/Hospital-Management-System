@@ -1,91 +1,117 @@
-<div class="landing-container">
+<div class="landing-wrapper">
   <app-header></app-header>
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <h2>Your Health, Our Priority</h2>
-    <p>
-      Comprehensive hospital management system designed to provide seamless healthcare services.
-      Book appointments, access medical records, and manage your health journey all in one place.
-    </p>
-
-    <div class="buttons">
-      <!-- ✅ Use routerLink instead of goToLoginSelection -->
-      <a routerLink="/login" class="btn primary">Get Started</a>
-      <button class="btn secondary" (click)="scrollToSection()">Learn More</button>
+ 
+  <section class="hero-elite animate-in">
+    <div class="hero-content">
+      <div class="system-status-pill">
+        <span class="pulse-dot"></span>
+        <span class="status-label">MediCare Systems v3.0 Active</span>
+      </div>
+      <h1 class="hero-title">Your Health, <br><span class="text-emerald">Perfected.</span></h1>
+      <p class="hero-subtitle">
+        A premium hospital management ecosystem designed for the modern patient.
+        Experience seamless care coordination through an intuitive, secure interface.
+      </p>
+      <div class="hero-actions">
+        <a routerLink="/login" class="btn-primary">Get Started Free</a>
+        <button class="btn-ghost-chic" (click)="scrollToSection()">
+          Platform Tour <span>→</span>
+        </button>
+      </div>
+    </div>
+   
+    <div class="hero-mockup animate-in">
+      <div class="mockup-frame">
+        <div class="mockup-header-bar">
+          <div class="mockup-dots"><span></span><span></span><span></span></div>
+          <div class="mockup-url">medicare.hospital/portal</div>
+        </div>
+        <div class="mockup-body">
+          <aside class="mockup-sidebar">
+            <div class="side-item active"></div>
+            <div class="side-item"></div>
+            <div class="side-item"></div>
+            <div class="side-item"></div>
+          </aside>
+          <main class="mockup-main">
+            <div class="image-slot-elite">
+              <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80" alt="Dashboard">
+            </div>
+            <div class="mockup-lines">
+              <span class="line long"></span>
+              <span class="line short"></span>
+            </div>
+          </main>
+        </div>
+        <div class="floating-badge-elite">👨‍⚕️ Top Rated Care</div>
+      </div>
     </div>
   </section>
-
-  <!-- Feature Highlights -->
-  <section class="features">
-    <div class="feature-box">
-      <div class="icon">📅</div>
-      <h3>Easy Appointment Scheduling</h3>
-      <p>Book appointments with our specialist doctors quickly and conveniently.</p>
+ 
+  <section class="features-elite" id="more-info">
+    <div class="feature-card">
+      <div class="card-icon-box">📅</div>
+      <h3>Smart Scheduling</h3>
+      <p>Real-time booking with instant specialist confirmation and reminders.</p>
     </div>
-    <div class="feature-box">
-      <div class="icon">👨‍⚕️</div>
-      <h3>Expert Medical Team</h3>
-      <p>Access to experienced doctors across multiple specializations.</p>
+    <div class="feature-card active">
+      <div class="card-icon-box white-icon">🛡️</div>
+      <h3>Secure Records</h3>
+      <p>End-to-end encrypted medical history available securely at your fingertips.</p>
     </div>
-    <div class="feature-box">
-      <div class="icon">📋</div>
-      <h3>Complete Medical History</h3>
-      <p>Track your medical records and treatment history in one place.</p>
-    </div>
-  </section>
-
-  <!-- Info Boxes -->
-  <section class="info-section">
-    <div class="info-box">
-      <div id="more-info" class="icon">🕒</div>
-      <h3>24/7 Access</h3>
-      <p>Manage your health information anytime, anywhere.</p>
-    </div>
-    <div class="info-box">
-      <div class="icon">🛡️</div>
-      <h3>Secure & Private</h3>
-      <p>Your medical data is protected with the highest security standards.</p>
-    </div>
-    <div class="info-box">
-      <div class="icon">❤️</div>
-      <h3>Patient-Centered Care</h3>
-      <p>Personalized treatment plans tailored to your needs.</p>
+    <div class="feature-card">
+      <div class="card-icon-box">📋</div>
+      <h3>Live Diagnostics</h3>
+      <p>Instant access to laboratory results, imaging, and personalized plans.</p>
     </div>
   </section>
-
-  <!-- Stats Banner -->
-  <section class="stats-banner">
-    <div>👥 500+ Patients Served</div>
-    <div>👨‍⚕️ 50+ Expert Doctors</div>
-    <div>🏥 15+ Specializations</div>
-    <div>📞 24/7 Support Available</div>
+ 
+  <section class="stats-strip-elite">
+    <div class="stat-box">
+      <strong class="stat-number">500+</strong>
+      <span class="stat-label">Patients Served</span>
+    </div>
+    <div class="stat-box">
+      <strong class="stat-number">50+</strong>
+      <span class="stat-label">Specialists</span>
+    </div>
+    <div class="stat-box">
+      <strong class="stat-number">15+</strong>
+      <span class="stat-label">Departments</span>
+    </div>
+    <div class="stat-box">
+      <strong class="stat-number">24/7</strong>
+      <span class="stat-label">Monitoring</span>
+    </div>
   </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-column">
-      <h4>MediCare Hospital</h4>
-      <p>Providing quality healthcare services with compassion and excellence.</p>
+ 
+  <footer class="footer-elite">
+    <div class="footer-grid">
+      <div class="footer-col-brand">
+        <h2 class="footer-logo">MediCare<span>+</span></h2>
+        <p class="footer-tagline">Advancing medical excellence through secure digital innovation.</p>
+      </div>
+      <div class="footer-col">
+        <h4 class="col-title">Portal Access</h4>
+        <nav class="footer-nav">
+          <a routerLink="/login">Patient Dashboard</a>
+          <a routerLink="/login">Clinician Portal</a>
+        </nav>
+      </div>
+      <div class="footer-col">
+        <h4 class="col-title">Contact Us</h4>
+        <div class="contact-details">
+          <p>support@medicare.com</p>
+          <p>Medical City, NY</p>
+        </div>
+      </div>
     </div>
-    <div class="footer-column">
-      <h4>Quick Links</h4>
-      <ul>
-        <li>🔗 Patient Portal</li>
-        <li>🔗 Doctor Portal</li>
-        <li>🚑 Emergency Services</li>
-        <li>📞 Contact Us</li>
-      </ul>
-    </div>
-    <div class="footer-column">
-      <h4>Contact</h4>
-      <p>📞 Emergency: +1-555-EMERGENCY</p>
-      <p>📅 Appointments: +1-555-APPOINT</p>
-      <p>✉️ Email: info@medicare.com</p>
-      <p>📍 Address: 123 Health Street, Medical City</p>
-    </div>
-    <div class="copyright">
-      © 2026 MediCare Hospital. All rights reserved.
+    <div class="footer-bottom-bar">
+      <p>© 2026 MediCare Hospital. All rights reserved.</p>
+      <div class="legal-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
     </div>
   </footer>
 </div>
