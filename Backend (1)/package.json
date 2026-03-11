@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "test:native": "node --test tests/auth.test.js",
-    "test:mocha": "mocha tests/medicalHistory.test.js"
+    "test:mocha": "mocha tests/*.test.js",
+    "test:controller": "mocha tests/patientController.test.js"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "chai": "^6.2.2",
-    "mocha": "^11.7.5"
+    "mocha": "^11.7.5",
+    "sinon": "^21.0.2"
   }
 }
