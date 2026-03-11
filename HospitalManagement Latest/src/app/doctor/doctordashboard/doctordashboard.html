@@ -1,17 +1,38 @@
-<nav class="dashboard-nav">
-  <div class="nav-brand">Medicare Hospital</div>
-  <a routerLink="appointment" routerLinkActive="active">Appointments</a>
-  <a routerLink="availability" routerLinkActive="active">Availability</a>
-  <a routerLink="patients" routerLinkActive="active">Medical History</a>
-  <a (click)="logout()" class="btn-logout">Logout</a>
-</nav>
- 
-<div class="dashboard-content">
-  <div class="dashboard-header">
-    <!-- ✅ Show doctor’s name -->
-    <h2>Hi, {{ doctor?.name }}</h2>
-  </div>
- 
-  <router-outlet></router-outlet>
+<div class="dashboard-wrapper">
+  <aside class="dashboard-nav">
+    <div class="nav-brand">
+      <span class="brand-icon">🏥</span> <span class="brand-text">MediCare</span>
+    </div>
+
+    <div class="nav-links">
+      <a routerLink="appointment" routerLinkActive="active" class="nav-item">
+        <span class="icon">📅</span>
+        <span class="label">Appointments</span>
+      </a>
+      <a routerLink="availability" routerLinkActive="active" class="nav-item">
+        <span class="icon">🕒</span>
+        <span class="label">Availability</span>
+      </a>
+      <a routerLink="patients" routerLinkActive="active" class="nav-item">
+        <span class="icon">📋</span>
+        <span class="label">Medical History</span>
+      </a>
+    </div>
+
+    <button class="btn-logout" (click)="logout()">
+      <span class="icon">🚪</span>
+      <span class="label">Logout</span>
+    </button>
+  </aside>
+
+  <main class="dashboard-main">
+    <header class="dashboard-header animate-in">
+      <h2>Welcome, Dr. {{ doctor?.name || "Doctor" }}</h2>
+      <div class="header-line"></div>
+    </header>
+
+    <div class="dashboard-content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
 </div>
- 

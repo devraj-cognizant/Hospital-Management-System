@@ -1,94 +1,186 @@
-/* Sidebar Navigation */
+:host {
+  --nav-width: 240px;
+  /* Doctor Specific Colors */
+  --doc-primary: #004d40; 
+  --doc-accent: #00bfa5;
+  --doc-hover: rgba(255, 255, 255, 0.08);
+  --bg-light: #f4f7fa;
+  --text-dark: #1e293b;
+  --transition: all 0.2s ease-in-out;
+}
+
+.dashboard-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-light);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Sidebar - Compact Professional */
 .dashboard-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 240px;
-  background-color: #004d40;
+  width: var(--nav-width);
+  background-color: var(--doc-primary);
   color: white;
   display: flex;
   flex-direction: column;
-  padding: 2rem 1.5rem;
-  gap: 1rem;
+  padding: 1.5rem 1rem;
+  position: fixed;
+  height: 100vh;
+  z-index: 100;
+  transition: width 0.3s ease;
 }
 
-/* Brand */
 .nav-brand {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 2rem;
-  text-align: center;
-  letter-spacing: 1px;
-  border-bottom: 2px solid #00bfa5;
-  padding-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 0.5rem 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1.5rem;
 }
 
-/* Nav Links */
-.dashboard-nav a {
-  font-weight: 600;
+.brand-icon { font-size: 1.5rem; }
+.brand-text { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.5px; }
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
   color: #e0f2f1;
-  padding: 0.8rem 1rem;
-  border-radius: 6px;
   text-decoration: none;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: var(--transition);
 }
 
-.dashboard-nav a:hover {
-  background-color: #00695c;
-  transform: translateX(4px);
-}
+.nav-item .icon { font-size: 1.2rem; }
 
-.dashboard-nav a.active {
-  background-color: #00bfa5;
+.nav-item:hover {
+  background: var(--doc-hover);
   color: white;
 }
 
-/* Logout link styled same as other links */
+.nav-item.active {
+  background: var(--doc-accent);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 191, 165, 0.2);
+}
+
+/* Keep logout red for destructive action standard */
 .btn-logout {
-  margin-top: auto; /* push to bottom */
-  color: #e0f2f1;   /* same as other links */
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: var(--transition);
 }
 
+.btn-logout:hover {
+  background: #ef4444;
+  color: white;
+}
 
-/* Main Content */
-.dashboard-content {
-  margin-left: 240px;         /* offset for sidebar */
-  min-height: 100vh;
-  background: #ffffff;
+/* Main Content Area */
+.dashboard-main {
+  flex: 1;
+  margin-left: var(--nav-width);
   padding: 2rem;
-  border-top-left-radius: 12px;
-  border-bottom-left-radius: 12px;
-  box-shadow: inset 0 0 8px rgba(0,0,0,0.05);
-  animation: fadeSlide 0.4s ease-in-out;
+  min-width: 0;
+  transition: margin-left 0.3s ease;
 }
 
-/* Animation */
-@keyframes fadeSlide {
-  from { opacity: 0; transform: translateY(20px); }
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.header-line {
+  width: 40px;
+  height: 4px;
+  background: var(--doc-accent);
+  border-radius: 2px;
+}
+
+/* --- Responsive Adjustments --- */
+
+/* Tablets - Slim Sidebar */
+@media (max-width: 1024px) {
+  :host { --nav-width: 70px; }
+  .brand-text, .nav-item .label, .btn-logout .label { display: none; }
+  .nav-brand { justify-content: center; padding-left: 0; padding-right: 0; }
+  .nav-item { justify-content: center; padding: 12px; }
+  .btn-logout { justify-content: center; }
+  .dashboard-main { padding: 1.5rem; }
+}
+
+/* Mobile - Bottom Navigation */
+@media (max-width: 640px) {
+  .dashboard-nav {
+    width: 100%;
+    height: 65px;
+    bottom: 0;
+    top: auto;
+    flex-direction: row;
+    padding: 0 1rem;
+    align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .nav-brand, .btn-logout { display: none; } /* Simplified for tiny screens */
+
+  .nav-links {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    gap: 0;
+  }
+
+  .nav-item {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.7rem;
+    padding: 8px;
+    text-align: center;
+  }
+
+  .nav-item .icon { font-size: 1.1rem; }
+
+  .dashboard-main {
+    margin-left: 0;
+    margin-bottom: 70px; /* Space for bottom nav */
+    padding: 1rem;
+  }
+
+  .dashboard-header h2 { font-size: 1.25rem; }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .dashboard-nav {
-    position: relative;
-    width: 100%;
-    height: auto;
-    flex-direction: row;
-    justify-content: space-around;
-    padding: 1rem;
-    border-bottom: 2px solid #00bfa5;
-  }
-
-  .nav-brand {
-    display: none;
-  }
-
-  .dashboard-content {
-    margin-left: 0;
-    padding: 1rem;
-  }
-}
+.animate-in { animation: fadeIn 0.4s ease-out forwards; }

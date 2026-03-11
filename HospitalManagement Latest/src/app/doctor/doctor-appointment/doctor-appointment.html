@@ -1,82 +1,181 @@
-<div class="appointment-wrapper">
-  <!-- Appointment Requests -->
-  <h3 class="section-title">Appointment Requests</h3>
-  <div *ngIf="requests.length > 0; else noRequests">
-    <div *ngFor="let appt of requests" class="appointment-card request">
-      <div class="card-header">
-        <strong>{{ appt.patientName }}</strong>
-        <span class="reason">{{ appt.reason }}</span>
-      </div>
-      <div class="card-body">
-        <p><i class="icon-calendar"></i> {{ appt.appointmentDate }} at {{ appt.time }}</p>
-      </div>
-      <div class="card-actions">
-        <button class="btn btn-approve" (click)="approve(appt)">Approve</button>
-        <button class="btn btn-cancel" (click)="cancel(appt)">Cancel</button>
+<div class="appointments-wrapper">
+  <header class="appointments-header animate-in">
+    <div class="header-content">
+      <h3 class="section-title">Schedule Management</h3>
+      <p class="section-desc">Manage patient requests, upcoming visits, and medical history.</p>
+    </div>
+    <div class="header-badge">
+      <span class="pulse-dot"></span> Doctor Portal Active
+    </div>
+  </header>
+
+  <section class="appointment-group animate-in" *ngIf="requests.length > 0; else noRequests">
+    <div class="group-header">
+      <h4 class="sub-title">Appointment Requests</h4>
+      <span class="count-pill">{{ requests.length }}</span>
+    </div>
+    <div class="appointment-grid">
+      <div *ngFor="let appt of requests" class="appointment-card request slide-up">
+        <div class="card-accent"></div>
+        <div class="card-content">
+          <div class="card-top">
+            <div class="doctor-info">
+              <span class="avatar-icon">👤</span>
+              <div>
+                <strong class="doc-name">{{ appt.patientName }}</strong>
+                <span class="specialty">Patient</span>
+              </div>
+            </div>
+            <span class="status-tag requested">Pending</span>
+          </div>
+
+          <div class="card-middle">
+            <div class="detail-row">
+              <span class="icon">📅</span> 
+              <span>{{ appt.appointmentDate  | date:'mediumDate'}} at <b>{{ appt.time }}</b></span>
+            </div>
+            <div class="detail-row">
+              <span class="icon">📝</span> 
+              <span class="reason-text">Reason: {{ appt.reason }}</span>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button type="button" class="btn btn-teal full-width" (click)="approve(appt)">Approve</button>
+            <button type="button" class="btn btn-danger-text" (click)="cancel(appt)">Decline</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
+
+  <section class="appointment-group animate-in" *ngIf="upcoming.length > 0; else noUpcoming">
+    <div class="group-header">
+      <h4 class="sub-title">Upcoming Appointments</h4>
+      <span class="count-pill teal-pill">{{ upcoming.length }}</span>
+    </div>
+    <div class="appointment-grid">
+      <div *ngFor="let appt of upcoming" class="appointment-card upcoming slide-up">
+        <div class="card-accent"></div>
+        <div class="card-content">
+          <div class="card-top">
+            <div class="doctor-info">
+              <span class="avatar-icon">🗓️</span>
+              <div>
+                <strong class="doc-name">{{ appt.patientName }}</strong>
+                <span class="specialty">Patient</span>
+              </div>
+            </div>
+            <span class="status-tag scheduled">{{ appt.status }}</span>
+          </div>
+
+          <div class="card-middle">
+            <div class="detail-row">
+              <span class="icon">📅</span> 
+              <span>{{ appt.appointmentDate | date:'mediumDate'}} at <b>{{ appt.time }}</b></span>
+            </div>
+            <div class="detail-row" *ngIf="appt.reason">
+              <span class="icon">📝</span> 
+              <span class="reason-text">Reason: {{ appt.reason }}</span>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <button type="button" class="btn btn-outline full-width" (click)="complete(appt)">
+              ✅ Mark Completed
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="appointment-group animate-in" *ngIf="past.length > 0; else noPast">
+    <div class="group-header">
+      <h4 class="sub-title">Completed Appointments</h4>
+      <span class="count-pill">{{ past.length }}</span>
+    </div>
+    <div class="appointment-grid">
+      <div *ngFor="let appt of past" class="appointment-card past slide-up">
+        <div class="card-content">
+          <div class="card-top">
+            <strong class="doc-name">{{ appt.patientName }}</strong>
+            <span class="status-tag completed">Done</span>
+          </div>
+          <div class="card-middle">
+            <p class="history-date">{{ appt.appointmentDate | date:'mediumDate'}} at {{ appt.time }}</p>
+            <div class="diagnosis-summary" *ngIf="appt.reason">
+              <small>VISIT REASON</small>
+              <p>{{ appt.reason }}</p>
+            </div>
+          </div>
+          <div class="card-actions" *ngIf="appt.notes">
+            <button type="button" class="btn btn-teal full-width" (click)="viewNotes(appt, $event)">
+              <span>📄</span> View Notes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="appointment-group animate-in" *ngIf="cancelled.length > 0; else noCancelled">
+    <div class="group-header">
+      <h4 class="sub-title">Cancelled Appointments</h4>
+      <span class="count-pill" style="background-color: #fee2e2; color: #ef4444;">{{ cancelled.length }}</span>
+    </div>
+    <div class="appointment-grid">
+      <div *ngFor="let appt of cancelled" class="appointment-card cancelled slide-up">
+        <div class="card-accent" style="background-color: var(--danger);"></div>
+        <div class="card-content">
+          <div class="card-top">
+            <div class="doctor-info">
+              <span class="avatar-icon">❌</span>
+              <div>
+                <strong class="doc-name">{{ appt.patientName }}</strong>
+                <span class="specialty">Patient</span>
+              </div>
+            </div>
+            <span class="status-tag cancelled" style="color: var(--danger); background: #fef2f2;">Cancelled</span>
+          </div>
+          <div class="card-middle">
+            <div class="detail-row">
+              <span class="icon">📅</span> 
+              <span style="text-decoration: line-through; color: var(--slate-400);">
+                {{ appt.appointmentDate  | date:'mediumDate'}} at {{ appt.time }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <ng-template #noRequests>
-    <p class="empty">No pending requests.</p>
+    <div class="empty-state animate-in">
+      <div class="empty-icon">📂</div>
+      <p>No pending appointment requests.</p>
+    </div>
   </ng-template>
 
-
-  <!-- Upcoming Appointments -->
-  <h3 class="section-title">Upcoming Appointments</h3>
-  <div *ngIf="upcoming.length > 0; else noUpcoming">
-    <div *ngFor="let appt of upcoming" class="appointment-card upcoming">
-      <div class="card-header">
-        <strong>{{ appt.patientName }}</strong>
-        <span class="reason">{{ appt.reason }}</span>
-      </div>
-      <div class="card-body">
-        <p><i class="icon-calendar"></i> {{ appt.appointmentDate }} at {{ appt.time }}</p>
-        <p class="status">Status: {{ appt.status }}</p>
-      </div>
-      <div class="card-actions">
-        <button class="btn btn-complete" (click)="complete(appt)">Mark Completed</button>
-      </div>
-
-    </div>
-  </div>
   <ng-template #noUpcoming>
-    <p class="empty">No upcoming appointments.</p>
+    <div class="empty-state animate-in">
+      <div class="empty-icon">🗓️</div>
+      <p>No upcoming appointments scheduled.</p>
+    </div>
   </ng-template>
 
-  <!-- Completed Appointments -->
-  <h3 class="section-title">Completed Appointments</h3>
-  <div *ngIf="past.length > 0; else noPast">
-    <div *ngFor="let appt of past" class="appointment-card past">
-      <div class="card-header">
-        <strong>{{ appt.patientName }}</strong>
-        <span class="reason">{{ appt.reason }}</span>
-      </div>
-      <div class="card-body">
-  <p><i class="icon-calendar"></i> {{ appt.appointmentDate }} at {{ appt.time }}</p>
-  <p class="status">Status: {{ appt.status }}</p>
-  
-  <a *ngIf="appt.notes" href="#" (click)="viewNotes(appt, $event)">View Notes</a>
-</div>
-    </div>
-  </div>
   <ng-template #noPast>
-    <p class="empty">No completed appointments.</p>
+    <div class="empty-state animate-in">
+      <div class="empty-icon">📜</div>
+      <p>No completed appointments yet.</p>
+    </div>
   </ng-template>
 
-  <!-- Cancelled Appointments -->
-  <h3 class="section-title">Cancelled Appointments</h3>
-  <div *ngIf="cancelled.length > 0; else noCancelled">
-    <div *ngFor="let appt of cancelled" class="appointment-card cancelled">
-      <div class="card-header">
-        <strong>{{ appt.patientName }}</strong>
-        <span class="reason">{{ appt.reason }}</span>
-      </div>
-      <div class="card-body">
-        <p><i class="icon-calendar"></i> {{ appt.appointmentDate }} at {{ appt.time }}</p>
-        <p class="status">Status: {{ appt.status }}</p>
-      </div>
-    </div>
-  </div>
   <ng-template #noCancelled>
-    <p class="empty">No cancelled appointments.</p>
+    <div class="empty-state animate-in">
+      <div class="empty-icon">✅</div>
+      <p>No cancelled appointments.</p>
+    </div>
   </ng-template>
+</div>
