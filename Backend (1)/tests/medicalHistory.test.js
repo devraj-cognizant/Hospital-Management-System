@@ -28,8 +28,8 @@ describe('Medical History Model Validation Tests', () => {
             patientID: "PAT-001",
             patientName: "Devraj Sharma",
             diagnosis: "Fever",
-            treatment: "Rest and hydration", // ✅ ADDED THIS
-            dateOfVisit: new Date(),         // ✅ ADDED THIS (Often required)
+            treatment: "Rest and hydration", 
+            dateOfVisit: new Date(),         
             doctorID: "DOC-101",
             doctorName: "Dr. Smith",
             appointmentID: "APT-999"
@@ -38,7 +38,7 @@ describe('Medical History Model Validation Tests', () => {
         // 2. Act
         const error = goodHistory.validateSync();
 
-        // 🚀 DEBUG TRICK: If it still fails, this will tell you EXACTLY which field is missing!
+        //  DEBUG TRICK: If it still fails, this will tell you EXACTLY which field is missing!
         if (error) {
             console.log("Mongoose is complaining about:", Object.keys(error.errors));
         }

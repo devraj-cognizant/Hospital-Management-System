@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-/* -------------------- Availability Schema -------------------- */
+/*  Availability Schema  */
 const AvailabilitySchema = new mongoose.Schema(
   {
     available: [{ type: String }], // list of available time slots
@@ -9,7 +9,7 @@ const AvailabilitySchema = new mongoose.Schema(
   { _id: false } // prevent automatic _id for subdocuments
 );
 
-/* -------------------- Doctor Schema -------------------- */
+/*  Doctor Schema  */
 const doctorSchema = new mongoose.Schema(
   {
     id: {

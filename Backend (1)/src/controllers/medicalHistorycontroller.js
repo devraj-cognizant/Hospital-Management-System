@@ -2,25 +2,24 @@ const MedicalHistory = require("../models/medicalHistory");
 const Patient = require("../models/patient");
 const Appointment = require("../models/appointment");
 
-// 1️⃣ The Add History Function
-// 1️⃣ The Add History Function
+// The Add History Function
 async function addMedicalHistory(req, res) {
     try {
         const { doctorID } = req.params;
         const { appointmentID, diagnosis, treatment, notes, doctorName } = req.body;
 
-        // 🔍 STEP 1: Look up the appointment to safely get the Patient ID and Name
+        // Look up the appointment to safely get the Patient ID and Name
         const appointment = await Appointment.findOne({ appointmentID: appointmentID });
         
         if (!appointment) {
             return res.status(404).json({ message: "Could not find the matching appointment." });
         }
 
-        // 📝 STEP 2: Create new history record using the data we found
+        // Create new history record using the data we found
         const newHistory = new MedicalHistory({
             historyID: "MH" + Date.now(),
-            patientID: appointment.patientID,       // ✅ Pulled securely from DB
-            patientName: appointment.patientName,   // ✅ Pulled securely from DB
+            patientID: appointment.patientID,       // Pulled securely from DB
+            patientName: appointment.patientName,   // Pulled securely from DB
             diagnosis: diagnosis,
             treatment: treatment,
             dateOfVisit: new Date(),
@@ -32,7 +31,7 @@ async function addMedicalHistory(req, res) {
 
         await newHistory.save();
 
-        // 🔄 STEP 3: Update the Appointment status to 'Completed'
+        // Update the Appointment status to 'Completed'
         await Appointment.findOneAndUpdate(
             { appointmentID: appointmentID },
             { status: 'Completed' }
@@ -45,7 +44,7 @@ async function addMedicalHistory(req, res) {
     }
 }
 
-// 2️⃣ The Get History Function
+// The Get History Function
 async function getDoctorHistory(req, res) {
     try {
         const { doctorID } = req.params;
@@ -106,7 +105,7 @@ const getPatientMedicalHistory = async (req, res) => {
 
 
 
-// 3️⃣ The Age Helper Function
+// The Age Helper Function
 function calculateAge(dob) {
     if (!dob) return "N/A";
     const birthDate = new Date(dob);
@@ -122,5 +121,5 @@ function calculateAge(dob) {
     return age;
 }
 
-// ✅ EXPORT BOTH FUNCTIONS
+// EXPORT BOTH FUNCTIONS
 module.exports = { addMedicalHistory, getDoctorHistory, getPatientMedicalHistory };

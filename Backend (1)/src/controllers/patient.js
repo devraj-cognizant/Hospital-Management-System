@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs");
 const { setUser } = require("../services/auth");
 const { v4: uuidv4 } = require("uuid");
 
-/* -------------------- Register Patient -------------------- */
+/*  Register Patient  */
 async function handlePatientRegister(req, res) {
     try {
         const body = req.body;
@@ -34,7 +34,7 @@ async function handlePatientRegister(req, res) {
     }
 }
 
-/* -------------------- Login Patient -------------------- */
+/*  Login Patient  */
 async function handlePatientLogin(req, res) {
     try {
         const { email, password } = req.body;
@@ -104,7 +104,7 @@ async function handleGetProfile(req, res) {
     }
 }
 
-/* -------------------- Update Patient Profile -------------------- */
+/*  Update Patient Profile  */
 async function handleUpdatePatientProfile(req, res) {
     try {
         const { email } = req.params;
@@ -129,7 +129,7 @@ async function handleUpdatePatientProfile(req, res) {
     }
 }
 
-/* -------------------- Book Appointment -------------------- */
+/*  Book Appointment  */
 async function bookAppointment(req, res) {
     try {
         const { doctorID, patientID, appointmentDate, time, reason } = req.body;
@@ -173,7 +173,7 @@ async function bookAppointment(req, res) {
     }
 }
 
-/* -------------------- Reschedule Appointment -------------------- */
+/*  Reschedule Appointment  */
 async function rescheduleAppointment(req, res) {
   try {
     const { appointmentID } = req.params;
@@ -184,7 +184,7 @@ async function rescheduleAppointment(req, res) {
       return res.status(404).json({ message: "Appointment not found" });
     }
 
-    // ✅ Only allow rescheduling if still a request
+    // Only allow rescheduling if still a request
     if (!["Requested", "Pending"].includes(appointment.status)) {
       return res.status(400).json({
         message: "Only requested appointments can be rescheduled before approval."
@@ -198,13 +198,13 @@ async function rescheduleAppointment(req, res) {
 
     const normalizedNewDate = new Date(newDate).toISOString().split("T")[0];
 
-    // ✅ Check if slot is available (doctor’s availability)
+    //Check if slot is available (doctor’s availability)
     const newDayAvailability = doctor.availability[normalizedNewDate] || { available: [], blocked: [] };
     if (!newDayAvailability.available.includes(newTime)) {
       return res.status(400).json({ message: `The new time slot ${newTime} on ${normalizedNewDate} is not available.` });
     }
 
-    // ✅ Just update appointment request (no availability changes yet)
+    // Just update appointment request (no availability changes yet)
     appointment.appointmentDate = new Date(newDate);
     appointment.time = newTime;
     appointment.status = "Requested"; // stays requested
@@ -221,7 +221,7 @@ async function rescheduleAppointment(req, res) {
 }
 
 
-/* -------------------- Logout Patient -------------------- */
+/*  Logout Patient  */
 async function handlePatientLogout(req, res) {
     try {
         // Grab the token from the cookie OR the header

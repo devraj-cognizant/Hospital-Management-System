@@ -25,9 +25,9 @@ const { restrictToLoggedInUserOnly, restrictToRoles } = require("../middlewares/
 
 const router = express.Router();
 
-// --------------------------------------------------
+
 // PUBLIC ROUTES (Accessible by Patients & Guests)
-// --------------------------------------------------
+
 router.post("/register", handleDoctorRegister);
 router.post("/login", handleDoctorLogin);
 
@@ -37,16 +37,14 @@ router.get("/all", getAllDoctors);
 // Patients need to see availability to pick a time slot
 router.get("/:doctorID/availability", getDoctorAvailability);
 
-// --------------------------------------------------
-// 🛑 MIDDLEWARE BARRIER
+
+// MIDDLEWARE BARRIER
 // Everything below this line requires a valid login AND the 'DOCTOR' role
-// --------------------------------------------------
+
 router.use(restrictToLoggedInUserOnly);
 router.use(restrictToRoles(["DOCTOR"]));
 
-// --------------------------------------------------
 // PROTECTED DOCTOR ROUTES
-// --------------------------------------------------
 // Availability (Doctors updating their own schedule)
 router.put("/:doctorID/availability", updateDoctorAvailability);
 router.patch("/:doctorID/availability", patchDoctorAvailability);

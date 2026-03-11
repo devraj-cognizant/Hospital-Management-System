@@ -1,7 +1,7 @@
 const Doctor = require("../models/doctor");
 const Appointment = require("../models/appointment");
 
-/* -------------------- Get Doctor Appointments -------------------- */
+/*  Get Doctor Appointments  */
 async function getDoctorAppointments(req, res) {
     try {
         const { doctorID } = req.params;
@@ -17,8 +17,8 @@ async function getDoctorAppointments(req, res) {
     }
 }
 
-/* -------------------- Accept Appointment -------------------- */
-/* -------------------- Accept Appointment -------------------- */
+/*  Accept Appointment  */
+/*  Accept Appointment  */
 async function acceptAppointment(req, res) {
   try {
     const { appointmentID } = req.body;
@@ -39,7 +39,7 @@ async function acceptAppointment(req, res) {
     // Access availability
     const dayAvailability = doctor.availability[date] || { available: [], blocked: [] };
 
-    // ✅ First check if slot is available
+    // First check if slot is available
     if (!dayAvailability.available.includes(time)) {
       return res.status(409).json({ message: "Slot not available or already booked" });
     }

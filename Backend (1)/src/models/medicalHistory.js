@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const MedicalHistorySchema = new mongoose.Schema({
   historyID: { type: String, required: true, unique: true },
-  // ✅ ADD THESE TWO FIELDS
+  // ADD THESE TWO FIELDS
   patientID: { type: String, required: true }, 
   patientName: { type: String, required: true },
   

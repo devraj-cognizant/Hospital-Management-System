@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const { setUser } = require("../services/auth");
 const { handlePatientLogout } = require("./patient");
 
-/* -------------------- Register Doctor -------------------- */
+/*Register Doctor*/
 async function handleDoctorRegister(req, res) {
     try {
         const { id, name, specialization, email, password } = req.body;
@@ -34,8 +34,8 @@ async function handleDoctorRegister(req, res) {
     }
 }
 
-/* -------------------- Login Doctor -------------------- */
-/* -------------------- Login Doctor -------------------- */
+/*  Login Doctor  */
+/*  Login Doctor  */
 async function handleDoctorLogin(req, res) {
     try {
         const { email, password } = req.body;
@@ -50,25 +50,24 @@ async function handleDoctorLogin(req, res) {
             return res.status(401).json({ message: "Invalid email or password. Please try again." });
         }
 
-        // 1. Create a payload that includes the role!
+        //  Create a payload that includes the role!
         const payload = {
             id: doctor.id,
             email: doctor.email,
             role: "DOCTOR" 
         };
 
-        // 2. Generate token
+        //  Generate token
         const token = setUser(payload);
 
-        // 3. Set the Secure HttpOnly Cookie
+        //  Set the Secure HttpOnly Cookie
         res.cookie("uid", token, {
-            httpOnly: true,  // 🛡️ Completely hides the cookie from JavaScript / Hackers
-            secure: false,   // ⚠️ Set to true in Production when you have HTTPS
+            httpOnly: true,  // Completely hides the cookie from JavaScript 
+            secure: false,   // Set to true in Production when you have HTTPS
             sameSite: "lax", // Prevents CSRF attacks
             maxAge: 24 * 60 * 60 * 1000 // Expires in 24 hours
         });
 
-        // 🚀 THE FIX: You accidentally deleted this block! 
         // Without this, Angular waits forever and nothing happens.
         return res.status(200).json({
             message: "Login successful",
@@ -82,7 +81,7 @@ async function handleDoctorLogin(req, res) {
     }
 }
 
-/* -------------------- Replace Availability (PUT) -------------------- */
+/*  Replace Availability (PUT)  */
 async function updateDoctorAvailability(req, res) {
     try {
         const { doctorID } = req.params;
@@ -107,7 +106,7 @@ async function updateDoctorAvailability(req, res) {
     }
 }
 
-/* -------------------- Partial Update Availability (PATCH) -------------------- */
+/*  Partial Update Availability (PATCH)  */
 async function patchDoctorAvailability(req, res) {
     try {
         const { doctorID } = req.params;
@@ -153,7 +152,7 @@ async function getDoctorAvailability(req, res) {
     }
 }
 
-/* -------------------- Logout Doctor -------------------- */
+/*  Logout Doctor  */
 async function handleDoctorLogout(req, res) {
     // Clear the doctor's cookie
     res.clearCookie("uid", {
