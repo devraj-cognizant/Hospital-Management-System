@@ -1,199 +1,191 @@
-/* Wrapper */
-.auth-wrapper {
-  max-width: 500px;
-  margin: 3rem auto;
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 2rem;
-  box-shadow: 0 8px 24px rgba(0, 77, 64, 0.15);
-  animation: fadeIn 0.6s ease-in-out;
+:host {
+  --primary-teal: #00bfa5;
+  --dark-teal: #004d40;
+  --light-teal: #e0f2f1;
+  --text-dark: #0f172a;
+  --text-gray: #64748b;
+  --error: #ef4444;
 }
 
-/* Back Button */
-.back-btn {
-  background: none;
-  border: none;
-  color: #004d40;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-bottom: 1rem;
-  transition: color 0.3s ease;
-}
-
-.back-btn:hover {
-  color: #00695c;
-}
-
-/* Tabs */
-.tabs {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 1.5rem;
-}
-
-.tabs span {
-  cursor: pointer;
-  font-weight: 600;
-  color: #555;
-  padding-bottom: 4px;
-  transition: color 0.3s ease, border-bottom 0.3s ease;
-}
-
-.tabs span.active {
-  color: #004d40;
-  border-bottom: 3px solid #004d40;
-}
-
-.tabs span:hover {
-  color: #00695c;
-}
-
-/* Form Section */
-.form-section {
-  animation: slideUp 0.5s ease;
-}
-
-.form-section h3 {
-  text-align: center;
-  color: #004d40;
-  margin-bottom: 1.5rem;
-}
-
-/* Inputs */
-input, select {
-  width: 100%;
-  padding: 0.8rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-input:focus, select:focus {
-  border-color: #004d40;
-  box-shadow: 0 0 6px rgba(0, 77, 64, 0.3);
-  outline: none;
-}
-
-/* Buttons */
-.btn {
-  width: 100%;
-  background-color: #004d40;
-  color: white;
-  border: none;
-  padding: 0.8rem;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn:hover {
-  background-color: #00695c;
-  transform: translateY(-2px);
-}
-
-/* Register Prompt */
-.register-prompt {
-  text-align: center;
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.register-prompt a {
-  color: #004d40;
-  font-weight: 600;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.register-prompt a:hover {
-  color: #00695c;
-}
-.error { color: #d32f2f; /* bright red */ font-size: 0.85rem; /* slightly smaller than input text */ font-weight: 500; /* semi-bold for emphasis */ margin-top: 4px; display: block; /* ensures it sits on its own line */ }
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-/* Full-page background */
-
-/* Full-page layout */
-.register-page {
-  height: 100vh;
-  width: 100%;
-  background: linear-gradient(135deg, #004d40, #00695c);
+/* --- Full Page Background --- */
+.auth-page-container {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  background: radial-gradient(circle at center, var(--light-teal), #ffffff);
   padding: 2rem;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* Form wrapper */
-.register-wrapper {
+/* --- Central Card --- */
+.auth-card {
   background: #ffffff;
-  padding: 2.5rem;
-  border-radius: 12px;
-  max-width: 500px;
   width: 100%;
-  box-shadow: 0 8px 24px rgba(0, 77, 64, 0.25);
-  animation: fadeIn 0.6s ease-in-out;
+  max-width: 650px; /* Wider for the grid layout */
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 20px 50px -12px rgba(0, 77, 64, 0.15);
+  border: 1px solid rgba(0,0,0,0.05);
 }
 
-/* Heading */
-.register-wrapper h2 {
+/* --- Top Bar & Tabs --- */
+.auth-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.btn-back-minimal {
+  background: transparent;
+  border: none;
+  color: var(--text-gray);
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.btn-back-minimal:hover { color: var(--primary-teal); }
+
+.auth-tabs {
+  background: var(--bg-soft);
+  padding: 4px;
+  border-radius: 12px;
+  display: flex;
+  border: 1px solid #e2e8f0;
+}
+
+.auth-tabs button {
+  padding: 8px 20px;
+  border: none;
+  background: transparent;
+  border-radius: 8px;
+  font-weight: 700;
+  color: var(--text-gray);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.auth-tabs button.active {
+  background: white;
+  color: var(--dark-teal);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* --- Form Headers --- */
+.auth-header {
   text-align: center;
-  color: #004d40;
   margin-bottom: 2rem;
 }
 
-/* Inputs and selects */
-input, select {
-  width: 100%;
-  padding: 0.9rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+.auth-header h3 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--dark-teal);
+  margin: 0;
+}
+
+.auth-header p {
+  color: var(--text-gray);
+  margin-top: 5px;
   font-size: 0.95rem;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* --- Modern Form Layout --- */
+.modern-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.full-width { grid-column: span 2; }
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+input, select {
+  padding: 0.8rem 1rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  background: #fdfdfd;
 }
 
 input:focus, select:focus {
-  border-color: #004d40;
-  box-shadow: 0 0 6px rgba(0, 77, 64, 0.3);
+  border-color: var(--primary-teal);
+  background: white;
   outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 191, 165, 0.1);
 }
 
-/* Button */
-.btn {
-  width: 100%;
-  background-color: #004d40;
+/* --- Submission --- */
+.btn-submit {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--dark-teal);
   color: white;
   border: none;
-  padding: 0.9rem;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s;
 }
 
-.btn:hover {
-  background-color: #00695c;
+.btn-submit:hover:not(:disabled) {
+  background: var(--primary-teal);
   transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 191, 165, 0.2);
 }
 
-/* Animation */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error-msg {
+  color: var(--error);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.8rem;
+  color: var(--text-gray);
+  opacity: 0.7;
+}
+
+/* Animations */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up { animation: slideUp 0.4s ease-out forwards; }
+
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .full-width { grid-column: span 1; }
+  .auth-card { padding: 1.5rem; }
 }

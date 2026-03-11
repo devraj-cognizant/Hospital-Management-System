@@ -1,32 +1,53 @@
-<div class="login-screen">
-  <div class="doctor-login-wrapper">
-    <div class="buttons back-btn">
-      <button type="button" class="btn btn-secondary" (click)="goBack()">⬅ Back</button>
+<div class="auth-page-container">
+  <div class="auth-card animate-fade-in">
+    
+    <div class="auth-top-bar">
+      <button class="btn-back-minimal" (click)="goBack()">
+        <span>←</span> Portal Selection
+      </button>
+      <div class="security-badge">
+        <span class="lock-icon">🔒</span> Secure Access
+      </div>
     </div>
 
-    <h2 class="portal-title">Doctor Portal</h2>
-    <p class="portal-sub">
-      Welcome Doctor 👨‍⚕️<br />Login to manage your appointments and patients.
-    </p>
-
-    <form (ngSubmit)="login()" class="login-form">
-      <div class="form-item">
-        <label for="email">Email</label>
-        <input id="email" type="email" [(ngModel)]="email" name="email" required />
+    <div class="auth-section animate-slide-up">
+      <div class="auth-header">
+        <div class="icon-circle">👨‍⚕️</div>
+        <h3>Doctor Login</h3>
+        <p>Please enter your clinical credentials to access the secure dashboard.</p>
       </div>
 
-      <div class="form-item">
-        <label for="password">Password</label>
-        <input id="password" type="password" [(ngModel)]="password" name="password" required />
-      </div>
+      <form (ngSubmit)="login()" class="modern-form">
+        <div class="input-group">
+          <label>Clinical Email</label>
+          <input 
+            type="email" 
+            [(ngModel)]="email" 
+            name="email" 
+            placeholder="dr.name@medicare.com" 
+            required 
+          />
+        </div>
 
-      <!-- <div class="form-footer">
-        <a href="#" class="forgot-link">Forgot Password?</a>
-      </div> -->
+        <div class="input-group">
+          <label>Password</label>
+          <input 
+            type="password" 
+            [(ngModel)]="password" 
+            name="password" 
+            placeholder="••••••••" 
+            required 
+          />
+        </div>
 
-      <div class="buttons">
-        <button type="submit" class="btn">Login</button>
-      </div>
-    </form>
+        <button class="btn-submit" type="submit">
+          Authorize & Sign In
+        </button>
+      </form>
+    </div>
+
+    <div class="auth-footer-note">
+      <p>Authorized personnel only. All access is monitored and logged.</p>
+    </div>
   </div>
 </div>

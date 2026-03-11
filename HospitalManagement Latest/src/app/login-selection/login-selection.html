@@ -1,34 +1,53 @@
-<button class="btn secondary" routerLink="/home">← Back to Home</button>
+<div class="auth-selection-wrapper">
+  <nav class="auth-nav animate-in">
+    <button class="btn-back-modern" routerLink="/home">
+      <span class="icon">←</span> Back to Home
+    </button>
+    <div class="system-status">
+      <span class="status-dot"></span> System Online
+    </div>
+  </nav>
 
-<h2>Welcome to MediCare Hospital</h2>
-<p class="intro">Please select your login type to continue</p>
-
-<div class="portal-container">
-  <!-- Patient Portal -->
-  <div class="portal">
-    <h3>👤 Patient Portal</h3>
-    <p>Book appointments, manage your medical records, and track your health journey</p>
-    <ul>
-      <li>✓ Schedule & manage appointments</li>
-      <li>✓ Access medical history</li>
-      <li>✓ Update personal information</li>
-      <li>✓ Book for family members</li>
-    </ul>
-    <!-- ✅ Navigate directly to patient auth -->
-    <a class="btn primary" routerLink="/patient/auth">Login as Patient</a>
+  <div class="hero-text-section animate-in">
+    <h2 class="elite-title">Your <span class="highlight-teal">Health Journey</span> Starts Here</h2>
+    <p class="elite-subtitle">Select the portal below to access your specialized clinical workspace.</p>
   </div>
 
-  <!-- Doctor Portal -->
-  <div class="portal">
-    <h3>👨‍⚕️ Doctor Portal</h3>
-    <p>Manage your schedule, view patient information, and handle appointment requests</p>
-    <ul>
-      <li>✓ Manage availability & schedule</li>
-      <li>✓ View & confirm appointments</li>
-      <li>✓ Access patient records</li>
-      <li>✓ Search & filter patients</li>
-    </ul>
-    <!-- ✅ Navigate directly to doctor login -->
-    <a class="btn primary" routerLink="/doctor/login">Login as Doctor</a>
+  <div class="elite-portal-grid">
+    
+    <div class="elite-card animate-slide-up" style="--delay: 0.1s">
+      <div class="card-badge">Patient Access</div>
+      <div class="elite-icon-container">
+        <div class="icon-circle">👤</div>
+      </div>
+      <div class="card-info">
+        <h3>Patient Portal</h3>
+        <p>Manage your appointments, secure medical records, and family health tracking.</p>
+        <div class="feature-tags">
+          <span>📅 Appointments</span>
+          <span>📋 History</span>
+          <span>🛡️ Privacy</span>
+        </div>
+      </div>
+      <a class="btn-elite btn-emerald" routerLink="/patient/auth">Login to Patient Portal</a>
+    </div>
+
+    <div class="elite-card animate-slide-up" style="--delay: 0.2s">
+      <div class="card-badge">Clinical Access</div>
+      <div class="elite-icon-container">
+        <div class="icon-circle">👨‍⚕️</div>
+      </div>
+      <div class="card-info">
+        <h3>Doctor Portal</h3>
+        <p>Access patient diagnostics, manage your availability, and clinical requests.</p>
+        <div class="feature-tags">
+          <span>📊 Analytics</span>
+          <span>🏥 Dashboard</span>
+          <span>✔️ Confirmations</span>
+        </div>
+      </div>
+      <a class="btn-elite btn-teal-dark" routerLink="/doctor/login">Login to Doctor Portal</a>
+    </div>
+
   </div>
 </div>
