@@ -9,45 +9,34 @@
   </nav>
 
   <div class="hero-text-section animate-in">
-    <h2 class="elite-title">Your <span class="highlight-teal">Health Journey</span> Starts Here</h2>
-    <p class="elite-subtitle">Select the portal below to access your specialized clinical workspace.</p>
+    <h2 class="elite-title">Welcome to <span class="highlight-teal">MediCare</span></h2>
+    <p class="elite-subtitle">Enter your credentials to access your clinical workspace.</p>
   </div>
 
   <div class="elite-portal-grid">
-    
-    <div class="elite-card animate-slide-up" style="--delay: 0.1s">
-      <div class="card-badge">Patient Access</div>
-      <div class="elite-icon-container">
-        <div class="icon-circle">👤</div>
-      </div>
-      <div class="card-info">
-        <h3>Patient Portal</h3>
-        <p>Manage your appointments, secure medical records, and family health tracking.</p>
-        <div class="feature-tags">
-          <span>📅 Appointments</span>
-          <span>📋 History</span>
-          <span>🛡️ Privacy</span>
+    <div class="elite-card login-card animate-slide-up" style="--delay: 0.1s">
+      <div class="card-badge">Secure Portal</div>
+      
+      <form class="unified-form" (ngSubmit)="login()">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="Enter your email" required>
         </div>
-      </div>
-      <a class="btn-elite btn-emerald" routerLink="/patient/auth">Login to Patient Portal</a>
-    </div>
 
-    <div class="elite-card animate-slide-up" style="--delay: 0.2s">
-      <div class="card-badge">Clinical Access</div>
-      <div class="elite-icon-container">
-        <div class="icon-circle">👨‍⚕️</div>
-      </div>
-      <div class="card-info">
-        <h3>Doctor Portal</h3>
-        <p>Access patient diagnostics, manage your availability, and clinical requests.</p>
-        <div class="feature-tags">
-          <span>📊 Analytics</span>
-          <span>🏥 Dashboard</span>
-          <span>✔️ Confirmations</span>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Enter your password" required>
         </div>
-      </div>
-      <a class="btn-elite btn-teal-dark" routerLink="/doctor/login">Login to Doctor Portal</a>
-    </div>
 
+        <button type="submit" class="btn-elite btn-emerald login-submit" [disabled]="isLoading">
+          {{ isLoading ? 'Authenticating...' : 'Secure Login' }}
+        </button>
+      </form>
+
+      <div class="registration-prompt">
+        <p>Are you a new patient?</p>
+        <a routerLink="/patient/auth" class="register-link">Register for a Patient Account</a>
+      </div>
+    </div>
   </div>
 </div>

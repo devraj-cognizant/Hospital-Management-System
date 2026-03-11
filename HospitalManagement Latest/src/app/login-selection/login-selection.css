@@ -58,7 +58,7 @@
 /* --- Hero Text --- */
 .hero-text-section {
   text-align: center;
-  margin: 4rem 0;
+  margin: 3rem 0;
 }
 
 .elite-title {
@@ -76,34 +76,22 @@
   margin-top: 10px;
 }
 
-/* --- Elite Cards --- */
+/* --- Login Card & Form --- */
 .elite-portal-grid {
   display: flex;
   justify-content: center;
-  gap: 3rem;
   padding: 0 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
 }
 
-.elite-card {
+.login-card {
   position: relative;
   background: var(--white);
   border-radius: 28px;
   padding: 4rem 3rem 3rem;
-  flex: 1;
-  max-width: 440px;
+  width: 100%;
+  max-width: 500px;
   border: 1px solid rgba(0,0,0,0.04);
-  box-shadow: 0 10px 40px -10px rgba(0, 77, 64, 0.08);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  flex-direction: column;
-}
-
-.elite-card:hover {
-  transform: translateY(-15px);
-  box-shadow: 0 30px 60px -12px rgba(0, 77, 64, 0.15);
-  border-color: var(--primary-teal);
+  box-shadow: 0 20px 40px -10px rgba(0, 77, 64, 0.15);
 }
 
 .card-badge {
@@ -120,85 +108,104 @@
   letter-spacing: 0.5px;
 }
 
-.elite-icon-container {
-  width: 80px; height: 80px;
-  background: linear-gradient(135deg, var(--light-teal), #ffffff);
-  border-radius: 20px;
+.unified-form {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 2.25rem;
-  margin-bottom: 2rem;
-  border: 1px solid var(--light-teal);
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1rem;
 }
 
-.card-info h3 {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--dark-teal);
-  margin-bottom: 1rem;
-}
-
-.card-info p {
-  color: var(--text-gray);
-  line-height: 1.6;
-  margin-bottom: 2rem;
-}
-
-/* --- Tags --- */
-.feature-tags {
+.form-group {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 3rem;
+  flex-direction: column;
+  text-align: left;
 }
 
-.feature-tags span {
-  background: var(--bg-slate);
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 0.85rem;
+.form-group label {
   font-weight: 600;
   color: var(--dark-teal);
-  border: 1px solid #e2e8f0;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
 }
 
-/* --- Buttons --- */
+.form-group input {
+  padding: 1rem 1.25rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s;
+  background-color: #f8fafc;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-teal);
+  box-shadow: 0 0 0 3px rgba(0, 191, 165, 0.15);
+  background-color: var(--white);
+}
+
 .btn-elite {
-  margin-top: auto;
+  margin-top: 1rem;
   padding: 1.1rem;
   border-radius: 14px;
   text-align: center;
   font-weight: 700;
-  font-size: 1rem;
-  text-decoration: none;
+  font-size: 1.05rem;
+  cursor: pointer;
+  border: none;
   transition: all 0.3s;
+  width: 100%;
 }
 
 .btn-emerald {
-  background: var(--primary-teal);
-  color: white;
-}
-
-.btn-teal-dark {
   background: var(--dark-teal);
   color: white;
 }
 
-.btn-elite:hover {
-  transform: scale(1.02);
-  filter: brightness(1.1);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+.btn-emerald:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: var(--primary-teal);
+  box-shadow: 0 10px 20px rgba(0, 191, 165, 0.2);
 }
 
-/* --- Responsive --- */
-@media (max-width: 900px) {
-  .elite-portal-grid { flex-direction: column; align-items: center; }
-  .elite-card { width: 100%; max-width: 480px; }
-  .auth-nav { padding: 1.5rem 2rem; }
+.btn-emerald:disabled {
+  opacity: 0.7;
+  cursor: wait;
 }
 
-/* --- Animations --- */
+/* --- Registration Prompt --- */
+.registration-prompt {
+  margin-top: 2.5rem;
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.registration-prompt p {
+  color: var(--text-gray);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.register-link {
+  color: var(--primary-teal);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.register-link:hover {
+  color: var(--dark-teal);
+  text-decoration: underline;
+}
+
+/* --- Responsive & Animations --- */
+@media (max-width: 600px) {
+  .login-card { padding: 3rem 2rem 2rem; }
+  .auth-nav { padding: 1.5rem 1rem; }
+}
+
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
