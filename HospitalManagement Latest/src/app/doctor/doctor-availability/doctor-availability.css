@@ -11,7 +11,7 @@
   --radius-lg: 16px;
 }
 
-/* --- Animations --- */
+/*  Animations  */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
@@ -21,7 +21,7 @@
   animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* --- Layout --- */
+/*  Layout  */
 .appointment-wrapper {
   max-width: 850px; 
   margin: 3rem auto;
@@ -40,7 +40,7 @@
   gap: 2.5rem;
 }
 
-/* --- Typography --- */
+/*  Typography  */
 .appointment-header { margin-bottom: 1rem; }
 
 .section-title {
@@ -65,7 +65,7 @@
   font-size: 1.05rem;
 }
 
-/* --- Date Picker --- */
+/*  Date Picker  */
 .modern-input {
   width: 100%;
   max-width: 300px;
@@ -86,7 +86,7 @@
   box-shadow: 0 0 0 4px rgba(0, 191, 165, 0.15);
 }
 
-/* --- Quick Action Chips --- */
+/*  Quick Action Chips  */
 .chip-group {
   display: flex;
   flex-wrap: wrap;

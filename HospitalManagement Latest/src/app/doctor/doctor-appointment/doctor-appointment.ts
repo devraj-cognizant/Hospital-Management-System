@@ -39,7 +39,7 @@ export class DoctorAppointment implements OnInit {
     
     this.doctorService.getAppointmentsFromDB(this.doctorID).subscribe({
       next: (res: any) => {
-        // ✅ Wrap in a tiny timeout and call detectChanges so Angular draws the screen!
+        // Wrap in a tiny timeout and call detectChanges so Angular draws the screen!
         setTimeout(() => {
           this.appointments = res.appointments || [];
           this.cdr.detectChanges(); 
@@ -106,7 +106,7 @@ export class DoctorAppointment implements OnInit {
 
 // ... (keep the rest of your DoctorAppointment class the same)
 
-  // ✅ FIXED: Add event parameter and preventDefault
+  // FIXED: Add event parameter and preventDefault
   viewNotes(appt: Appointment, event?: Event) {
     if (event) {
       event.preventDefault(); // Stops the href="#" from jumping to the top of the page
