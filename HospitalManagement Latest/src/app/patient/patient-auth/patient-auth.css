@@ -4,7 +4,8 @@
   --light-teal: #e0f2f1;
   --text-dark: #0f172a;
   --text-gray: #64748b;
-  --error: #ef4444;
+  --error: #ef4444; /* Standard red for errors */
+  --error-bg: #fef2f2; /* Light red tint for input backgrounds */
 }
 
 /* --- Full Page Background --- */
@@ -22,7 +23,7 @@
 .auth-card {
   background: #ffffff;
   width: 100%;
-  max-width: 650px; /* Wider for the grid layout */
+  max-width: 650px;
   border-radius: 24px;
   padding: 2.5rem;
   box-shadow: 0 20px 50px -12px rgba(0, 77, 64, 0.15);
@@ -49,7 +50,7 @@
 .btn-back-minimal:hover { color: var(--primary-teal); }
 
 .auth-tabs {
-  background: var(--bg-soft);
+  background: #f8fafc;
   padding: 4px;
   border-radius: 12px;
   display: flex;
@@ -119,6 +120,7 @@
   color: var(--text-dark);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  transition: color 0.2s;
 }
 
 input, select {
@@ -128,6 +130,7 @@ input, select {
   font-size: 0.95rem;
   transition: all 0.2s;
   background: #fdfdfd;
+  width: 100%;
 }
 
 input:focus, select:focus {
@@ -135,6 +138,33 @@ input:focus, select:focus {
   background: white;
   outline: none;
   box-shadow: 0 0 0 4px rgba(0, 191, 165, 0.1);
+}
+
+/* --- Error States --- */
+
+/* Highlighting the label in red */
+.input-group.input-error label {
+  color: var(--error);
+}
+
+/* Turning the input border and background red */
+.input-group.input-error input,
+.input-group.input-error select {
+  border-color: var(--error);
+  background: var(--error-bg);
+}
+
+/* Red glow on focus when invalid */
+.input-group.input-error input:focus {
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+.error-msg {
+  color: var(--error);
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 2px;
+  animation: shake 0.3s ease-in-out; /* Eye-catching shake */
 }
 
 /* --- Submission --- */
@@ -162,12 +192,6 @@ input:focus, select:focus {
   cursor: not-allowed;
 }
 
-.error-msg {
-  color: var(--error);
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
 .auth-footer {
   text-align: center;
   margin-top: 2rem;
@@ -180,6 +204,12 @@ input:focus, select:focus {
 @keyframes slideUp {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
 }
 
 .animate-slide-up { animation: slideUp 0.4s ease-out forwards; }

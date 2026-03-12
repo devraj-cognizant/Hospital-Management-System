@@ -18,20 +18,17 @@
       </div>
 
       <form [formGroup]="loginForm" (ngSubmit)="login()" class="modern-form">
-        <div class="input-group">
+        <div class="input-group" [class.input-error]="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
           <label>Email Address</label>
           <input type="email" formControlName="email" placeholder="name@example.com" />
-          <span class="error-msg" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
-            Please enter a valid email.
-          </span>
+          <span class="error-msg" *ngIf="loginForm.get('email')?.errors?.['required'] && loginForm.get('email')?.touched">Email is required.</span>
+          <span class="error-msg" *ngIf="loginForm.get('email')?.errors?.['email'] && loginForm.get('email')?.dirty">Please enter a valid email.</span>
         </div>
 
-        <div class="input-group">
+        <div class="input-group" [class.input-error]="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
           <label>Password</label>
           <input type="password" formControlName="password" placeholder="••••••••" />
-          <span class="error-msg" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
-            Password is required.
-          </span>
+          <span class="error-msg" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">Password is required.</span>
         </div>
 
         <button class="btn-submit" type="submit" [disabled]="loginForm.invalid">
@@ -48,30 +45,41 @@
 
       <form [formGroup]="registerForm" (ngSubmit)="register()" class="modern-form">
         <div class="form-grid">
-          <div class="input-group">
+          
+          <div class="input-group" [class.input-error]="registerForm.get('firstName')?.invalid && (registerForm.get('firstName')?.dirty || registerForm.get('firstName')?.touched)">
             <label>First Name</label>
             <input type="text" formControlName="firstName" placeholder="John" />
+            <span class="error-msg" *ngIf="registerForm.get('firstName')?.errors?.['required'] && registerForm.get('firstName')?.touched">First name is required.</span>
+            <span class="error-msg" *ngIf="registerForm.get('firstName')?.errors?.['minlength']">Must be at least 2 characters.</span>
           </div>
-          <div class="input-group">
+
+          <div class="input-group" [class.input-error]="registerForm.get('lastName')?.invalid && (registerForm.get('lastName')?.dirty || registerForm.get('lastName')?.touched)">
             <label>Last Name</label>
             <input type="text" formControlName="lastName" placeholder="Doe" />
+            <span class="error-msg" *ngIf="registerForm.get('lastName')?.errors?.['required'] && registerForm.get('lastName')?.touched">Last name is required.</span>
           </div>
 
-          <div class="input-group full-width">
+          <div class="input-group full-width" [class.input-error]="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)">
             <label>Email Address</label>
             <input type="email" formControlName="email" placeholder="john.doe@hospital.com" />
+            <span class="error-msg" *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched">Email is required.</span>
+            <span class="error-msg" *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.dirty">Invalid email format.</span>
           </div>
 
-          <div class="input-group">
+          <div class="input-group" [class.input-error]="registerForm.get('phone')?.invalid && (registerForm.get('phone')?.dirty || registerForm.get('phone')?.touched)">
             <label>Phone Number</label>
             <input type="tel" formControlName="phone" placeholder="10-digit number" />
-          </div>
-          <div class="input-group">
-            <label>Date of Birth</label>
-            <input type="date" formControlName="dob" [max]="today" />
+            <span class="error-msg" *ngIf="registerForm.get('phone')?.errors?.['required'] && registerForm.get('phone')?.touched">Phone is required.</span>
+            <span class="error-msg" *ngIf="registerForm.get('phone')?.errors?.['pattern']">Must be exactly 10 digits.</span>
           </div>
 
-          <div class="input-group">
+          <div class="input-group" [class.input-error]="registerForm.get('dob')?.invalid && registerForm.get('dob')?.touched">
+            <label>Date of Birth</label>
+            <input type="date" formControlName="dob" />
+            <span class="error-msg" *ngIf="registerForm.get('dob')?.invalid && registerForm.get('dob')?.touched">Birth date required.</span>
+          </div>
+
+          <div class="input-group" [class.input-error]="registerForm.get('gender')?.invalid && registerForm.get('gender')?.touched">
             <label>Gender</label>
             <select formControlName="gender">
               <option value="" disabled>Select</option>
@@ -79,25 +87,29 @@
               <option value="Female">Female</option>
               <option value="Other">Other</option>
             </select>
+            <span class="error-msg" *ngIf="registerForm.get('gender')?.invalid && registerForm.get('gender')?.touched">Please select gender.</span>
           </div>
-          <div class="input-group">
+
+          <div class="input-group" [class.input-error]="registerForm.get('bloodGroup')?.invalid && registerForm.get('bloodGroup')?.touched">
             <label>Blood Group</label>
             <select formControlName="bloodGroup">
               <option value="" disabled>Select</option>
               <option *ngFor="let bg of ['A+','A-','B+','B-','AB+','AB-','O+','O-']" [value]="bg">{{ bg }}</option>
             </select>
+            <span class="error-msg" *ngIf="registerForm.get('bloodGroup')?.invalid && registerForm.get('bloodGroup')?.touched">Please select blood group.</span>
           </div>
 
-          <div class="input-group full-width">
+          <div class="input-group full-width" [class.input-error]="registerForm.get('password')?.invalid && (registerForm.get('password')?.dirty || registerForm.get('password')?.touched)">
             <label>Password</label>
             <input type="password" formControlName="password" placeholder="Min. 8 characters" />
+            <span class="error-msg" *ngIf="registerForm.get('password')?.errors?.['required'] && registerForm.get('password')?.touched">Password is required.</span>
+            <span class="error-msg" *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters.</span>
           </div>
-          <div class="input-group full-width">
+
+          <div class="input-group full-width" [class.input-error]="(registerForm.hasError('passwordMismatch') || registerForm.get('confirmPassword')?.invalid) && registerForm.get('confirmPassword')?.touched">
             <label>Confirm Password</label>
             <input type="password" formControlName="confirmPassword" placeholder="Repeat password" />
-            <span class="error-msg" *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched">
-              Passwords do not match.
-            </span>
+            <span class="error-msg" *ngIf="registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched">Passwords do not match.</span>
           </div>
         </div>
 
