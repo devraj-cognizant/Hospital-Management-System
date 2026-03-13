@@ -46,8 +46,8 @@
     </div>
 
     <div class="form-actions animate-in">
-      <button class="submit-btn" (click)="saveAvailability()">
-        Save Availability
+      <button class="submit-btn" [disabled]="isSaving" (click)="saveAvailability()">
+        {{ isSaving ? 'Saving...' : 'Save Availability' }}
       </button>
       
       <div *ngIf="successMessage" class="success-alert animate-in">

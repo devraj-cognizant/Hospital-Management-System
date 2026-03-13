@@ -80,8 +80,8 @@
     </div>
 
     <div class="form-actions">
-      <button class="submit-btn" [disabled]="appointmentForm.invalid" (click)="book($event)">
-        {{ rescheduleAppt ? 'Confirm Reschedule' : 'Complete Booking' }}
+      <button class="submit-btn" [disabled]="appointmentForm.invalid || isSubmitting" (click)="book($event)">
+        {{ isSubmitting ? 'Processing...' : (rescheduleAppt ? 'Confirm Reschedule' : 'Complete Booking') }}
       </button>
     </div>
   </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule, Location } from '@angular/common'; // IMPORT Location HERE
+import { CommonModule, Location } from '@angular/common'; 
 import { Appointment } from '../../model/appointment';
 import { DoctorService } from '../../services/doctor';
 import { PatientService } from '../../services/patient-service';
@@ -25,6 +25,9 @@ export class Bookappointment implements OnInit {
 
   reasons: string[] = ['General Checkup', 'Follow-up', 'Prescription Renewal', 'Lab Results Discussion'];
   showOtherReason = false;
+  
+  // ✅ ADDED: Loading state flag
+  isSubmitting = false; 
 
   constructor(
     private fb: FormBuilder,
@@ -32,7 +35,7 @@ export class Bookappointment implements OnInit {
     private patientService: PatientService,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private location: Location // INJECT Location HERE
+    private location: Location 
   ) {
     this.appointmentForm = this.fb.group({
       patientName: [''],
@@ -47,12 +50,8 @@ export class Bookappointment implements OnInit {
   }
 
   ngOnInit() {
-    console.log("--- BOOKING PAGE INIT ---");
-
-    // 1. Fetch Doctors
     this.doctorService.getAllDoctorsFromDB().subscribe({
       next: (data: any) => {
-        console.log("1. Doctors fetched:", data);
         setTimeout(() => {
           this.doctors = data.doctors ? data.doctors : data;
           this.specializations = [...new Set(this.doctors.map(d => d.specialization))];
@@ -64,13 +63,10 @@ export class Bookappointment implements OnInit {
       error: (err: any) => console.error("Failed to load doctors", err)
     });
 
-    // 2. Listen for Doctor Selection
     this.appointmentForm.get('doctor')?.valueChanges.subscribe(doctorID => {
-      console.log(`2. Doctor selected: ${doctorID}`);
       if (doctorID) {
         this.doctorService.getAvailabilityFromDB(doctorID).subscribe({
           next: (res: any) => {
-            console.log("3. Availability fetched from DB:", res);
             this.doctorService.updateAvailability(doctorID, res.availability || res);
             this.updateAvailableSlots();
           },
@@ -79,9 +75,7 @@ export class Bookappointment implements OnInit {
       }
     });
 
-    // 3. Listen for Date Selection
     this.appointmentForm.get('date')?.valueChanges.subscribe((dateValue) => {
-      console.log(`4. Date selected: ${dateValue}`);
       this.updateAvailableSlots();
     });
   }
@@ -115,7 +109,6 @@ export class Bookappointment implements OnInit {
 
   onSpecializationChange() {
     const selectedSpec = this.appointmentForm.get('specialization')?.value;
-    console.log(`Specialization changed to: ${selectedSpec}`);
     this.filteredDoctors = this.doctors.filter(d => d.specialization === selectedSpec);
     this.appointmentForm.patchValue({ doctor: '', time: '', date: '' });
     this.availableSlotsList = [];
@@ -145,11 +138,7 @@ export class Bookappointment implements OnInit {
     }
 
     const normDate = this.normalizedDate(rawDate);
-    console.log(`5. Looking for slots for Doctor [${doctorID}] on Date [${normDate}]`);
-
     const slots = this.doctorService.getAvailableSlots(doctorID, normDate);
-
-    console.log(`6. Found slots:`, slots);
     this.availableSlotsList = slots || [];
     this.cdr.detectChanges();
   }
@@ -163,16 +152,19 @@ export class Bookappointment implements OnInit {
     this.appointmentForm.get('time')?.markAsTouched();
   }
 
-  // UPDATED BOOK METHOD with event preventDefault
   book(event?: Event) {
     if (event) {
-      event.preventDefault(); // Stop the browser from refreshing!
+      event.preventDefault(); 
     }
 
-    if (this.appointmentForm.invalid) {
-      alert('Please fill all required fields');
+    // ✅ Stop execution if form is invalid OR if we are already submitting
+    if (this.appointmentForm.invalid || this.isSubmitting) {
+      if (this.appointmentForm.invalid) alert('Please fill all required fields');
       return;
     }
+
+    // ✅ Lock the button immediately
+    this.isSubmitting = true; 
 
     const data = this.appointmentForm.getRawValue();
     const normalizedDate = this.normalizedDate(data.date);
@@ -182,6 +174,7 @@ export class Bookappointment implements OnInit {
     const patient = this.patientService.getLoggedInPatient();
 
     if (!patient) {
+      this.isSubmitting = false; // Unlock on error
       alert('❌ No patient logged in');
       return;
     }
@@ -192,10 +185,14 @@ export class Bookappointment implements OnInit {
       this.patientService.rescheduleAppointmentDB(this.rescheduleAppt.appointmentID, normalizedDate, data.time)
         .subscribe({
           next: () => {
+            this.isSubmitting = false; // ✅ Unlock on success
             alert(`✅ Rescheduled successfully with ${doctor?.name || 'your doctor'} to ${data.date} at ${data.time}`);
-            this.location.back(); // Safe auto-back
+            this.location.back(); 
           },
-          error: (err: any) => alert(`❌ Failed to reschedule: ${err.error?.message}`)
+          error: (err: any) => {
+            this.isSubmitting = false; // ✅ Unlock on error
+            alert(`❌ Failed to reschedule: ${err.error?.message}`);
+          }
         });
     } else {
       const bookingPayload = {
@@ -208,10 +205,12 @@ export class Bookappointment implements OnInit {
 
       this.patientService.bookAppointmentDB(bookingPayload).subscribe({
         next: () => {
+          this.isSubmitting = false; // ✅ Unlock on success
           alert(`✅ Appointment requested successfully!`);
-          this.location.back(); // Safe auto-back
+          this.location.back(); 
         },
         error: (err: any) => {
+          this.isSubmitting = false; // ✅ Unlock on error
           console.error("Booking failed", err);
           alert(`❌ Failed to book: ${err.error?.message || 'Server error'}`);
         }

@@ -19,7 +19,9 @@ export class DoctorAvailability implements OnInit {
   timeSlots: string[] = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
   successMessage: string = '';
 
-  // Local working copy 
+  // ✅ ADDED: Loading state flag
+  isSaving = false;
+
   localAvailability: Record<string, { available: string[]; blocked: string[] }> = {};
 
   constructor(private route: ActivatedRoute, private doctorService: DoctorService) {
@@ -27,12 +29,10 @@ export class DoctorAvailability implements OnInit {
   }
 
   ngOnInit() {
-    // Load existing availability from Database
     if (this.doctorID) {
       this.doctorService.getAvailabilityFromDB(this.doctorID).subscribe({
         next: (response) => {
           this.localAvailability = response.availability || {};
-          // Update the local service cache just in case other components need it right now
           this.doctorService.updateAvailability(this.doctorID, this.localAvailability);
         },
         error: (err) => console.error("Error fetching availability:", err)
@@ -108,16 +108,20 @@ export class DoctorAvailability implements OnInit {
       return;
     }
 
-    // Send to Database
+    // ✅ Lock the button and clear old messages
+    this.isSaving = true;
+    this.successMessage = '';
+
     this.doctorService.saveAvailabilityToDB(this.doctorID, { availability: this.localAvailability }).subscribe({
       next: () => {
+        this.isSaving = false; // ✅ Unlock on success
         const normalizedDate = this.normalizedDate(this.selectedDate);
         this.successMessage = `✅ Availability updated for ${normalizedDate} in Database`;
         
-        // Sync the frontend service cache
         this.doctorService.updateAvailability(this.doctorID, this.localAvailability);
       },
       error: (err) => {
+        this.isSaving = false; // ✅ Unlock on error
         console.error("Save Error", err);
         this.successMessage = '❌ Error saving availability to server.';
       }
