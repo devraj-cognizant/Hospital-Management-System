@@ -4,13 +4,7 @@ import { FormGroup, FormControl, FormsModule, ReactiveFormsModule, Validators, A
 import { Patient } from '../../model/patient';
 import { PatientService } from '../../services/patient-service';
 import { Router, RouterModule } from '@angular/router';
-import {v4 as uuidv4} from 'uuid';
-
-// 1. Define Enum for clarity
-export enum AuthTab {
-  Login = 'login',
-  Register = 'register'
-}
+import { v4 as uuidv4 } from 'uuid';
 
 // Custom validator for matching password & confirmPassword
 export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -29,22 +23,8 @@ export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): V
   styleUrls: ['./patient-auth.css'],
 })
 export class PatientAuth implements OnInit {
-  // 2. Expose Enum to the template so it can be used in *ngIf
-  public AuthTab = AuthTab;
   
-  // 3. Update activeTab to use the Enum type
-  activeTab: AuthTab = AuthTab.Login;
-
   today = new Date().toISOString().split('T')[0];
-
-  // FIX: Initialize forms immediately right here!
-  loginForm: FormGroup = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/)
-    ])
-  });
 
   registerForm: FormGroup = new FormGroup({
     firstName: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-z]+$/)]),
@@ -68,17 +48,11 @@ export class PatientAuth implements OnInit {
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-  }
-
-  // 4. Update method signature to accept Enum
-  switchTab(tab: AuthTab) {
-    this.activeTab = tab;
-  }
+  ngOnInit(): void {}
 
   register() {
     if (this.registerForm.invalid) {
-      alert('Please fill all required fields correctlyy');
+      alert('Please fill all required fields correctly');
       return;
     }
 
@@ -101,13 +75,11 @@ export class PatientAuth implements OnInit {
 
     this.patientService.register(newPatient).subscribe({
       next: (response) => {
-        alert('Registration successful! You can now log in.');
-        
-        // Clear out the registration form fields
+        alert('Registration successful! Redirecting to secure login...');
         this.registerForm.reset(); 
         
-        // Force the UI to switch to the login tab directly
-        this.activeTab = AuthTab.Login; 
+        // 🚀 Redirect straight to your shiny new Unified Login Page!
+        this.router.navigate(['/login']); 
       },
       error: (err) => {
         alert('Registration failed: ' + (err.error?.message || 'Server error occurred'));
@@ -116,41 +88,8 @@ export class PatientAuth implements OnInit {
     });
   }
 
-  login() {
-    if (this.loginForm.invalid) {
-      alert('Please enter a valid email and strong password');
-      return;
-    }
-
-    const { email, password } = this.loginForm.value;
-
-    this.patientService.login(email, password).subscribe({
-      next: (response) => {
-        console.log("Full Backend Response:", response);
-        // COMPLETELY REMOVED localStorage logic here!
-
-        // Extract the user data from your Node.js response
-        const loggedInUser = response.user; 
-        
-        if (loggedInUser) {
-          // Save the user in the service so the rest of the app knows who is logged in
-          this.patientService.setCurrentPatient(loggedInUser);
-          alert(`Login successful! Welcome ${loggedInUser.firstName} ${loggedInUser.lastName}`);
-        } else {
-          alert(`Login successful!`);
-        }
-
-        // Navigate to the dashboard
-        this.router.navigate(['/patient']);
-      },
-      error: (err) => {
-        alert('Login failed: ' + (err.error?.message || 'Invalid credentials'));
-        console.error('Login Error:', err);
-      }
-    });
-  }
-
   goBack() {
-    this.router.navigate(['/home']);
+    // Also update the back button to safely return to the login page
+    this.router.navigate(['/login']);
   }
 }

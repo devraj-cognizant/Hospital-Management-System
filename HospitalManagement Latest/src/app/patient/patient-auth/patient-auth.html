@@ -3,41 +3,11 @@
     
     <div class="auth-top-bar">
       <button class="btn-back-minimal" (click)="goBack()">
-        <span>←</span> Back
+        <span>←</span> Back to Login
       </button>
-      <div class="auth-tabs">
-        <button [class.active]="activeTab === AuthTab.Login" (click)="switchTab(AuthTab.Login)">Login</button>
-        <button [class.active]="activeTab === AuthTab.Register" (click)="switchTab(AuthTab.Register)">Register</button>
-      </div>
-    </div>
-
-    <div *ngIf="activeTab === AuthTab.Login" class="auth-section animate-slide-up">
-      <div class="auth-header">
-        <h3>Welcome Back</h3>
-        <p>Enter your credentials to access your secure portal.</p>
       </div>
 
-      <form [formGroup]="loginForm" (ngSubmit)="login()" class="modern-form">
-        <div class="input-group" [class.input-error]="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)">
-          <label>Email Address</label>
-          <input type="email" formControlName="email" placeholder="name@example.com" />
-          <span class="error-msg" *ngIf="loginForm.get('email')?.errors?.['required'] && loginForm.get('email')?.touched">Email is required.</span>
-          <span class="error-msg" *ngIf="loginForm.get('email')?.errors?.['email'] && loginForm.get('email')?.dirty">Please enter a valid email.</span>
-        </div>
-
-        <div class="input-group" [class.input-error]="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)">
-          <label>Password</label>
-          <input type="password" formControlName="password" placeholder="••••••••" />
-          <span class="error-msg" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">Password is required.</span>
-        </div>
-
-        <button class="btn-submit" type="submit" [disabled]="loginForm.invalid">
-          Sign In to Portal
-        </button>
-      </form>
-    </div>
-
-    <div *ngIf="activeTab === AuthTab.Register" class="auth-section animate-slide-up">
+    <div class="auth-section animate-slide-up">
       <div class="auth-header">
         <h3>Create Clinical Account</h3>
         <p>Join our medical network to manage your health journey.</p>
@@ -75,7 +45,7 @@
 
           <div class="input-group" [class.input-error]="registerForm.get('dob')?.invalid && registerForm.get('dob')?.touched">
             <label>Date of Birth</label>
-            <input type="date" formControlName="dob" [max]="today"/>
+            <input type="date" formControlName="dob" [max]="today" />
             <span class="error-msg" *ngIf="registerForm.get('dob')?.invalid && registerForm.get('dob')?.touched">Birth date required.</span>
           </div>
 
