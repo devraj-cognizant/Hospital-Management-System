@@ -2,16 +2,18 @@ const Doctor = require("../models/doctor");
 const Appointment = require("../models/appointment");
 
 /*  Get Doctor Appointments  */
+/* Get Doctor Appointments  */
 async function getDoctorAppointments(req, res) {
     try {
         const { doctorID } = req.params;
 
         const appointments = await Appointment.find({ doctorID });
-        if (!appointments || appointments.length === 0) {
-            return res.status(404).json({ message: "No appointments found" });
-        }
-
-        return res.status(200).json({ appointments });
+        
+        // ✅ THE FIX: Always return a 200 status, even if the array is empty!
+        return res.status(200).json({ 
+            appointments: appointments || [] 
+        });
+        
     } catch (error) {
         return res.status(500).json({ message: "Error fetching appointments", error: error.message });
     }
