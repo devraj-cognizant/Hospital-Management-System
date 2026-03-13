@@ -75,7 +75,7 @@
 
           <div class="input-group" [class.input-error]="registerForm.get('dob')?.invalid && registerForm.get('dob')?.touched">
             <label>Date of Birth</label>
-            <input type="date" formControlName="dob" />
+            <input type="date" formControlName="dob" [max]="today"/>
             <span class="error-msg" *ngIf="registerForm.get('dob')?.invalid && registerForm.get('dob')?.touched">Birth date required.</span>
           </div>
 
