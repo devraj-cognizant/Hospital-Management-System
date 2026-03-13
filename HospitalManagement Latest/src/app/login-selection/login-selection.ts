@@ -50,7 +50,16 @@ export class LoginSelection {
           this.patientService.setCurrentPatient(res.user);
           this.router.navigate(['/patient']);
         } else if (res.role === 'DOCTOR') {
-          this.doctorService.setLoggedInDoctor(res.user);
+          
+          // 🛑 THE FIX: Map the data so the Doctor Dashboard gets exactly what it expects!
+          const doctorData = {
+            id: res.user.id,
+            name: res.user.firstName, // Grab the name from the unified firstName field
+            specialization: res.user.specialization,
+            email: res.user.email
+          };
+
+          this.doctorService.setLoggedInDoctor(doctorData as any);
           this.router.navigate(['/doctor', res.user.id]);
         }
       },
