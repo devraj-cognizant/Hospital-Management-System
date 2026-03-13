@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core'; // ✅ Imported ChangeDetectorRef
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -19,21 +19,26 @@ export class DoctorAvailability implements OnInit {
   timeSlots: string[] = ['09:00', '10:00', '11:00', '14:00', '15:00', '16:00'];
   successMessage: string = '';
 
-  // ✅ ADDED: Loading state flag
   isSaving = false;
 
   localAvailability: Record<string, { available: string[]; blocked: string[] }> = {};
 
-  constructor(private route: ActivatedRoute, private doctorService: DoctorService) {
+  // ✅ Injected ChangeDetectorRef (cdr) here
+  constructor(
+    private route: ActivatedRoute, 
+    private doctorService: DoctorService,
+    private cdr: ChangeDetectorRef 
+  ) {
     this.doctorID = this.route.parent?.snapshot.paramMap.get('id') || '';
   }
 
   ngOnInit() {
     if (this.doctorID) {
       this.doctorService.getAvailabilityFromDB(this.doctorID).subscribe({
-        next: (response) => {
+        next: (response: any) => {
           this.localAvailability = response.availability || {};
           this.doctorService.updateAvailability(this.doctorID, this.localAvailability);
+          this.cdr.detectChanges(); // ✅ Wake up UI
         },
         error: (err) => console.error("Error fetching availability:", err)
       });
@@ -108,22 +113,28 @@ export class DoctorAvailability implements OnInit {
       return;
     }
 
-    // ✅ Lock the button and clear old messages
     this.isSaving = true;
     this.successMessage = '';
+    this.cdr.detectChanges(); // ✅ Tell UI we are starting the save
 
     this.doctorService.saveAvailabilityToDB(this.doctorID, { availability: this.localAvailability }).subscribe({
       next: () => {
-        this.isSaving = false; // ✅ Unlock on success
+        this.isSaving = false; 
         const normalizedDate = this.normalizedDate(this.selectedDate);
         this.successMessage = `✅ Availability updated for ${normalizedDate} in Database`;
         
         this.doctorService.updateAvailability(this.doctorID, this.localAvailability);
+        
+        // ✅ Tell Angular to refresh the HTML immediately!
+        this.cdr.detectChanges(); 
       },
       error: (err) => {
-        this.isSaving = false; // ✅ Unlock on error
+        this.isSaving = false; 
         console.error("Save Error", err);
         this.successMessage = '❌ Error saving availability to server.';
+        
+        // ✅ Tell Angular to refresh the HTML on error too!
+        this.cdr.detectChanges(); 
       }
     });
   }
