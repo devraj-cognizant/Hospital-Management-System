@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Patient } from '../model/patient';
 import { PatientMedicalHistory } from '../model/patient-medical-history';
-import { Appointment } from '../model/appointment';
-import { DoctorService } from './doctor';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
@@ -14,20 +12,22 @@ export class PatientService {
 
   private currentPatientSubject = new BehaviorSubject<Patient | null>(null);
   public currentPatient$ = this.currentPatientSubject.asObservable();
+  
+  // Legacy cache
   private registeredPatients: Patient[] = [];
 
-  constructor(
-    private doctorService: DoctorService,
-    private http: HttpClient,
-  ) {
-    //  Read from the Frontend Cookie instead of localStorage
+  constructor(private http: HttpClient) {
+    // Read from the Frontend Cookie instead of localStorage
     const savedPatient = this.getPatientCookie();
     if (savedPatient) {
       this.currentPatientSubject.next(savedPatient);
     }
   }
 
-  //  COOKIE HELPER METHODS
+  // ----------------------------------------
+  // COOKIE HELPER METHODS
+  // ----------------------------------------
+
   private setPatientCookie(patient: Patient) {
     const patientString = encodeURIComponent(JSON.stringify(patient));
     document.cookie = `loggedInPatient=${patientString}; path=/; max-age=86400; SameSite=Strict`;
@@ -46,34 +46,30 @@ export class PatientService {
   }
 
   private clearPatientCookie() {
-    document.cookie =
-      'loggedInPatient=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict';
+    document.cookie = 'loggedInPatient=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict';
   }
 
-  // Authentication & Session
+  // ----------------------------------------
+  // AUTHENTICATION & SESSION STATE
+  // (Login is now handled by Unified Auth Component!)
+  // ----------------------------------------
+
   register(patient: Patient): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, patient);
   }
 
-  login(email: string, password: string): Observable<any> {
-    return this.http
-      .post(`${this.apiUrl}/login`, { email, password }, { withCredentials: true })
-      .pipe(
-        tap((response: any) => {
-          this.currentPatientSubject.next(response.user);
-          this.setPatientCookie(response.user); // ✅ Save to cookie
-        }),
-      );
-  }
-
   setCurrentPatient(patient: Patient): void {
     this.currentPatientSubject.next(patient);
-    this.setPatientCookie(patient); //  Save to cookie
+    this.setPatientCookie(patient); // Save to cookie
+  }
+
+  getLoggedInPatient(): Patient | null {
+    return this.currentPatientSubject.value;
   }
 
   clearLocalSession(): void {
     this.currentPatientSubject.next(null);
-    this.clearPatientCookie(); //  Wipe the cookie
+    this.clearPatientCookie(); // Wipe the cookie
   }
 
   logout(): Observable<any> {
@@ -82,12 +78,10 @@ export class PatientService {
       .pipe(tap(() => this.clearLocalSession()));
   }
 
-  getLoggedInPatient(): Patient | null {
-    return this.currentPatientSubject.value;
-  }
+  // ----------------------------------------
+  // DATABASE API CALLS
+  // ----------------------------------------
 
-  // Profile & Medical History
-  
   getProfile(): Observable<Patient> {
     return this.http.get<Patient>(`${this.apiUrl}/profile`, { withCredentials: true }).pipe(
       tap((patient) => {
@@ -108,17 +102,48 @@ export class PatientService {
       );
   }
 
-  getMedicalHistory(): PatientMedicalHistory | undefined {
-    return this.currentPatientSubject.value?.medicalHistory;
+  bookAppointmentDB(bookingData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/book-appointment`, bookingData, {
+      withCredentials: true,
+    });
   }
 
-  // Add this inside your PatientService class
+  rescheduleAppointmentDB(appointmentID: string, newDate: string, newTime: string): Observable<any> {
+    return this.http.patch(
+      `${this.apiUrl}/appointment/${appointmentID}`,
+      { newDate, newTime },
+      { withCredentials: true },
+    );
+  }
+
+  cancelAppointmentDB(appointmentID: string): Observable<any> {
+    // ✅ Fixed: Now uses this.apiUrl dynamically
+    return this.http.patch(
+      `${this.apiUrl}/appointment/${appointmentID}/cancel`,
+      {},
+      { withCredentials: true },
+    );
+  }
+
+  getPatientAppointmentsDB(patientID: string): Observable<any> {
+    // ✅ Fixed: Now uses this.apiUrl dynamically
+    return this.http.get(`${this.apiUrl}/${patientID}/appointments`, {
+      withCredentials: true,
+    });
+  }
 
   getMedicalHistoryDB(patientID: string): Observable<any[]> {
-    // This calls the specific endpoint for the medicalhistories collection
     return this.http.get<any[]>(`${this.apiUrl}/${patientID}/medical-history`, {
       withCredentials: true,
     });
+  }
+
+  // ----------------------------------------
+  // LOCAL UI STATE LOGIC (Legacy caching)
+  // ----------------------------------------
+
+  getMedicalHistory(): PatientMedicalHistory | undefined {
+    return this.currentPatientSubject.value?.medicalHistory;
   }
 
   saveMedicalHistory(history: PatientMedicalHistory): void {
@@ -130,26 +155,6 @@ export class PatientService {
     }
   }
 
-  
-  // Appointments
-  bookAppointmentDB(bookingData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/book-appointment`, bookingData, {
-      withCredentials: true,
-    });
-  }
-
-  rescheduleAppointmentDB(
-    appointmentID: string,
-    newDate: string,
-    newTime: string,
-  ): Observable<any> {
-    return this.http.patch(
-      `${this.apiUrl}/appointment/${appointmentID}`,
-      { newDate, newTime },
-      { withCredentials: true },
-    );
-  }
-
   getPatientById(patientID: string): Patient {
     const found = this.registeredPatients.find((p) => p.patientID === patientID);
     if (!found) {
@@ -158,20 +163,5 @@ export class PatientService {
       return { firstName: 'Unknown', lastName: 'Patient', patientID } as Patient;
     }
     return found;
-  }
-
-  // Inside patient-service.ts in Angular
-  cancelAppointmentDB(appointmentID: string) {
-    return this.http.patch(
-      `http://localhost:5000/patient/appointment/${appointmentID}/cancel`,
-      {},
-      { withCredentials: true },
-    );
-  }
-
-  getPatientAppointmentsDB(patientID: string): Observable<any> {
-    return this.http.get(`http://localhost:5000/patient/${patientID}/appointments`, {
-      withCredentials: true,
-    });
   }
 }
