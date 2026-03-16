@@ -91,18 +91,18 @@ async function bookAppointment(req, res) {
             return res.status(404).json({ message: "Patient or Doctor not found" });
         }
 
-        // 🛑 TEMPORARILY DISABLED FOR TESTING
-        // const activeAppointment = await Appointment.findOne({
-        //     patientID: patient.patientID,
-        //     doctorID: doctor.id,
-        //     status: { $in: ["Requested", "Scheduled", "Pending", "Rescheduled"] } 
-        // });
+        // ✅ SECURITY RULE RE-ENABLED: Prevent booking same doctor if an active appointment exists
+        const activeAppointment = await Appointment.findOne({
+            patientID: patient.patientID,
+            doctorID: doctor.id,
+            status: { $in: ["Requested", "Scheduled", "Pending", "Rescheduled"] } 
+        });
 
-        // if (activeAppointment) {
-        //     return res.status(400).json({ 
-        //         message: "You already have an active appointment with this doctor. Please wait until it is completed or cancel it to book again." 
-        //     });
-        // }
+        if (activeAppointment) {
+            return res.status(400).json({ 
+                message: "You already have an active appointment with this doctor. Please wait until it is completed or cancel it to book again." 
+            });
+        }
 
         const normalizedDate = new Date(appointmentDate).toISOString().split("T")[0];
 
