@@ -26,7 +26,7 @@ export class App implements OnInit {
     const activeDoctor = this.doctorService.getLoggedInDoctor();
     if (activeDoctor) {
       console.log("👨‍⚕️ Doctor session detected for:", activeDoctor.name, "- Skipping Patient check.");
-      return; // 🛑 Stop the function here! Do not call the patient API.
+      return; //  Stop the function here! Do not call the patient API.
     }
 
     //  2. If no Doctor is found, check for a PATIENT session

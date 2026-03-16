@@ -1,23 +1,5 @@
 import { Routes } from '@angular/router';
 
-// Patient components
-import { Profile } from './patient/profile/profile';
-import { Bookappointment } from './patient/bookappointment/bookappointment';
-import { Myappointment } from './patient/myappointment/myappointment';
-import { PatientDashboard } from './patient/patient-dashboard/patient-dashboard';
-import { PatientAuth } from './patient/patient-auth/patient-auth';
-
-// Doctor components
-import { DoctorAppointment } from './doctor/doctor-appointment/doctor-appointment';
-import { DoctorAvailability } from './doctor/doctor-availability/doctor-availability';
-import { DoctorPatient } from './doctor/doctor-patient/doctor-patient';
-import { Doctordashboard } from './doctor/doctordashboard/doctordashboard';
-import { DoctorLogin } from './doctor/doctor-login/doctor-login';
-
-// Shared components
-import { LoginSelection } from './login-selection/login-selection';
-import { Landing } from './landing/landing';
-
 // Guards
 import { AuthGuard } from './guards/auth-guard';
 import { PatientGuard } from './guards/patient-guard';

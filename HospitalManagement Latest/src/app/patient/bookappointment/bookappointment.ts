@@ -26,7 +26,7 @@ export class Bookappointment implements OnInit {
   reasons: string[] = ['General Checkup', 'Follow-up', 'Prescription Renewal', 'Lab Results Discussion'];
   showOtherReason = false;
   
-  // ✅ ADDED: Loading state flag
+  //  ADDED: Loading state flag
   isSubmitting = false; 
 
   constructor(
@@ -157,13 +157,13 @@ export class Bookappointment implements OnInit {
       event.preventDefault(); 
     }
 
-    // ✅ Stop execution if form is invalid OR if we are already submitting
+    //  Stop execution if form is invalid OR if we are already submitting
     if (this.appointmentForm.invalid || this.isSubmitting) {
       if (this.appointmentForm.invalid) alert('Please fill all required fields');
       return;
     }
 
-    // ✅ Lock the button immediately
+    // Lock the button immediately
     this.isSubmitting = true; 
 
     const data = this.appointmentForm.getRawValue();
@@ -205,12 +205,12 @@ export class Bookappointment implements OnInit {
 
       this.patientService.bookAppointmentDB(bookingPayload).subscribe({
         next: () => {
-          this.isSubmitting = false; // ✅ Unlock on success
+          this.isSubmitting = false; // Unlock on success
           alert(`✅ Appointment requested successfully!`);
           this.location.back(); 
         },
         error: (err: any) => {
-          this.isSubmitting = false; // ✅ Unlock on error
+          this.isSubmitting = false; // Unlock on error
           console.error("Booking failed", err);
           alert(`❌ Failed to book: ${err.error?.message || 'Server error'}`);
         }

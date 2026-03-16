@@ -78,7 +78,7 @@ export class PatientAuth implements OnInit {
         alert('Registration successful! Redirecting to secure login...');
         this.registerForm.reset(); 
         
-        // 🚀 Redirect straight to your shiny new Unified Login Page!
+        //  Redirect straight to your shiny new Unified Login Page!
         this.router.navigate(['/login']); 
       },
       error: (err) => {

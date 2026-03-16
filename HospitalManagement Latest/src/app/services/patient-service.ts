@@ -24,9 +24,7 @@ export class PatientService {
     }
   }
 
-  // ----------------------------------------
-  // COOKIE HELPER METHODS
-  // ----------------------------------------
+
 
   private setPatientCookie(patient: Patient) {
     const patientString = encodeURIComponent(JSON.stringify(patient));
@@ -49,10 +47,6 @@ export class PatientService {
     document.cookie = 'loggedInPatient=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict';
   }
 
-  // ----------------------------------------
-  // AUTHENTICATION & SESSION STATE
-  // (Login is now handled by Unified Auth Component!)
-  // ----------------------------------------
 
   register(patient: Patient): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, patient);
@@ -78,9 +72,7 @@ export class PatientService {
       .pipe(tap(() => this.clearLocalSession()));
   }
 
-  // ----------------------------------------
-  // DATABASE API CALLS
-  // ----------------------------------------
+
 
   getProfile(): Observable<Patient> {
     return this.http.get<Patient>(`${this.apiUrl}/profile`, { withCredentials: true }).pipe(
@@ -117,7 +109,7 @@ export class PatientService {
   }
 
   cancelAppointmentDB(appointmentID: string): Observable<any> {
-    // ✅ Fixed: Now uses this.apiUrl dynamically
+    // Fixed: Now uses this.apiUrl dynamically
     return this.http.patch(
       `${this.apiUrl}/appointment/${appointmentID}/cancel`,
       {},
@@ -126,7 +118,7 @@ export class PatientService {
   }
 
   getPatientAppointmentsDB(patientID: string): Observable<any> {
-    // ✅ Fixed: Now uses this.apiUrl dynamically
+    // Fixed: Now uses this.apiUrl dynamically
     return this.http.get(`${this.apiUrl}/${patientID}/appointments`, {
       withCredentials: true,
     });
@@ -138,9 +130,7 @@ export class PatientService {
     });
   }
 
-  // ----------------------------------------
-  // LOCAL UI STATE LOGIC (Legacy caching)
-  // ----------------------------------------
+
 
   getMedicalHistory(): PatientMedicalHistory | undefined {
     return this.currentPatientSubject.value?.medicalHistory;

@@ -104,7 +104,6 @@ export class DoctorAppointment implements OnInit {
     this.router.navigate(['/doctor', this.doctorID, 'history-form', appt.appointmentID]);
   }
 
-// ... (keep the rest of your DoctorAppointment class the same)
 
   // FIXED: Add event parameter and preventDefault
   viewNotes(appt: Appointment, event?: Event) {

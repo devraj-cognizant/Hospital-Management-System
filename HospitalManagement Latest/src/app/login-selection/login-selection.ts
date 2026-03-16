@@ -51,7 +51,7 @@ export class LoginSelection {
           this.router.navigate(['/patient']);
         } else if (res.role === 'DOCTOR') {
           
-          // 🛑 THE FIX: Map the data so the Doctor Dashboard gets exactly what it expects!
+          // THE FIX: Map the data so the Doctor Dashboard gets exactly what it expects!
           const doctorData = {
             id: res.user.id,
             name: res.user.firstName, // Grab the name from the unified firstName field

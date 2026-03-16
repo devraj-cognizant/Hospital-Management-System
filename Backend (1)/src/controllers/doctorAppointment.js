@@ -9,7 +9,7 @@ async function getDoctorAppointments(req, res) {
 
         const appointments = await Appointment.find({ doctorID });
         
-        // ✅ THE FIX: Always return a 200 status, even if the array is empty!
+        //THE FIX: Always return a 200 status, even if the array is empty!
         return res.status(200).json({ 
             appointments: appointments || [] 
         });

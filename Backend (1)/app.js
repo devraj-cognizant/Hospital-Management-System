@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const doctorRoute = require("./src/routes/doctor");
 const patientRoute = require("./src/routes/patient");
-const authRoute = require("./src/routes/auth"); // ✅ 1. ADDED THIS IMPORT HERE
+const authRoute = require("./src/routes/auth"); //  ADDED THIS IMPORT HERE
 const cookieParser = require("cookie-parser");
 
 const app = express();
@@ -17,7 +17,7 @@ app.use(cookieParser());
 // Route definitions
 app.use("/doctor", doctorRoute);
 app.use("/patient", patientRoute);
-app.use("/auth", authRoute); // ✅ 2. ADDED THIS ROUTE HANDLER HERE
+app.use("/auth", authRoute); //  ADDED THIS ROUTE HANDLER HERE
 
 app.get("/", (req, res) => {
   res

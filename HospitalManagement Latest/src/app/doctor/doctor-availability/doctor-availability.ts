@@ -23,7 +23,7 @@ export class DoctorAvailability implements OnInit {
 
   localAvailability: Record<string, { available: string[]; blocked: string[] }> = {};
 
-  // ✅ Injected ChangeDetectorRef (cdr) here
+  // Injected ChangeDetectorRef (cdr) here
   constructor(
     private route: ActivatedRoute, 
     private doctorService: DoctorService,
@@ -38,7 +38,7 @@ export class DoctorAvailability implements OnInit {
         next: (response: any) => {
           this.localAvailability = response.availability || {};
           this.doctorService.updateAvailability(this.doctorID, this.localAvailability);
-          this.cdr.detectChanges(); // ✅ Wake up UI
+          this.cdr.detectChanges(); //  Wake up UI
         },
         error: (err) => console.error("Error fetching availability:", err)
       });
@@ -115,7 +115,7 @@ export class DoctorAvailability implements OnInit {
 
     this.isSaving = true;
     this.successMessage = '';
-    this.cdr.detectChanges(); // ✅ Tell UI we are starting the save
+    this.cdr.detectChanges(); // Tell UI we are starting the save
 
     this.doctorService.saveAvailabilityToDB(this.doctorID, { availability: this.localAvailability }).subscribe({
       next: () => {
@@ -125,7 +125,7 @@ export class DoctorAvailability implements OnInit {
         
         this.doctorService.updateAvailability(this.doctorID, this.localAvailability);
         
-        // ✅ Tell Angular to refresh the HTML immediately!
+        // Tell Angular to refresh the HTML immediately!
         this.cdr.detectChanges(); 
       },
       error: (err) => {
@@ -133,7 +133,7 @@ export class DoctorAvailability implements OnInit {
         console.error("Save Error", err);
         this.successMessage = '❌ Error saving availability to server.';
         
-        // ✅ Tell Angular to refresh the HTML on error too!
+        // Tell Angular to refresh the HTML on error too!
         this.cdr.detectChanges(); 
       }
     });
