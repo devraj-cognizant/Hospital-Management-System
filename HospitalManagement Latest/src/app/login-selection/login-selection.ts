@@ -1,3 +1,4 @@
+// 
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -33,40 +34,39 @@ export class LoginSelection {
 
     this.isLoading = true;
 
-    // Call our new Unified Backend Route!
     this.http.post('http://localhost:5000/auth/login', 
-      { email: this.email, password: this.password }, 
-      { withCredentials: true }
+      { email: this.email, password: this.password }
     ).subscribe({
       next: (res: any) => {
         this.isLoading = false;
         
-        // 1. Greet the user
-        const userName = res.user.firstName || res.user.lastName || "Doctor";
+        // Save token to session storage immediately for the current tab
+        const token = res.token;
+        const role = res.role;
+        const user = res.user;
+
+        const userName = user.firstName || user.lastName || "Doctor";
         alert(`Login successful! Welcome ${userName}`);
 
-        // 2. Smart Routing based on the Role returned by the backend
-        if (res.role === 'PATIENT') {
-          this.patientService.setCurrentPatient(res.user);
+        if (role === 'PATIENT') {
+          // Pass user AND token to set session storage
+          this.patientService.setCurrentPatient(user, token);
           this.router.navigate(['/patient']);
-        } else if (res.role === 'DOCTOR') {
-          
-          // THE FIX: Map the data so the Doctor Dashboard gets exactly what it expects!
+        } else if (role === 'DOCTOR') {
           const doctorData = {
-            id: res.user.id,
-            name: res.user.firstName, // Grab the name from the unified firstName field
-            specialization: res.user.specialization,
-            email: res.user.email
+            id: user.id,
+            name: user.firstName,
+            specialization: user.specialization,
+            email: user.email
           };
-
-          this.doctorService.setLoggedInDoctor(doctorData as any);
-          this.router.navigate(['/doctor', res.user.id]);
+          // Pass doctorData AND token to set session storage
+          this.doctorService.setLoggedInDoctor(doctorData as any, token);
+          this.router.navigate(['/doctor', user.id]);
         }
       },
       error: (err) => {
         this.isLoading = false;
         alert('Login failed: ' + (err.error?.message || 'Invalid Credentials'));
-        console.error('Unified Login Error:', err);
       }
     });
   }
