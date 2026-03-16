@@ -91,7 +91,6 @@ async function bookAppointment(req, res) {
             return res.status(404).json({ message: "Patient or Doctor not found" });
         }
 
-        // ✅ SECURITY RULE RE-ENABLED: Prevent booking same doctor if an active appointment exists
         const activeAppointment = await Appointment.findOne({
             patientID: patient.patientID,
             doctorID: doctor.id,
