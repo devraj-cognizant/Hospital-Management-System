@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http'; // Added HttpHeaders
 import { BehaviorSubject, Observable } from 'rxjs';
 import { PatientRecord } from '../model/patient-history';
 
@@ -13,6 +13,12 @@ export class MedicalHistoryService {
 
   constructor(private http: HttpClient) { }
 
+  // 1. HELPER: Grab the token from the current tab's session
+  private getAuthHeaders() {
+    const token = sessionStorage.getItem('token');
+    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  }
+
   addHistory(doctorID: string, doctorName: string, appointment: any, formData: any): Observable<any> {
     const historyPayload = {
       patientID: appointment.patientID,
@@ -25,22 +31,33 @@ export class MedicalHistoryService {
       doctorName: doctorName,
       dateOfVisit: new Date()
     };
-    return this.http.post(`${this.apiUrl}/${doctorID}/medicalhistory`, historyPayload, { withCredentials: true });
+
+    // 2. USE HEADERS instead of just withCredentials
+    return this.http.post(
+      `${this.apiUrl}/${doctorID}/medicalhistory`, 
+      historyPayload, 
+      { headers: this.getAuthHeaders() } 
+    );
   }
 
-  //  ONLY ONE VERSION OF THIS FUNCTION:
- fetchPatientsFromDB(doctorID: string): void {
-  this.http.get<{ histories: PatientRecord[] }>(
-    `${this.apiUrl}/${doctorID}/medicalhistory`, 
-    { withCredentials: true }
-  ).subscribe({
-    next: (res) => {
-      console.log("📦 Received Grouped Patients:", res.histories);
-      this.patientsSubject.next(res.histories || []);
-    },
-    error: (err) => console.error("❌ History fetch failed:", err)
-  });
-}
+  fetchPatientsFromDB(doctorID: string): void {
+    // 3. USE HEADERS here too
+    this.http.get<{ histories: PatientRecord[] }>(
+      `${this.apiUrl}/${doctorID}/medicalhistory`, 
+      { headers: this.getAuthHeaders() } 
+    ).subscribe({
+      next: (res) => {
+        console.log("📦 Received Grouped Patients:", res.histories);
+        this.patientsSubject.next(res.histories || []);
+      },
+      error: (err) => {
+        console.error("❌ History fetch failed:", err);
+        if (err.status === 401) {
+          alert("Session expired. Please login again.");
+        }
+      }
+    });
+  }
 
   public calculateAge(dob: string): number {
     if (!dob) return 0;
